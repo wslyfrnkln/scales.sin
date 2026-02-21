@@ -1,0 +1,68 @@
+{
+  "name": "Scales.sin",
+  "short_name": "Scales.sin",
+  "description": "Music theory tools for producers and guitarists",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1a1814",
+  "theme_color": "#1a1814",
+  "categories": ["education", "music"],
+  "screenshots": [
+    {
+      "src": "../Assets/Icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "../Assets/Icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    }
+  ],
+  "icons": [
+    {
+      "src": "../Assets/Icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "../Assets/Icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Scale Visualizer",
+      "short_name": "Scales",
+      "description": "Visualize scales on guitar and piano",
+      "url": "./scale_viz_v5.html",
+      "icons": [
+        {
+          "src": "../Assets/Icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Voice Leading",
+      "short_name": "Voicing",
+      "description": "Practice voice leading across chords",
+      "url": "./chord_voice_leading.html",
+      "icons": [
+        {
+          "src": "../Assets/Icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}

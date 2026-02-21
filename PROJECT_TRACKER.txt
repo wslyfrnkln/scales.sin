@@ -1,0 +1,160 @@
+================================================================================
+                        Scales.sin — PROJECT TRACKER
+================================================================================
+Last Updated: 2026-02-20
+Version: 0.1 (Pre-Release)
+Company: SinAudio
+Domain: sinaudio.co
+Type: PWA (Progressive Web App) → Future: Native iOS App
+
+================================================================================
+                             CHANGE LOG
+================================================================================
+
+[2026-02-20] - Session 3: Javelin Phase 1 COMPLETE — Files Pulled
+  - All 9 Phase 1 files pulled from Javelin outbox via receive.sh
+  - Source/: index.html, manifest.json, sw.js, scale_viz_v5.html, chord_voice_leading.html
+  - Assets/Icons/: icon-192.svg, icon-512.svg (SVG placeholder icons)
+  - Piano view added to Scale Visualizer (SVG 2-octave keyboard, scale degree colors)
+  - Natural Minor added to Voice Leading (correct chord qualities, Roman numeral toggle)
+  - Full PWA shell wired: manifest, service worker, offline cache, back nav
+  - Status: Ready for browser QA + iOS device test
+
+[2026-02-20] - Session 2: Javelin Phase 1b In Progress
+  - Onboarding prompt written for Javelin (ONBOARDING_PROMPT.txt) — 6-step ordered read
+  - Javelin heartbeat: status "working" on scales-sin-phase1b, ~90 min ETA at close
+  - Remaining: renderPiano() JS implementation + Natural Minor toggle + chord quality data
+  - SINAUDIO_BRAND.txt + JAVELIN_OPERATING_PREFERENCES.txt sent to Javelin docs/
+  - Sync system operational: HEARTBEAT.json + STATE.md + SYNC_PROTOCOL.txt
+  - Run receive.sh when Javelin heartbeat flips to "completed"
+
+[2026-02-20] - Session 1: Project Initialized
+  - Two existing HTML tools assessed and documented:
+      scale_viz_v5.html       (~85% complete)
+      chord_voice_leading.html (~75% complete)
+  - PWA strategy decided over native iOS (ship fast, evolve later)
+  - JAVELIN_PROMPT.txt written — full build brief for Javelin agent
+  - Project tracker created
+  - Added to MASTER_PROJECT_TRACKER.txt
+
+================================================================================
+                           DEVELOPMENT ROADMAP
+================================================================================
+
+PHASE 1 — PWA Product (Current)
+---------------------------------
+Goal: Unify two HTML tools into a branded, installable PWA
+Assigned to: Javelin (OpenClaw agent)
+Model: claude-sonnet-4-6
+Brief: JAVELIN_PROMPT.txt
+
+  [x] index.html — Scales.sin home screen + nav
+  [x] manifest.json — PWA manifest
+  [x] sw.js — Service worker (offline support)
+  [x] icons/ — PWA icons (192 + 512, SVG placeholders)
+  [x] scale_viz_v5.html — rebranded + PWA wired
+  [x] chord_voice_leading.html — rebranded + PWA wired
+  [x] Minor scale added to voice leading tool
+  [x] Piano keyboard view added to scale viz tool
+  [ ] All files test clean in browser (no console errors) ← QA PENDING
+  [ ] Installs correctly to iPhone home screen ← QA PENDING
+
+PHASE 2 — Content Expansion
+-----------------------------
+Goal: Expand scale and chord coverage, add audio
+  [ ] Audio playback via Web Audio API (click note → hear it)
+  [ ] Harmonic Minor + Melodic Minor in voice leading tool
+  [ ] Pentatonic scales in scale viz
+  [ ] Bass guitar view (4-string, standard tuning)
+  [ ] Chord progression builder (user composes progression)
+
+PHASE 3 — Native iOS App
+-------------------------
+Goal: SwiftUI rebuild of PWA for App Store distribution
+  [ ] Architecture design (each tool = SwiftUI View)
+  [ ] SwiftUI fretboard component (replaces SVG)
+  [ ] SwiftUI piano keyboard component
+  [ ] Voice leading engine ported from JS to Swift
+  [ ] App Store submission
+  Model recommendation: claude-opus-4-6 (complex SwiftUI patterns)
+
+PHASE 4 — Scales.sin Suite
+---------------------------
+Goal: Expand into a full music theory toolkit
+  [ ] Ear training tool
+  [ ] Interval recognition
+  [ ] Rhythm/groove trainer
+  [ ] Circle of fifths interactive visualization
+
+================================================================================
+                          APP / PROJECT STRUCTURE
+================================================================================
+
+Current:
+  Scales.sin App/
+  ├── JAVELIN_PROMPT.txt          ← Javelin build brief
+  ├── PROJECT_TRACKER.txt         ← This file
+  ├── scale_viz_v5.html           ← Scale visualization (guitar fretboard)
+  └── chord_voice_leading.html    ← Voice leading exercise tool
+
+After Phase 1 (Javelin output):
+  Scales.sin App/
+  ├── index.html                  ← PWA home screen
+  ├── manifest.json               ← PWA manifest
+  ├── sw.js                       ← Service worker
+  ├── scale_viz_v5.html           ← Rebranded + piano view
+  ├── chord_voice_leading.html    ← Rebranded + minor scale
+  ├── icons/
+  │   ├── icon-192.png
+  │   └── icon-512.png
+  ├── JAVELIN_PROMPT.txt
+  └── PROJECT_TRACKER.txt
+
+================================================================================
+                            DESIGN SYSTEM
+================================================================================
+
+Colors:
+  --bg-primary:    #1a1814
+  --bg-secondary:  #242018
+  --bg-card:       #2a2520
+  --text-primary:  #f5f0e8
+  --text-secondary:#a89f94
+
+Scale Degree Colors:
+  --deg-1: #e85d4c  (Root — red)
+  --deg-2: #e89a4c  (2nd — orange)
+  --deg-3: #c9a227  (3rd — gold)
+  --deg-4: #7db87d  (4th — green)
+  --deg-5: #4a90a4  (5th — blue)
+  --deg-6: #8a6aa4  (6th — purple)
+  --deg-7: #a4586a  (7th — magenta)
+
+Fonts:
+  Instrument Serif  — headings
+  JetBrains Mono    — labels, data, code
+  DM Sans           — body, UI
+
+================================================================================
+                               NOTES
+================================================================================
+
+- Tools built originally in Opus 4.6 due to complex SVG + voicing algorithms
+- Phase 1 (Javelin) uses Sonnet 4.6 — scope is well-defined, additive only
+- Phase 3 native iOS rebuild should use Opus 4.6
+- PWA does not require Apple Developer account — distribute via URL
+- Future domain: sinaudio.co (purchased 2026-02-20 via Cloudflare)
+- "Counsel not advice" framing not relevant here — pure music theory tool
+- Naming convention: [Name].sin for all SinAudio tools
+
+================================================================================
+                             MODEL USAGE
+================================================================================
+
+| Date       | Model              | Task                          |
+|------------|--------------------|-------------------------------|
+| 2026-02-20 | claude-sonnet-4-6  | Project assessment + planning |
+| 2026-02-20 | claude-haiku-4-5   | Codebase exploration (subagent)|
+| 2026-02-20 | claude-sonnet-4-6  | Onboarding prompt, sync system, monitoring Javelin phase1b |
+
+================================================================================

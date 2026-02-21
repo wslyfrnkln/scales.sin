@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Music theory tools for producers and guitarists">
+    <meta name="theme-color" content="#1a1814">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Scales.sin">
+    <link rel="apple-touch-icon" href="../Assets/Icons/icon-192.svg">
+    <link rel="manifest" href="./manifest.json">
+    <title>Scales.sin — SinAudio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1814;
+            --bg-secondary: #242018;
+            --bg-card: #2a2520;
+            --text-primary: #f5f0e8;
+            --text-secondary: #a89f94;
+            --accent: #e85d4c;
+            --border: rgba(168, 159, 148, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            padding: 2rem 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(2rem, 6vw, 3rem);
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 1.5rem;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .tools-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tool-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            display: block;
+        }
+
+        .tool-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(232, 93, 76, 0.1);
+        }
+
+        .tool-card:active {
+            transform: translateY(0);
+        }
+
+        .tool-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .tool-card h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+
+        .tool-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .install-hint {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .install-hint strong {
+            color: var(--accent);
+        }
+
+        .install-hint.hidden {
+            display: none;
+        }
+
+        .close-hint {
+            float: right;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1;
+            padding: 0.25rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 1.5rem 1rem 0.75rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            main {
+                padding: 1.5rem 1rem;
+            }
+
+            .tool-card {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Scales.sin</h1>
+        <p class="subtitle">Music Theory Tools for Producers</p>
+    </header>
+
+    <main>
+        <div id="installHint" class="install-hint">
+            <span class="close-hint" onclick="closeInstallHint()">&times;</span>
+            <strong>💡 Tip:</strong> Add this app to your home screen for offline access.
+            On iPhone, tap Share → Add to Home Screen. On Android, tap the menu → Install App.
+        </div>
+
+        <div class="tools-grid">
+            <a href="./scale_viz_v5.html" class="tool-card">
+                <span class="tool-icon">🎸</span>
+                <h2>Scale Visualizer</h2>
+                <p>See scales across guitar fretboard and piano keyboard. Explore modes and diatonic chords.</p>
+            </a>
+
+            <a href="./chord_voice_leading.html" class="tool-card">
+                <span class="tool-icon">🎹</span>
+                <h2>Voice Leading</h2>
+                <p>Practice smooth voice leading across harmonic cycles. Major and natural minor scales.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>A <strong>SinAudio</strong> tool — <a href="https://sinaudio.co">sinaudio.co</a></p>
+    </footer>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => {
+                console.warn('Service Worker registration failed:', err);
+            });
+        }
+
+        // Show install hint only on first visit
+        function closeInstallHint() {
+            document.getElementById('installHint').classList.add('hidden');
+            localStorage.setItem('scales-sin-hint-dismissed', 'true');
+        }
+
+        // Check if hint was previously dismissed
+        if (localStorage.getItem('scales-sin-hint-dismissed')) {
+            document.getElementById('installHint').classList.add('hidden');
+        }
+
+        // Prompt PWA install on supported devices
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+    </script>
+</body>
+</html>

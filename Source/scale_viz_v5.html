@@ -1,0 +1,3087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scale visualizer for guitar and piano with interactive fretboard">
+    <meta name="theme-color" content="#1a1814">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Scale Visualizer">
+    <link rel="apple-touch-icon" href="../Assets/Icons/icon-192.svg">
+    <link rel="manifest" href="./manifest.json">
+    <title>Scale Visualizer — Scales.sin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1814;
+            --bg-secondary: #242018;
+            --bg-card: #2a2520;
+            --text-primary: #f5f0e8;
+            --text-secondary: #a89f94;
+            --fret-wire: #8a8078;
+            --string: #d4cfc5;
+            --nut: #f5f0e8;
+            
+            /* Scale degree colors */
+            --deg-1: #e85d4c;  /* Root - red */
+            --deg-2: #e89a4c;  /* 2nd - orange */
+            --deg-3: #c9a227;  /* 3rd - gold */
+            --deg-4: #7db87d;  /* 4th - green */
+            --deg-5: #4a90a4;  /* 5th - blue */
+            --deg-6: #8a6aa4;  /* 6th - purple */
+            --deg-7: #a4586a;  /* 7th - magenta */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        header {
+            position: relative;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        .brand-logo {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.05em;
+        }
+
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .view-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.35rem 0.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid rgba(168, 159, 148, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .view-btn:hover {
+            color: var(--text-primary);
+            border-color: rgba(168, 159, 148, 0.5);
+        }
+
+        .view-btn.active {
+            background: var(--text-secondary);
+            color: var(--bg-primary);
+            border-color: var(--text-secondary);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .control-group label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+
+        select {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.35rem 1.5rem 0.35rem 0.5rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid rgba(168, 159, 148, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%23a89f94' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.4rem center;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--deg-1);
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .scale-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            padding: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .scale-formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+        }
+
+        .scale-notes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .mode-info {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--deg-1);
+        }
+
+        .relative-scale {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 0.4rem 0.75rem;
+            border-radius: 4px;
+            border: 1px dashed rgba(168, 159, 148, 0.3);
+        }
+
+        .relative-scale .equals {
+            color: rgba(168, 159, 148, 0.5);
+            margin-right: 0.25rem;
+        }
+
+        .relative-scale .parent-scale {
+            color: var(--deg-5);
+        }
+
+        .fretboard-section {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .fretboard-section.visible {
+            display: block;
+        }
+
+        .piano-section {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .piano-section.visible {
+            display: block;
+        }
+
+        .fretboard-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+        }
+
+        .piano-container {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .fretboard-label {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .piano-label {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .piano-keyboard {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 200px;
+            background: linear-gradient(to bottom, #2a2520 0%, #1f1b17 100%);
+            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid rgba(168, 159, 148, 0.2);
+        }
+
+        .fretboard {
+            position: relative;
+            min-width: 900px;
+        }
+
+        .fretboard svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .chord-info-section {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .chord-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .voicing-toggle {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--bg-secondary);
+            padding: 0.25rem;
+            border-radius: 6px;
+        }
+
+        .voicing-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 0.4rem 0.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .voicing-btn:hover {
+            color: var(--text-primary);
+        }
+
+        .voicing-btn.active {
+            background: var(--bg-card);
+            color: var(--deg-1);
+        }
+
+        /* Triads Section */
+        .triads-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        .triads-header {
+            margin-bottom: 1rem;
+        }
+
+        .triads-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+        }
+
+        .triads-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .triads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+
+        .triad-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid rgba(168, 159, 148, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .triad-card:hover {
+            border-color: rgba(232, 93, 76, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .triad-card.active {
+            border-color: var(--deg-1);
+            box-shadow: 0 0 0 2px var(--deg-1), 0 4px 12px rgba(232, 93, 76, 0.2);
+        }
+
+        .triad-card .triad-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .triad-card .triad-degree {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .triad-card .triad-notes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .triad-card .triad-inversions {
+            display: flex;
+            gap: 0.25rem;
+            flex-wrap: wrap;
+        }
+
+        .triad-card .inversion-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.4rem;
+            background: var(--bg-secondary);
+            border-radius: 3px;
+            color: var(--text-secondary);
+        }
+
+        .triad-card .inversion-badge.available {
+            background: rgba(125, 184, 125, 0.2);
+            color: var(--deg-4);
+        }
+
+        .position-indicator {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            background: rgba(232, 93, 76, 0.1);
+            border-left: 2px dashed rgba(232, 93, 76, 0.4);
+            border-right: 2px dashed rgba(232, 93, 76, 0.4);
+            pointer-events: none;
+        }
+
+        .chord-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.75rem;
+            max-width: 100%;
+        }
+
+        @media (max-width: 700px) {
+            .chord-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .chord-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid rgba(168, 159, 148, 0.1);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chord-card:hover {
+            border-color: rgba(232, 93, 76, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .chord-card.active {
+            border-color: var(--deg-1);
+            box-shadow: 0 0 0 2px var(--deg-1), 0 4px 12px rgba(232, 93, 76, 0.2);
+        }
+
+        .chord-card.selected {
+            border-color: var(--deg-5);
+            box-shadow: 0 0 0 2px var(--deg-5), 0 4px 12px rgba(74, 144, 164, 0.3);
+        }
+
+        .chord-card .chord-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .chord-card .chord-degree {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.4rem;
+        }
+
+        .chord-card .chord-notes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .chord-inversions-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        .chord-inversions-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .chord-inversions-degrees {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .chord-inversions-degrees .degree {
+            display: inline-block;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            margin: 0 0.15rem;
+        }
+
+        .chord-inversions-grid {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .chord-degree {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .chord-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .chord-type {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .progression-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+        }
+
+        .progression-header {
+            margin-bottom: 0.75rem;
+        }
+
+        .progression-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .progression-description {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .progression-examples {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.6rem;
+            max-width: 600px;
+        }
+
+        @media (max-width: 600px) {
+            .progression-examples {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .progression-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid rgba(168, 159, 148, 0.1);
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .progression-card:hover {
+            border-color: rgba(232, 93, 76, 0.5);
+        }
+
+        .progression-card.active {
+            border-color: var(--deg-1);
+            box-shadow: 0 0 0 1px var(--deg-1);
+        }
+
+        .progression-style {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--deg-1);
+            margin-bottom: 0.3rem;
+        }
+
+        .progression-chords {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            align-items: center;
+        }
+
+        .progression-chords .chord {
+            background: var(--bg-secondary);
+            padding: 0.15rem 0.35rem;
+            border-radius: 3px;
+            font-size: 0.8rem;
+        }
+
+        .progression-chords .arrow {
+            color: var(--text-secondary);
+            font-size: 0.65rem;
+        }
+
+        .progression-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        .chord-diagrams-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+            display: none;
+        }
+
+        .chord-diagrams-section.visible {
+            display: block;
+        }
+
+        .chord-diagrams-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .chord-diagrams-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+
+        .close-diagrams {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border: 1px solid rgba(168, 159, 148, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .close-diagrams:hover {
+            border-color: var(--deg-1);
+            color: var(--text-primary);
+        }
+
+        .chord-diagrams-grid {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 1rem;
+        }
+
+        .chord-diagram-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            min-width: 160px;
+            border: 1px solid rgba(168, 159, 148, 0.1);
+        }
+
+        .chord-diagram-card .chord-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .chord-diagram-card .chord-name sup {
+            font-size: 0.6em;
+        }
+
+        .chord-diagram-card .fretboard-container {
+            width: 140px;
+            height: 190px;
+        }
+
+        .chord-diagram-card .inversion-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--deg-1);
+            background: rgba(232, 93, 76, 0.15);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            margin-top: 0.25rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(168, 159, 148, 0.1);
+        }
+
+        @media (max-width: 800px) {
+            .chord-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-nav">
+            <a href="index.html" class="back-link">← Back</a>
+            <span class="brand-logo">SinAudio / Scales.sin</span>
+            <div style="width: 60px;"></div>
+        </div>
+        <h1>Scale Visualizer</h1>
+        <p class="subtitle">Built by WESLEYFRANKLIN</p>
+        <div class="view-toggle">
+            <button class="view-btn active" data-view="guitar">Guitar</button>
+            <button class="view-btn" data-view="piano">Piano</button>
+        </div>
+        <div id="piano-svg" style="display: none;"></div>
+    </header>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Root</label>
+            <select id="root-select">
+                <option value="0" selected>C</option>
+                <option value="1">C♯/D♭</option>
+                <option value="2">D</option>
+                <option value="3">D♯/E♭</option>
+                <option value="4">E</option>
+                <option value="5">F</option>
+                <option value="6">F♯/G♭</option>
+                <option value="7">G</option>
+                <option value="8">G♯/A♭</option>
+                <option value="9">A</option>
+                <option value="10">A♯/B♭</option>
+                <option value="11">B</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Scale</label>
+            <select id="scale-select">
+                <option value="major" selected>Major (Ionian)</option>
+                <option value="natural_minor">Natural Minor (Aeolian)</option>
+                <option value="harmonic_minor">Harmonic Minor</option>
+                <option value="melodic_minor">Melodic Minor</option>
+                <option value="diminished_hw">Diminished (H-W)</option>
+                <option value="diminished_wh">Diminished (W-H)</option>
+                <option value="whole_tone">Whole Tone</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Mode</label>
+            <select id="mode-select">
+                <option value="0">1 - Ionian</option>
+                <option value="1">2 - Dorian</option>
+                <option value="2">3 - Phrygian</option>
+                <option value="3">4 - Lydian</option>
+                <option value="4">5 - Mixolydian</option>
+                <option value="5">6 - Aeolian</option>
+                <option value="6">7 - Locrian</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Shape</label>
+            <select id="degree-select">
+                <option value="all">All Shapes</option>
+                <option value="0">Shape 1</option>
+                <option value="1">Shape 2</option>
+                <option value="2">Shape 3</option>
+                <option value="3">Shape 4</option>
+                <option value="4">Shape 5</option>
+                <option value="5">Shape 6</option>
+                <option value="6">Shape 7</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Position</label>
+            <select id="position-select">
+                <option value="all">All Positions</option>
+                <option value="0">Position 1</option>
+                <option value="1">Position 2</option>
+                <option value="2">Position 3</option>
+                <option value="3">Position 4</option>
+                <option value="4">Position 5</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="legend" id="legend">
+        <!-- Generated by JS -->
+    </div>
+
+    <div class="scale-info">
+        <div class="scale-formula" id="scale-formula">W-W-H-W-W-W-H</div>
+        <div class="scale-notes" id="scale-notes">C D E F G A B</div>
+        <div class="mode-info" id="mode-info">Ionian Mode</div>
+        <div class="relative-scale" id="relative-scale"></div>
+    </div>
+
+    <div class="fretboard-section visible">
+        <div class="fretboard-container">
+            <div class="fretboard" id="fretboard">
+                <!-- SVG generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="piano-section" id="piano-section">
+        <div class="piano-label">Piano Keyboard</div>
+        <div class="piano-container" id="piano-container">
+            <!-- Piano SVG generated by JS -->
+        </div>
+    </div>
+
+    <div class="chord-info-section">
+        <div class="chord-section-header">
+            <div class="fretboard-label">Diatonic Chords <span id="position-label">in Position </span><span id="position-number"></span></div>
+            <div class="voicing-toggle" id="voicing-toggle">
+                <button class="voicing-btn active" data-voicing="triad">Triads</button>
+                <button class="voicing-btn" data-voicing="drop2">Drop 2</button>
+                <button class="voicing-btn" data-voicing="drop3">Drop 3</button>
+            </div>
+        </div>
+        <div class="triads-subtitle">Click a chord to highlight on fretboard</div>
+        <div class="chord-grid" id="chord-grid">
+            <!-- Generated by JS -->
+        </div>
+        <div class="chord-inversions-section" id="chord-inversions-section" style="display: none;">
+            <div class="chord-inversions-title" id="chord-inversions-title">CMaj7 Inversions</div>
+            <div class="chord-inversions-degrees" id="chord-inversions-degrees">Chord Tones: 1 - 3 - 5 - 7</div>
+            <div class="chord-inversions-grid" id="chord-inversions-grid">
+                <!-- Generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div class="progression-section">
+        <div class="progression-header">
+            <div class="progression-title" id="progression-title">Mode Character</div>
+            <div class="progression-description" id="progression-description">Description of the mode's sound and feel.</div>
+        </div>
+        <div class="progression-examples" id="progression-examples">
+            <!-- Generated by JS -->
+        </div>
+    </div>
+
+    <div class="chord-diagrams-section" id="chord-diagrams-section">
+        <div class="chord-diagrams-header">
+            <div class="chord-diagrams-title" id="chord-diagrams-title">Chord Progression</div>
+            <button class="close-diagrams" id="close-diagrams">✕ Close</button>
+        </div>
+        <div class="chord-diagrams-grid" id="chord-diagrams-grid">
+            <!-- Generated by JS -->
+        </div>
+    </div>
+
+    <footer>
+        <p>Select root, scale type, mode, and position to visualize patterns</p>
+    </footer>
+
+    <script>
+        // ============ CONSTANTS ============
+        const NOTE_NAMES_SHARP = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+        const NOTE_NAMES_FLAT = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+        const FLAT_KEYS = [5, 10, 3, 8, 1, 6]; // F, Bb, Eb, Ab, Db, Gb
+        
+        // Scale intervals (in semitones from root)
+        const SCALES = {
+            major: {
+                name: 'Major',
+                intervals: [0, 2, 4, 5, 7, 9, 11],
+                formula: 'W-W-H-W-W-W-H',
+                chordQualities: ['Maj7', 'm7', 'm7', 'Maj7', '7', 'm7', 'm7♭5'],
+                chordTypes: ['maj7', 'min7', 'min7', 'maj7', 'dom7', 'min7', 'min7b5'],
+                modes: ['Ionian', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian', 'Aeolian', 'Locrian']
+            },
+            natural_minor: {
+                name: 'Natural Minor',
+                intervals: [0, 2, 3, 5, 7, 8, 10],
+                formula: 'W-H-W-W-H-W-W',
+                chordQualities: ['m7', 'm7♭5', 'Maj7', 'm7', 'm7', 'Maj7', '7'],
+                chordTypes: ['min7', 'min7b5', 'maj7', 'min7', 'min7', 'maj7', 'dom7'],
+                modes: ['Aeolian', 'Locrian', 'Ionian', 'Dorian', 'Phrygian', 'Lydian', 'Mixolydian']
+            },
+            harmonic_minor: {
+                name: 'Harmonic Minor',
+                intervals: [0, 2, 3, 5, 7, 8, 11],
+                formula: 'W-H-W-W-H-A-H',  // A = augmented 2nd (3 semitones)
+                chordQualities: ['mMaj7', 'm7♭5', 'Maj7♯5', 'm7', '7', 'Maj7', 'dim7'],
+                chordTypes: ['minmaj7', 'min7b5', 'maj7sharp5', 'min7', 'dom7', 'maj7', 'dim7'],
+                modes: ['Harmonic Minor', 'Locrian ♮6', 'Ionian ♯5', 'Dorian ♯4', 'Phrygian Dominant', 'Lydian ♯2', 'Superlocrian']
+            },
+            melodic_minor: {
+                name: 'Melodic Minor',
+                intervals: [0, 2, 3, 5, 7, 9, 11],
+                formula: 'W-H-W-W-W-W-H',
+                chordQualities: ['mMaj7', 'm7', 'Maj7♯5', '7', '7', 'm7♭5', 'm7♭5'],
+                chordTypes: ['minmaj7', 'min7', 'maj7sharp5', 'dom7', 'dom7', 'min7b5', 'min7b5'],
+                modes: ['Melodic Minor', 'Dorian ♭2', 'Lydian ♯5', 'Lydian Dominant', 'Mixolydian ♭6', 'Locrian ♮2', 'Altered Scale']
+            },
+            diminished_hw: {
+                name: 'Diminished (H-W)',
+                intervals: [0, 1, 3, 4, 6, 7, 9, 10], // 8 notes
+                formula: 'H-W-H-W-H-W-H-W',
+                // Used over dim7 chords - all tertian chords are dim7
+                chordQualities: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                chordTypes: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                modes: ['Half-Whole Dim'],
+                isSymmetric: true,
+                noteCount: 8
+            },
+            diminished_wh: {
+                name: 'Diminished (W-H)',
+                intervals: [0, 2, 3, 5, 6, 8, 9, 11], // 8 notes
+                formula: 'W-H-W-H-W-H-W-H',
+                // Used over dom7(♭9) chords - root position gives dom7, others give dim7
+                // C W-H dim: C, D, E♭, F, G♭, A♭, A, B
+                // Chord on C: C-E♭-G♭-A = dim7? No wait, let's check: C(0), skip D(2), E♭(3), skip F(5), G♭(6), skip A♭(8), A(9)
+                // That's C-E♭-G♭-A = Cdim7. But this scale is used over C7♭9...
+                // Actually the dom7 chord comes from stacking: C-E(missing)-G-B♭(missing)... 
+                // This scale doesn't produce dom7 chords diatonically - it's used OVER dom7 chords
+                chordQualities: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                chordTypes: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                modes: ['Whole-Half Dim'],
+                isSymmetric: true,
+                noteCount: 8
+            },
+            whole_tone: {
+                name: 'Whole Tone',
+                intervals: [0, 2, 4, 6, 8, 10], // 6 notes
+                formula: 'W-W-W-W-W-W',
+                // C whole tone: C, D, E, F♯, G♯, A♯
+                // Chord on C: C-E-G♯-A♯ = C+Maj7 (augmented major 7)
+                // All chords are augmented with major 7th
+                chordQualities: ['+Maj7', '+Maj7', '+Maj7', '+Maj7', '+Maj7', '+Maj7'],
+                chordTypes: ['maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5'],
+                modes: ['Whole Tone'],
+                isSymmetric: true,
+                noteCount: 6
+            }
+        };
+        
+        // Example progressions for each scale/mode
+        // Format: array of [degree (1-7), description]
+        const MODE_PROGRESSIONS = {
+            major: [
+                { // Ionian
+                    name: 'Major / Ionian',
+                    description: 'Bright, happy, resolved. The "default" major sound.',
+                    progressions: [
+                        { chords: [1, 4, 5, 1], name: 'I - IV - V - I', style: 'Classic Pop/Rock' },
+                        { chords: [1, 5, 6, 4], name: 'I - V - vi - IV', style: 'Pop Anthem' },
+                        { chords: [1, 6, 4, 5], name: 'I - vi - IV - V', style: '50s Progression' },
+                        { chords: [2, 5, 1], name: 'ii - V - I', style: 'Jazz Standard' }
+                    ]
+                },
+                { // Dorian
+                    name: 'Dorian',
+                    description: 'Minor but hopeful. The raised 6th gives it a brighter quality than natural minor.',
+                    progressions: [
+                        { chords: [1, 4], name: 'i - IV', style: 'Dorian Vamp (So What)' },
+                        { chords: [1, 4, 7, 3], name: 'i - IV - ♭VII - ♭III', style: 'Funk/Soul' },
+                        { chords: [1, 2, 7, 1], name: 'i - ii - ♭VII - i', style: 'Modal Rock' },
+                        { chords: [1, 7, 4, 1], name: 'i - ♭VII - IV - i', style: 'Santana Style' }
+                    ]
+                },
+                { // Phrygian
+                    name: 'Phrygian',
+                    description: 'Dark, Spanish/Flamenco flavor. The ♭2 gives it tension.',
+                    progressions: [
+                        { chords: [1, 2], name: 'i - ♭II', style: 'Phrygian Vamp' },
+                        { chords: [1, 2, 7, 1], name: 'i - ♭II - ♭VII - i', style: 'Metal/Flamenco' },
+                        { chords: [1, 7, 6, 2], name: 'i - ♭VII - ♭VI - ♭II', style: 'Spanish Cadence' },
+                        { chords: [1, 2, 3, 2], name: 'i - ♭II - ♭III - ♭II', style: 'Phrygian Rock' }
+                    ]
+                },
+                { // Lydian
+                    name: 'Lydian',
+                    description: 'Dreamy, floating, ethereal. The #4 creates an "unresolved" quality.',
+                    progressions: [
+                        { chords: [1, 2], name: 'I - II', style: 'Lydian Vamp' },
+                        { chords: [1, 2, 7, 1], name: 'I - II - vii - I', style: 'Film Score' },
+                        { chords: [1, 3, 2, 1], name: 'I - iii - II - I', style: 'Dream Pop' },
+                        { chords: [1, 7, 4, 1], name: 'I - vii - IV - I', style: 'Joe Satriani Style' }
+                    ]
+                },
+                { // Mixolydian
+                    name: 'Mixolydian',
+                    description: 'Bluesy, rock feel. Major with a ♭7 gives it a dominant, unresolved quality.',
+                    progressions: [
+                        { chords: [1, 7, 4, 1], name: 'I - ♭VII - IV - I', style: 'Classic Rock' },
+                        { chords: [1, 7], name: 'I - ♭VII', style: 'Mixolydian Vamp' },
+                        { chords: [1, 4, 7, 4], name: 'I - IV - ♭VII - IV', style: 'Southern Rock' },
+                        { chords: [1, 2, 7, 1], name: 'I - ii - ♭VII - I', style: 'Blues Rock' }
+                    ]
+                },
+                { // Aeolian
+                    name: 'Natural Minor / Aeolian',
+                    description: 'Sad, melancholic. The standard minor sound.',
+                    progressions: [
+                        { chords: [1, 7, 6, 7], name: 'i - ♭VII - ♭VI - ♭VII', style: 'Andalusian Cadence' },
+                        { chords: [1, 6, 3, 7], name: 'i - ♭VI - ♭III - ♭VII', style: 'Epic Minor' },
+                        { chords: [1, 4, 7, 1], name: 'i - iv - ♭VII - i', style: 'Minor Rock' },
+                        { chords: [6, 7, 1], name: '♭VI - ♭VII - i', style: 'Mario Cadence' }
+                    ]
+                },
+                { // Locrian
+                    name: 'Locrian',
+                    description: 'Unstable, dissonant. Rarely used as a tonal center. The diminished i chord lacks stability.',
+                    progressions: [
+                        { chords: [1, 2], name: 'i° - ♭II', style: 'Locrian Tension' },
+                        { chords: [1, 2, 6, 7], name: 'i° - ♭II - ♭VI - ♭VII', style: 'Dark Ambient' },
+                        { chords: [2, 1], name: '♭II - i°', style: 'Unresolved' }
+                    ]
+                }
+            ],
+            natural_minor: [], // Will copy from major Aeolian
+            harmonic_minor: [
+                { // Harmonic Minor
+                    name: 'Harmonic Minor',
+                    description: 'Classical, Middle Eastern. The augmented 2nd interval creates tension.',
+                    progressions: [
+                        { chords: [1, 4, 5, 1], name: 'i - iv - V - i', style: 'Classical Minor' },
+                        { chords: [1, 7, 6, 5], name: 'i - ♭VII - ♭VI - V', style: 'Neoclassical Metal' },
+                        { chords: [4, 5, 1], name: 'iv - V - i', style: 'Minor ii-V-i' },
+                        { chords: [6, 5, 1], name: '♭VI - V - i', style: 'Spanish Drama' }
+                    ]
+                },
+                { // Locrian ♮6
+                    name: 'Locrian ♮6',
+                    description: 'Slightly less dark than Locrian due to natural 6th.',
+                    progressions: [
+                        { chords: [1, 6], name: 'i° - VI', style: 'Modal Exploration' },
+                        { chords: [1, 2, 6], name: 'i° - ♭II - VI', style: 'Jazz Fusion' }
+                    ]
+                },
+                { // Ionian ♯5
+                    name: 'Ionian ♯5',
+                    description: 'Augmented major sound. Bright but unstable.',
+                    progressions: [
+                        { chords: [1, 3], name: 'I+ - iii', style: 'Augmented Movement' },
+                        { chords: [1, 4, 2], name: 'I+ - IV - ii', style: 'Chromatic Pop' }
+                    ]
+                },
+                { // Dorian ♯4
+                    name: 'Dorian ♯4',
+                    description: 'Minor with Lydian flavor. The #4 adds brightness to minor.',
+                    progressions: [
+                        { chords: [1, 2, 4], name: 'i - II - IV', style: 'Jazz Minor' },
+                        { chords: [1, 4, 7], name: 'i - IV - ♭VII', style: 'Fusion' }
+                    ]
+                },
+                { // Phrygian Dominant
+                    name: 'Phrygian Dominant',
+                    description: 'Spanish, Jewish, Middle Eastern. Major chord on ♭2 with Phrygian flavor.',
+                    progressions: [
+                        { chords: [1, 2], name: 'I - ♭II', style: 'Flamenco' },
+                        { chords: [1, 2, 7, 1], name: 'I - ♭II - ♭vii - I', style: 'Middle Eastern' },
+                        { chords: [1, 4, 2, 1], name: 'I - iv - ♭II - I', style: 'Jewish/Klezmer' },
+                        { chords: [2, 1], name: '♭II - I', style: 'Andalusian' }
+                    ]
+                },
+                { // Lydian ♯2
+                    name: 'Lydian ♯2',
+                    description: 'Exotic, augmented 2nd creates unique color.',
+                    progressions: [
+                        { chords: [1, 2], name: 'I - ♯ii°', style: 'Modal Jazz' },
+                        { chords: [1, 4, 7], name: 'I - ♯IV - vii', style: 'Avant-Garde' }
+                    ]
+                },
+                { // Superlocrian
+                    name: 'Superlocrian / Diminished',
+                    description: 'Extremely unstable. Fully diminished sound.',
+                    progressions: [
+                        { chords: [1, 2], name: 'i° - ♭II', style: 'Tension' },
+                        { chords: [7, 1], name: '♭VII - i°', style: 'Horror Score' }
+                    ]
+                }
+            ],
+            melodic_minor: [
+                { // Melodic Minor
+                    name: 'Melodic Minor',
+                    description: 'Jazz minor. Minor with major 6th and 7th creates smoother melody.',
+                    progressions: [
+                        { chords: [1, 4, 5, 1], name: 'i - iv - V - i', style: 'Jazz Minor' },
+                        { chords: [1, 2, 5, 1], name: 'i - ii - V - i', style: 'Minor ii-V-i' },
+                        { chords: [1, 4, 7, 3], name: 'i - IV - ♭VII - ♭III', style: 'Fusion' }
+                    ]
+                },
+                { // Dorian ♭2
+                    name: 'Dorian ♭2 / Phrygian ♯6',
+                    description: 'Dark Dorian with Phrygian ♭2. Used over sus♭9 chords.',
+                    progressions: [
+                        { chords: [1, 2], name: 'i - ♭II', style: 'Phrygian Dorian' },
+                        { chords: [1, 4, 2], name: 'i - IV - ♭II', style: 'Modal Fusion' }
+                    ]
+                },
+                { // Lydian ♯5 / Lydian Augmented
+                    name: 'Lydian ♯5 / Lydian Augmented',
+                    description: 'Bright and floating with augmented quality. Used over Maj7♯5.',
+                    progressions: [
+                        { chords: [1, 2], name: 'I+ - II', style: 'Augmented Lydian' },
+                        { chords: [1, 5, 2, 1], name: 'I+ - V - II - I+', style: 'Jazz Ballad' }
+                    ]
+                },
+                { // Lydian Dominant
+                    name: 'Lydian Dominant / Lydian ♭7',
+                    description: 'The "Simpsons" sound. Major with #4 and ♭7. Used over 7♯11 chords.',
+                    progressions: [
+                        { chords: [1, 2, 7], name: 'I7 - II - ♭VII', style: 'Fusion' },
+                        { chords: [1, 5], name: 'I7 - V', style: 'Tritone Sub Prep' },
+                        { chords: [1, 4, 7, 1], name: 'I7 - IV - ♭VII - I7', style: 'Blues Fusion' }
+                    ]
+                },
+                { // Mixolydian ♭6
+                    name: 'Mixolydian ♭6 / Hindu Scale',
+                    description: 'Dominant with minor 6th. Bittersweet, Indian flavor.',
+                    progressions: [
+                        { chords: [1, 6, 7], name: 'I - ♭VI - ♭VII', style: 'Film Score' },
+                        { chords: [1, 4, 6, 7], name: 'I - IV - ♭VI - ♭VII', style: 'Epic' }
+                    ]
+                },
+                { // Locrian ♮2 / Half-Diminished
+                    name: 'Locrian ♮2 / Half-Diminished',
+                    description: 'Less dark Locrian. Used over m7♭5 chords in jazz.',
+                    progressions: [
+                        { chords: [1, 2, 5], name: 'i° - ii - V', style: 'Jazz Minor ii-V' },
+                        { chords: [1, 4], name: 'i° - IV', style: 'Modal' }
+                    ]
+                },
+                { // Altered Scale / Super Locrian
+                    name: 'Altered Scale',
+                    description: 'All alterations (♭9, ♯9, ♭5, ♯5). Used over altered dominant 7th chords.',
+                    progressions: [
+                        { chords: [1], name: 'V7alt resolving to I', style: 'Jazz Resolution' },
+                        { chords: [2, 1], name: 'ii - V7alt', style: 'Bebop' }
+                    ]
+                }
+            ]
+        };
+        
+        // Copy major mode progressions to natural minor (starting from Aeolian)
+        MODE_PROGRESSIONS.natural_minor = [
+            MODE_PROGRESSIONS.major[5], // Aeolian
+            MODE_PROGRESSIONS.major[6], // Locrian
+            MODE_PROGRESSIONS.major[0], // Ionian
+            MODE_PROGRESSIONS.major[1], // Dorian
+            MODE_PROGRESSIONS.major[2], // Phrygian
+            MODE_PROGRESSIONS.major[3], // Lydian
+            MODE_PROGRESSIONS.major[4]  // Mixolydian
+        ];
+        
+        // Diminished scale progressions
+        MODE_PROGRESSIONS.diminished_hw = [
+            {
+                name: 'Diminished (Half-Whole)',
+                description: 'Symmetric scale with minor 3rd symmetry. Used over diminished 7th chords. All diatonic chords are dim7.',
+                progressions: [
+                    { chords: [1], name: 'dim7 vamp', style: 'Tension/Transition' },
+                    { chords: [1, 3], name: 'i° - ♯ii°', style: 'Minor 3rd Movement' },
+                    { chords: [1, 3, 5, 7], name: 'i° - ♯ii° - ♯iv° - vi°', style: 'Diminished Cycle' }
+                ]
+            }
+        ];
+        
+        MODE_PROGRESSIONS.diminished_wh = [
+            {
+                name: 'Diminished (Whole-Half)',
+                description: 'Symmetric scale used OVER dominant 7♭9 chords. Diatonic chords are all dim7. Common in jazz for altered dominants.',
+                progressions: [
+                    { chords: [1], name: 'dim7 vamp', style: 'Dominant Tension' },
+                    { chords: [1, 3], name: 'i° - ii°', style: 'Whole Step Movement' }
+                ]
+            }
+        ];
+        
+        // Whole tone scale progressions
+        MODE_PROGRESSIONS.whole_tone = [
+            {
+                name: 'Whole Tone',
+                description: 'Symmetric 6-note scale. Dreamy, floating, unresolved. All diatonic chords are augmented Maj7 (+Maj7).',
+                progressions: [
+                    { chords: [1], name: '+Maj7 vamp', style: 'Impressionist' },
+                    { chords: [1, 2], name: 'I+ - II+', style: 'Parallel Augmented' },
+                    { chords: [1, 3, 5], name: 'I+ - III+ - ♯V+', style: 'Whole Tone Cycle' }
+                ]
+            }
+        ];
+        
+        // Standard tuning (MIDI notes)
+        const TUNING = [40, 45, 50, 55, 59, 64]; // E2, A2, D3, G3, B3, E4
+        const STRING_NAMES = ['E', 'A', 'D', 'G', 'B', 'e'];
+        
+        // Position definitions - fret ranges for each position
+        // These are based on 3-notes-per-string patterns
+        // Position start frets are relative to root note location
+        const POSITION_SPANS = 5; // Each position spans roughly 5 frets
+        
+        // Triad intervals
+        const TRIAD_INTERVALS = {
+            'maj': [0, 4, 7],    // Major: R-M3-P5
+            'min': [0, 3, 7],    // Minor: R-m3-P5
+            'dim': [0, 3, 6],    // Diminished: R-m3-d5
+            'aug': [0, 4, 8]     // Augmented: R-M3-A5
+        };
+        
+        // Triad qualities for each scale degree (major scale as reference)
+        const DIATONIC_TRIAD_QUALITIES = {
+            major: ['maj', 'min', 'min', 'maj', 'maj', 'min', 'dim'],
+            natural_minor: ['min', 'dim', 'maj', 'min', 'min', 'maj', 'maj'],
+            harmonic_minor: ['min', 'dim', 'aug', 'min', 'maj', 'maj', 'dim'],
+            melodic_minor: ['min', 'min', 'aug', 'maj', 'maj', 'dim', 'dim']
+        };
+        
+        // Current selected triad (for highlighting)
+        let selectedTriad = null;
+        let currentPosition = 'all';
+        
+        // Degree colors (extended to 8 for diminished scale)
+        const DEGREE_COLORS = [
+            '#e85d4c', // 1 - red
+            '#e89a4c', // 2 - orange  
+            '#c9a227', // 3 - gold
+            '#7db87d', // 4 - green
+            '#4a90a4', // 5 - blue
+            '#8a6aa4', // 6 - purple
+            '#a4586a', // 7 - magenta
+            '#5a9a8a'  // 8 - teal (for diminished)
+        ];
+
+        // Drop 2 voicing intervals (for chord diagrams)
+        // Chord intervals: [R, 3rd, 5th, 7th] in semitones
+        const CHORD_INTERVALS = {
+            'maj7': [0, 4, 7, 11],
+            'min7': [0, 3, 7, 10],
+            'dom7': [0, 4, 7, 10],
+            'min7b5': [0, 3, 6, 10],
+            'dim7': [0, 3, 6, 9],
+            'minmaj7': [0, 3, 7, 11],
+            'maj7sharp5': [0, 4, 8, 11]
+        };
+
+        // Drop 2 inversions (low to high on strings 6,5,4,3)
+        // Index = string position (0=bass), Value = chord tone (0=R, 1=3, 2=5, 3=7)
+        const DROP2_INVERSIONS = {
+            'root': [0, 2, 3, 1],  // R-5-7-3 (Root in bass)
+            '1st':  [1, 3, 0, 2],  // 3-7-R-5 (3rd in bass)
+            '2nd':  [2, 0, 1, 3],  // 5-R-3-7 (5th in bass)
+            '3rd':  [3, 1, 2, 0]   // 7-3-5-R (7th in bass)
+        };
+
+        // Drop 3 inversions (3rd voice from top dropped)
+        // Close voicing: R-3-5-7, drop the 3rd from top (5) down an octave
+        const DROP3_INVERSIONS = {
+            'root': [2, 0, 1, 3],  // 5-R-3-7 (Root in bass of upper structure)
+            '1st':  [3, 1, 2, 0],  // 7-3-5-R (3rd in bass of upper structure)
+            '2nd':  [0, 2, 3, 1],  // R-5-7-3 (5th in bass of upper structure)
+            '3rd':  [1, 3, 0, 2]   // 3-7-R-5 (7th in bass of upper structure)
+        };
+
+        // Triad inversions (R, 3, 5 only - on strings 6,5,4)
+        const TRIAD_INVERSIONS = {
+            'root': [0, 1, 2],     // R-3-5 (Root in bass)
+            '1st':  [1, 2, 0],     // 3-5-R (3rd in bass)
+            '2nd':  [2, 0, 1]      // 5-R-3 (5th in bass)
+        };
+
+        const INVERSION_NAMES = ['root', '1st', '2nd', '3rd'];
+        const TRIAD_INVERSION_NAMES = ['root', '1st', '2nd'];
+
+        // Current state
+        let currentVoicingType = 'drop2';
+        let selectedChordIndex = null;
+        let currentScaleNotes = [];
+        let currentChordQualities = [];
+        let currentUseFlats = false;
+        let currentView = 'guitar';
+        let currentRoot = 0;
+        let currentScaleType = 'major';
+        let currentModeIndex = 0;
+
+        // String set for low strings (6,5,4,3)
+        const LOW_STRINGS_MIDI = [40, 45, 50, 55]; // E2, A2, D3, G3
+        const LOW_STRING_INDICES = [0, 1, 2, 3];
+
+        // Chord type mapping from scale chord types to interval keys
+        const CHORD_TYPE_MAP = {
+            'maj7': 'maj7',
+            'min7': 'min7',
+            'dom7': 'dom7',
+            'min7b5': 'min7b5',
+            'dim7': 'dim7',
+            'minmaj7': 'minmaj7',
+            'maj7sharp5': 'maj7sharp5'
+        };
+
+        // ============ HELPERS ============
+        
+        function getNoteName(noteIndex, useFlats) {
+            const idx = ((noteIndex % 12) + 12) % 12;
+            return useFlats ? NOTE_NAMES_FLAT[idx] : NOTE_NAMES_SHARP[idx];
+        }
+        
+        function getScaleNotes(root, scaleType, modeIndex) {
+            const scale = SCALES[scaleType];
+            const baseIntervals = scale.intervals;
+            const noteCount = scale.noteCount || 7;
+            
+            // For symmetric scales, modes don't really apply the same way
+            if (scale.isSymmetric) {
+                const notes = baseIntervals.map(interval => (root + interval) % 12);
+                return { notes, intervals: baseIntervals, noteCount };
+            }
+            
+            // Parallel approach: apply mode intervals to the selected root
+            // Mode rotates which interval pattern we use, but root stays the same
+            const rotatedIntervals = [];
+            const modeStartInterval = baseIntervals[modeIndex];
+            
+            for (let i = 0; i < noteCount; i++) {
+                const idx = (modeIndex + i) % noteCount;
+                let interval = baseIntervals[idx] - modeStartInterval;
+                if (interval < 0) interval += 12;
+                rotatedIntervals.push(interval);
+            }
+            
+            // Get actual notes based on the selected root (not relative to parent scale)
+            const notes = rotatedIntervals.map(interval => (root + interval) % 12);
+            return { notes, intervals: rotatedIntervals, noteCount };
+        }
+        
+        function getScaleDegreeAtFret(stringIdx, fret, root, scaleNotes) {
+            const noteMidi = TUNING[stringIdx] + fret;
+            const noteClass = noteMidi % 12;
+            const degreeIdx = scaleNotes.indexOf(noteClass);
+            return degreeIdx; // -1 if not in scale
+        }
+        
+        // Calculate position fret ranges based on root note
+        function getPositionRanges(root) {
+            // Find lowest occurrence of root on low E string
+            const lowERoot = root >= 4 ? root - 4 : root + 8; // Adjust for E string (MIDI 40 = E = 4)
+            
+            // 5 positions, each spanning about 4-5 frets
+            // Positions are based on where scale patterns naturally fall
+            const positions = [];
+            for (let i = 0; i < 5; i++) {
+                const startFret = (lowERoot + i * 3 - 1 + 12) % 12;
+                // Adjust to stay within reasonable fret range
+                let adjustedStart = startFret;
+                if (adjustedStart < 0) adjustedStart += 12;
+                
+                positions.push({
+                    startFret: adjustedStart,
+                    endFret: adjustedStart + POSITION_SPANS - 1
+                });
+            }
+            return positions;
+        }
+        
+        // Find all triad voicings within a fret range
+        function findTriadsInPosition(scaleNotes, scaleType, root, positionStart, positionEnd, useFlats) {
+            const triads = [];
+            const noteCount = scaleNotes.length;
+            
+            // Get triad qualities for this scale type
+            let triadQualities;
+            if (DIATONIC_TRIAD_QUALITIES[scaleType]) {
+                triadQualities = DIATONIC_TRIAD_QUALITIES[scaleType];
+            } else {
+                // Default to major qualities or derive from scale
+                triadQualities = Array(noteCount).fill('maj');
+            }
+            
+            // For each scale degree, find if a triad can be played in this position
+            for (let degree = 0; degree < Math.min(noteCount, 7); degree++) {
+                const triadRoot = scaleNotes[degree];
+                const quality = triadQualities[degree] || 'maj';
+                const intervals = TRIAD_INTERVALS[quality];
+                
+                if (!intervals) continue;
+                
+                // Get the three notes of the triad
+                const triadNotes = intervals.map(interval => (triadRoot + interval) % 12);
+                
+                // Find all possible voicings of this triad within the position
+                const voicings = findTriadVoicingsInRange(triadNotes, positionStart, positionEnd, degree, quality);
+                
+                if (voicings.length > 0) {
+                    const rootName = getNoteName(triadRoot, useFlats);
+                    const qualitySymbol = quality === 'maj' ? '' : quality === 'min' ? 'm' : quality === 'dim' ? '°' : '+';
+                    
+                    triads.push({
+                        degree: degree,
+                        root: triadRoot,
+                        name: rootName + qualitySymbol,
+                        quality: quality,
+                        notes: triadNotes,
+                        noteNames: triadNotes.map(n => getNoteName(n, useFlats)),
+                        voicings: voicings
+                    });
+                }
+            }
+            
+            return triads;
+        }
+        
+        // Find specific voicings of a triad within a fret range
+        function findTriadVoicingsInRange(triadNotes, positionStart, positionEnd, degree, quality) {
+            const voicings = [];
+            
+            // Check for voicings on different string sets
+            const stringSets = [
+                [0, 1, 2],    // E-A-D (low)
+                [1, 2, 3],    // A-D-G
+                [2, 3, 4],    // D-G-B
+                [3, 4, 5]     // G-B-E (high)
+            ];
+            
+            for (const stringSet of stringSets) {
+                // Try each inversion
+                for (let inv = 0; inv < 3; inv++) {
+                    const voicing = tryTriadVoicing(triadNotes, stringSet, inv, positionStart, positionEnd);
+                    if (voicing) {
+                        voicing.inversion = inv;
+                        voicing.inversionName = ['Root', '1st', '2nd'][inv];
+                        voicing.stringSet = stringSet;
+                        voicings.push(voicing);
+                    }
+                }
+            }
+            
+            return voicings;
+        }
+        
+        // Try to build a specific triad voicing
+        function tryTriadVoicing(triadNotes, stringSet, inversion, positionStart, positionEnd) {
+            const voicing = [];
+            
+            // Rotate notes for inversion
+            const rotatedNotes = [
+                triadNotes[inversion % 3],
+                triadNotes[(inversion + 1) % 3],
+                triadNotes[(inversion + 2) % 3]
+            ];
+            
+            for (let i = 0; i < 3; i++) {
+                const stringIdx = stringSet[i];
+                const targetNote = rotatedNotes[i];
+                const stringOpenNote = TUNING[stringIdx] % 12;
+                
+                // Find fret for this note on this string
+                let fret = (targetNote - stringOpenNote + 12) % 12;
+                
+                // Adjust to be within position range
+                while (fret < positionStart && fret + 12 <= 18) fret += 12;
+                while (fret > positionEnd && fret - 12 >= 0) fret -= 12;
+                
+                // Check if fret is within position
+                if (fret < positionStart || fret > positionEnd) {
+                    // Try octave adjustment
+                    if (fret + 12 >= positionStart && fret + 12 <= positionEnd && fret + 12 <= 18) {
+                        fret += 12;
+                    } else if (fret - 12 >= positionStart && fret - 12 <= positionEnd && fret - 12 >= 0) {
+                        fret -= 12;
+                    } else {
+                        return null; // Can't play this note in position
+                    }
+                }
+                
+                voicing.push({
+                    stringIndex: stringIdx,
+                    fret: fret,
+                    noteClass: targetNote,
+                    chordTone: (3 - inversion + i) % 3 // 0=root, 1=3rd, 2=5th
+                });
+            }
+            
+            // Check if span is playable (max 4 frets for triads)
+            const frets = voicing.map(v => v.fret);
+            const span = Math.max(...frets) - Math.min(...frets);
+            if (span > 4) return null;
+            
+            return { notes: voicing };
+        }
+
+        // ============ FRETBOARD RENDERING ============
+        
+        function renderFretboard() {
+            const root = parseInt(document.getElementById('root-select').value);
+            const scaleType = document.getElementById('scale-select').value;
+            const modeIndex = parseInt(document.getElementById('mode-select').value);
+            const degreeValue = document.getElementById('degree-select').value;
+            const positionValue = document.getElementById('position-select').value;
+            
+            currentPosition = positionValue;
+            
+            const scale = SCALES[scaleType];
+            const noteCount = scale.noteCount || 7;
+            const isSymmetric = scale.isSymmetric || false;
+            
+            // For symmetric scales, force mode to 0
+            const effectiveModeIndex = isSymmetric ? 0 : modeIndex;
+            const { notes: scaleNotes, intervals } = getScaleNotes(root, scaleType, effectiveModeIndex);
+            
+            // Determine if we should use flats based on scale content
+            // For minor scales from "sharp" roots, we still need flats for the b3, b6, b7
+            // Check if the scale contains flat-class notes (Db=1, Eb=3, Gb=6, Ab=8, Bb=10)
+            const flatNoteClasses = [1, 3, 6, 8, 10];
+            const scaleHasFlatNotes = scaleNotes.some(note => flatNoteClasses.includes(note));
+            const useFlats = FLAT_KEYS.includes(root) || scaleHasFlatNotes;
+            
+            // Calculate positions
+            const positions = getPositionRanges(root);
+            let positionStart = 0;
+            let positionEnd = 15;
+            
+            if (positionValue !== 'all') {
+                const posIdx = parseInt(positionValue);
+                positionStart = positions[posIdx].startFret;
+                positionEnd = positions[posIdx].endFret;
+            }
+            
+            // Update mode selector based on scale type
+            const modeSelect = document.getElementById('mode-select');
+            modeSelect.innerHTML = '';
+            if (isSymmetric) {
+                // Symmetric scales have only one mode
+                const opt = document.createElement('option');
+                opt.value = '0';
+                opt.textContent = `1 - ${scale.modes[0]}`;
+                modeSelect.appendChild(opt);
+                modeSelect.disabled = true;
+            } else {
+                scale.modes.forEach((modeName, idx) => {
+                    const opt = document.createElement('option');
+                    opt.value = idx.toString();
+                    opt.textContent = `${idx + 1} - ${modeName}`;
+                    opt.selected = idx === modeIndex;
+                    modeSelect.appendChild(opt);
+                });
+                modeSelect.disabled = false;
+            }
+            
+            // Update degree selector based on note count
+            const degreeSelect = document.getElementById('degree-select');
+            degreeSelect.innerHTML = '<option value="all">All Shapes</option>';
+            for (let i = 0; i < noteCount; i++) {
+                const opt = document.createElement('option');
+                opt.value = i.toString();
+                opt.textContent = `Shape ${i + 1}`;
+                opt.selected = degreeValue === i.toString();
+                degreeSelect.appendChild(opt);
+            }
+            
+            // Determine which degrees to show
+            let activeDegrees = [];
+            for (let i = 0; i < noteCount; i++) activeDegrees.push(i);
+            
+            if (degreeValue !== 'all') {
+                const startDegree = parseInt(degreeValue);
+                activeDegrees = [];
+                for (let i = 0; i < Math.min(6, noteCount); i++) {
+                    activeDegrees.push((startDegree + i) % noteCount);
+                }
+            }
+            
+            // Update scale info
+            document.getElementById('scale-formula').textContent = scale.formula;
+            document.getElementById('scale-notes').textContent = scaleNotes.map(n => getNoteName(n, useFlats)).join(' ');
+            document.getElementById('mode-info').textContent = scale.modes[effectiveModeIndex] || scale.modes[0];
+            
+            // Calculate and display relative/parent scale
+            const relativeScaleEl = document.getElementById('relative-scale');
+            if (effectiveModeIndex === 0 || isSymmetric) {
+                // Already on mode 1 or symmetric scale, no relative to show
+                relativeScaleEl.innerHTML = '';
+                relativeScaleEl.style.display = 'none';
+            } else {
+                // Find the parent scale root (mode 1)
+                // The parent root is found by going backwards through the mode intervals
+                const parentRootInterval = scale.intervals[effectiveModeIndex];
+                const parentRoot = (root - parentRootInterval + 12) % 12;
+                const parentRootName = getNoteName(parentRoot, FLAT_KEYS.includes(parentRoot));
+                const parentScaleName = scale.name;
+                
+                relativeScaleEl.innerHTML = `<span class="parent-scale">${parentRootName} ${parentScaleName}</span> (mode 1)`;
+                relativeScaleEl.style.display = 'block';
+            }
+            
+            // Update legend - highlight active degrees
+            const legendHtml = scaleNotes.map((note, idx) => {
+                const isActive = activeDegrees.includes(idx);
+                return `
+                    <div class="legend-item" style="opacity: ${isActive ? 1 : 0.3}">
+                        <div class="legend-dot" style="background: ${DEGREE_COLORS[idx] || '#888'}">${idx + 1}</div>
+                        <span>${getNoteName(note, useFlats)}</span>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('legend').innerHTML = legendHtml;
+            
+            // Generate SVG fretboard
+            const numFrets = 15;
+            const fretWidth = 55;
+            const stringSpacing = 25;
+            const leftMargin = 40;
+            const topMargin = 30;
+            const width = leftMargin + numFrets * fretWidth + 20;
+            const height = topMargin + 5 * stringSpacing + 40;
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret markers (dots)
+            const markerFrets = [3, 5, 7, 9, 12, 15];
+            markerFrets.forEach(fret => {
+                if (fret <= numFrets) {
+                    const x = leftMargin + (fret - 0.5) * fretWidth;
+                    if (fret === 12) {
+                        svg += `<circle cx="${x}" cy="${topMargin + 1.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                        svg += `<circle cx="${x}" cy="${topMargin + 3.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    } else {
+                        svg += `<circle cx="${x}" cy="${topMargin + 2.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    }
+                }
+            });
+            
+            // Nut
+            svg += `<rect x="${leftMargin - 4}" y="${topMargin - 5}" width="6" height="${5 * stringSpacing + 10}" fill="#f5f0e8" rx="2"/>`;
+            
+            // Frets
+            for (let fret = 1; fret <= numFrets; fret++) {
+                const x = leftMargin + fret * fretWidth;
+                svg += `<line x1="${x}" y1="${topMargin - 5}" x2="${x}" y2="${topMargin + 5 * stringSpacing + 5}" stroke="#8a8078" stroke-width="2"/>`;
+            }
+            
+            // Strings
+            for (let str = 0; str < 6; str++) {
+                const y = topMargin + str * stringSpacing;
+                const thickness = 1 + (5 - str) * 0.3;
+                svg += `<line x1="${leftMargin - 10}" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#d4cfc5" stroke-width="${thickness}"/>`;
+                
+                // String name
+                svg += `<text x="15" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#a89f94">${STRING_NAMES[5 - str]}</text>`;
+            }
+            
+            // Fret numbers
+            for (let fret = 0; fret <= numFrets; fret += 3) {
+                const x = leftMargin + (fret === 0 ? 0 : fret * fretWidth - fretWidth/2);
+                svg += `<text x="${x}" y="${height - 10}" font-family="JetBrains Mono, monospace" font-size="10" fill="#a89f94" text-anchor="middle">${fret}</text>`;
+            }
+            
+            // Scale notes on fretboard
+            for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                const y = topMargin + (5 - stringIdx) * stringSpacing; // Reverse for display (low E at bottom)
+                
+                for (let fret = 0; fret <= numFrets; fret++) {
+                    const degree = getScaleDegreeAtFret(stringIdx, fret, root, scaleNotes);
+                    
+                    if (degree >= 0) {
+                        const x = fret === 0 ? leftMargin - 15 : leftMargin + fret * fretWidth - fretWidth/2;
+                        const color = DEGREE_COLORS[degree];
+                        const isRoot = degree === 0;
+                        const isActive = activeDegrees.includes(degree);
+                        const radius = isRoot ? 12 : 10;
+                        
+                        if (isActive) {
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" ${isRoot ? 'stroke="#fff" stroke-width="2"' : ''}/>`;
+                            svg += `<text x="${x}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="10" fill="white" text-anchor="middle" font-weight="600">${degree + 1}</text>`;
+                        } else {
+                            // Dimmed notes for inactive degrees
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius * 0.6}" fill="${color}" opacity="0.15"/>`;
+                        }
+                    }
+                }
+            }
+            
+            // Position indicator overlay
+            if (positionValue !== 'all') {
+                const posIdx = parseInt(positionValue);
+                const pos = positions[posIdx];
+                const x1 = leftMargin + (pos.startFret - 0.5) * fretWidth;
+                const x2 = leftMargin + (pos.endFret + 0.5) * fretWidth;
+                const rectWidth = x2 - x1;
+                svg += `<rect x="${x1}" y="${topMargin - 10}" width="${rectWidth}" height="${5 * stringSpacing + 20}" fill="rgba(232, 93, 76, 0.08)" stroke="rgba(232, 93, 76, 0.3)" stroke-width="2" stroke-dasharray="5,3" rx="4"/>`;
+                svg += `<text x="${x1 + rectWidth/2}" y="${topMargin - 15}" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(232, 93, 76, 0.7)" text-anchor="middle">Position ${posIdx + 1}</text>`;
+            }
+            
+            svg += '</svg>';
+            document.getElementById('fretboard').innerHTML = svg;
+            
+            // Update chord grid (handles both triads and 7th chords based on voicing type)
+            renderChordGrid(root, scaleType, modeIndex, useFlats, activeDegrees);
+        }
+        
+        function renderAllTriads(scaleNotes, scaleType, root, useFlats) {
+            const noteCount = scaleNotes.length;
+            
+            // Get triad qualities for this scale type
+            let triadQualities;
+            if (DIATONIC_TRIAD_QUALITIES[scaleType]) {
+                triadQualities = DIATONIC_TRIAD_QUALITIES[scaleType];
+            } else {
+                triadQualities = Array(noteCount).fill('maj');
+            }
+            
+            const triads = [];
+            for (let degree = 0; degree < Math.min(noteCount, 7); degree++) {
+                const triadRoot = scaleNotes[degree];
+                const quality = triadQualities[degree] || 'maj';
+                const intervals = TRIAD_INTERVALS[quality];
+                
+                if (!intervals) continue;
+                
+                const triadNotes = intervals.map(interval => (triadRoot + interval) % 12);
+                const rootName = getNoteName(triadRoot, useFlats);
+                const qualitySymbol = quality === 'maj' ? '' : quality === 'min' ? 'm' : quality === 'dim' ? '°' : '+';
+                
+                triads.push({
+                    degree: degree,
+                    root: triadRoot,
+                    name: rootName + qualitySymbol,
+                    quality: quality,
+                    notes: triadNotes,
+                    noteNames: triadNotes.map(n => getNoteName(n, useFlats))
+                });
+            }
+            
+            document.getElementById('triads-section').style.display = 'block';
+            document.getElementById('position-label').style.display = 'none';
+            document.getElementById('position-number').textContent = '';
+            
+            const romans = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+            
+            const html = triads.map((triad, idx) => {
+                const isSelected = selectedTriad && selectedTriad.degree === triad.degree;
+                
+                return `
+                    <div class="triad-card ${isSelected ? 'active' : ''}" data-triad-idx="${idx}">
+                        <div class="triad-name">${triad.name}</div>
+                        <div class="triad-degree" style="color: ${DEGREE_COLORS[triad.degree]}">${romans[triad.degree]}</div>
+                        <div class="triad-notes">${triad.noteNames.join(' - ')}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('triads-grid').innerHTML = html;
+            window.currentTriads = triads;
+            
+            // Add click handlers to highlight triad across full neck
+            document.querySelectorAll('.triad-card').forEach((card, idx) => {
+                card.addEventListener('click', () => {
+                    const triad = triads[idx];
+                    selectedTriad = triad;
+                    highlightTriadAcrossNeck(triad);
+                    
+                    document.querySelectorAll('.triad-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+        }
+        
+        function highlightTriadAcrossNeck(triad) {
+            const root = parseInt(document.getElementById('root-select').value);
+            const scaleType = document.getElementById('scale-select').value;
+            const modeIndex = parseInt(document.getElementById('mode-select').value);
+            const degreeValue = document.getElementById('degree-select').value;
+            
+            const scale = SCALES[scaleType];
+            const isSymmetric = scale.isSymmetric || false;
+            const effectiveModeIndex = isSymmetric ? 0 : modeIndex;
+            const { notes: scaleNotes } = getScaleNotes(root, scaleType, effectiveModeIndex);
+            const noteCount = scaleNotes.length;
+            
+            const flatNoteClasses = [1, 3, 6, 8, 10];
+            const scaleHasFlatNotes = scaleNotes.some(note => flatNoteClasses.includes(note));
+            const useFlats = FLAT_KEYS.includes(root) || scaleHasFlatNotes;
+            
+            let activeDegrees = [];
+            for (let i = 0; i < noteCount; i++) activeDegrees.push(i);
+            if (degreeValue !== 'all') {
+                const startDegree = parseInt(degreeValue);
+                activeDegrees = [];
+                for (let i = 0; i < Math.min(6, noteCount); i++) {
+                    activeDegrees.push((startDegree + i) % noteCount);
+                }
+            }
+            
+            const triadNoteClasses = triad.notes;
+            
+            // SVG setup
+            const numFrets = 15;
+            const fretWidth = 55;
+            const stringSpacing = 25;
+            const leftMargin = 40;
+            const topMargin = 30;
+            const width = leftMargin + numFrets * fretWidth + 20;
+            const height = topMargin + 5 * stringSpacing + 40;
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret markers
+            const markerFrets = [3, 5, 7, 9, 12, 15];
+            markerFrets.forEach(fret => {
+                if (fret <= numFrets) {
+                    const x = leftMargin + (fret - 0.5) * fretWidth;
+                    if (fret === 12) {
+                        svg += `<circle cx="${x}" cy="${topMargin + 1.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                        svg += `<circle cx="${x}" cy="${topMargin + 3.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    } else {
+                        svg += `<circle cx="${x}" cy="${topMargin + 2.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    }
+                }
+            });
+            
+            // Nut
+            svg += `<rect x="${leftMargin - 4}" y="${topMargin - 5}" width="6" height="${5 * stringSpacing + 10}" fill="#f5f0e8" rx="2"/>`;
+            
+            // Frets
+            for (let fret = 1; fret <= numFrets; fret++) {
+                const x = leftMargin + fret * fretWidth;
+                svg += `<line x1="${x}" y1="${topMargin - 5}" x2="${x}" y2="${topMargin + 5 * stringSpacing + 5}" stroke="#8a8078" stroke-width="2"/>`;
+            }
+            
+            // Strings
+            for (let str = 0; str < 6; str++) {
+                const y = topMargin + str * stringSpacing;
+                const thickness = 1 + (5 - str) * 0.3;
+                svg += `<line x1="${leftMargin - 10}" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#d4cfc5" stroke-width="${thickness}"/>`;
+                svg += `<text x="15" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#a89f94">${STRING_NAMES[5 - str]}</text>`;
+            }
+            
+            // Fret numbers
+            for (let fret = 0; fret <= numFrets; fret += 3) {
+                const x = leftMargin + (fret === 0 ? 0 : fret * fretWidth - fretWidth/2);
+                svg += `<text x="${x}" y="${height - 10}" font-family="JetBrains Mono, monospace" font-size="10" fill="#a89f94" text-anchor="middle">${fret}</text>`;
+            }
+            
+            // Scale notes with triad highlighting across entire neck
+            for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                const y = topMargin + (5 - stringIdx) * stringSpacing;
+                
+                for (let fret = 0; fret <= numFrets; fret++) {
+                    const degree = getScaleDegreeAtFret(stringIdx, fret, root, scaleNotes);
+                    
+                    if (degree >= 0) {
+                        const x = fret === 0 ? leftMargin - 15 : leftMargin + fret * fretWidth - fretWidth/2;
+                        const color = DEGREE_COLORS[degree];
+                        const isActive = activeDegrees.includes(degree);
+                        
+                        const noteClass = (TUNING[stringIdx] + fret) % 12;
+                        const isTriadTone = triadNoteClasses.includes(noteClass);
+                        
+                        if (isTriadTone) {
+                            const radius = 14;
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" stroke="#fff" stroke-width="3"/>`;
+                            svg += `<text x="${x}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="white" text-anchor="middle" font-weight="700">${degree + 1}</text>`;
+                        } else if (isActive) {
+                            const radius = 8;
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" opacity="0.3"/>`;
+                            svg += `<text x="${x}" y="${y + 3}" font-family="JetBrains Mono, monospace" font-size="8" fill="white" text-anchor="middle" opacity="0.5">${degree + 1}</text>`;
+                        } else {
+                            svg += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" opacity="0.1"/>`;
+                        }
+                    }
+                }
+            }
+            
+            svg += '</svg>';
+            document.getElementById('fretboard').innerHTML = svg;
+        }
+        
+        function renderTriadsInPosition(scaleNotes, scaleType, root, positionStart, positionEnd, useFlats, positionIdx) {
+            const triads = findTriadsInPosition(scaleNotes, scaleType, root, positionStart, positionEnd, useFlats);
+            
+            if (triads.length === 0) {
+                document.getElementById('triads-section').style.display = 'none';
+                return;
+            }
+            
+            document.getElementById('triads-section').style.display = 'block';
+            document.getElementById('position-label').style.display = 'inline';
+            document.getElementById('position-number').textContent = positionIdx + 1;
+            
+            const romans = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+            
+            const html = triads.map((triad, idx) => {
+                const isSelected = selectedTriad && selectedTriad.degree === triad.degree;
+                const inversionBadges = ['Root', '1st', '2nd'].map(inv => {
+                    const hasInv = triad.voicings.some(v => v.inversionName === inv);
+                    return `<span class="inversion-badge ${hasInv ? 'available' : ''}">${inv}</span>`;
+                }).join('');
+                
+                return `
+                    <div class="triad-card ${isSelected ? 'active' : ''}" data-triad-idx="${idx}">
+                        <div class="triad-name">${triad.name}</div>
+                        <div class="triad-degree" style="color: ${DEGREE_COLORS[triad.degree]}">${romans[triad.degree]}</div>
+                        <div class="triad-notes">${triad.noteNames.join(' - ')}</div>
+                        <div class="triad-inversions">${inversionBadges}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('triads-grid').innerHTML = html;
+            
+            // Store triads for click handlers
+            window.currentTriads = triads;
+            
+            // Add click handlers
+            document.querySelectorAll('.triad-card').forEach((card, idx) => {
+                card.addEventListener('click', () => {
+                    const triad = triads[idx];
+                    selectTriad(triad, positionStart, positionEnd);
+                    
+                    // Update active state
+                    document.querySelectorAll('.triad-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+        }
+        
+        function selectTriad(triad, positionStart, positionEnd) {
+            selectedTriad = triad;
+            
+            // Re-render fretboard with triad highlighted
+            highlightTriadOnFretboard(triad, positionStart, positionEnd);
+        }
+        
+        function highlightTriadOnFretboard(triad, positionStart, positionEnd) {
+            const root = parseInt(document.getElementById('root-select').value);
+            const scaleType = document.getElementById('scale-select').value;
+            const modeIndex = parseInt(document.getElementById('mode-select').value);
+            const degreeValue = document.getElementById('degree-select').value;
+            
+            const useFlats = FLAT_KEYS.includes(root);
+            const scale = SCALES[scaleType];
+            const isSymmetric = scale.isSymmetric || false;
+            const effectiveModeIndex = isSymmetric ? 0 : modeIndex;
+            const { notes: scaleNotes } = getScaleNotes(root, scaleType, effectiveModeIndex);
+            const noteCount = scaleNotes.length;
+            
+            // Determine active degrees
+            let activeDegrees = [];
+            for (let i = 0; i < noteCount; i++) activeDegrees.push(i);
+            if (degreeValue !== 'all') {
+                const startDegree = parseInt(degreeValue);
+                activeDegrees = [];
+                for (let i = 0; i < Math.min(6, noteCount); i++) {
+                    activeDegrees.push((startDegree + i) % noteCount);
+                }
+            }
+            
+            // Get triad notes
+            const triadNoteClasses = triad.notes;
+            
+            // SVG setup
+            const numFrets = 15;
+            const fretWidth = 55;
+            const stringSpacing = 25;
+            const leftMargin = 40;
+            const topMargin = 30;
+            const width = leftMargin + numFrets * fretWidth + 20;
+            const height = topMargin + 5 * stringSpacing + 40;
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret markers
+            const markerFrets = [3, 5, 7, 9, 12, 15];
+            markerFrets.forEach(fret => {
+                if (fret <= numFrets) {
+                    const x = leftMargin + (fret - 0.5) * fretWidth;
+                    if (fret === 12) {
+                        svg += `<circle cx="${x}" cy="${topMargin + 1.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                        svg += `<circle cx="${x}" cy="${topMargin + 3.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    } else {
+                        svg += `<circle cx="${x}" cy="${topMargin + 2.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    }
+                }
+            });
+            
+            // Nut
+            svg += `<rect x="${leftMargin - 4}" y="${topMargin - 5}" width="6" height="${5 * stringSpacing + 10}" fill="#f5f0e8" rx="2"/>`;
+            
+            // Frets
+            for (let fret = 1; fret <= numFrets; fret++) {
+                const x = leftMargin + fret * fretWidth;
+                svg += `<line x1="${x}" y1="${topMargin - 5}" x2="${x}" y2="${topMargin + 5 * stringSpacing + 5}" stroke="#8a8078" stroke-width="2"/>`;
+            }
+            
+            // Strings
+            for (let str = 0; str < 6; str++) {
+                const y = topMargin + str * stringSpacing;
+                const thickness = 1 + (5 - str) * 0.3;
+                svg += `<line x1="${leftMargin - 10}" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#d4cfc5" stroke-width="${thickness}"/>`;
+                svg += `<text x="15" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#a89f94">${STRING_NAMES[5 - str]}</text>`;
+            }
+            
+            // Fret numbers
+            for (let fret = 0; fret <= numFrets; fret += 3) {
+                const x = leftMargin + (fret === 0 ? 0 : fret * fretWidth - fretWidth/2);
+                svg += `<text x="${x}" y="${height - 10}" font-family="JetBrains Mono, monospace" font-size="10" fill="#a89f94" text-anchor="middle">${fret}</text>`;
+            }
+            
+            // Position indicator
+            const positions = getPositionRanges(root);
+            const posIdx = parseInt(document.getElementById('position-select').value);
+            const pos = positions[posIdx];
+            const x1 = leftMargin + (pos.startFret - 0.5) * fretWidth;
+            const x2 = leftMargin + (pos.endFret + 0.5) * fretWidth;
+            const rectWidth = x2 - x1;
+            svg += `<rect x="${x1}" y="${topMargin - 10}" width="${rectWidth}" height="${5 * stringSpacing + 20}" fill="rgba(232, 93, 76, 0.08)" stroke="rgba(232, 93, 76, 0.3)" stroke-width="2" stroke-dasharray="5,3" rx="4"/>`;
+            
+            // Scale notes with triad highlighting
+            for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                const y = topMargin + (5 - stringIdx) * stringSpacing;
+                
+                for (let fret = 0; fret <= numFrets; fret++) {
+                    const degree = getScaleDegreeAtFret(stringIdx, fret, root, scaleNotes);
+                    
+                    if (degree >= 0) {
+                        const x = fret === 0 ? leftMargin - 15 : leftMargin + fret * fretWidth - fretWidth/2;
+                        const color = DEGREE_COLORS[degree];
+                        const isRoot = degree === 0;
+                        const isActive = activeDegrees.includes(degree);
+                        
+                        // Check if this note is a triad tone in position
+                        const noteClass = (TUNING[stringIdx] + fret) % 12;
+                        const isTriadTone = triadNoteClasses.includes(noteClass);
+                        const inPosition = fret >= positionStart && fret <= positionEnd;
+                        const isHighlighted = isTriadTone && inPosition;
+                        
+                        if (isHighlighted) {
+                            // Triad tone - larger, white border
+                            const radius = 14;
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" stroke="#fff" stroke-width="3"/>`;
+                            svg += `<text x="${x}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="white" text-anchor="middle" font-weight="700">${degree + 1}</text>`;
+                        } else if (isActive) {
+                            // Regular scale note
+                            const radius = isRoot ? 10 : 8;
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" opacity="0.4"/>`;
+                            svg += `<text x="${x}" y="${y + 3}" font-family="JetBrains Mono, monospace" font-size="8" fill="white" text-anchor="middle" opacity="0.6">${degree + 1}</text>`;
+                        } else {
+                            svg += `<circle cx="${x}" cy="${y}" r="5" fill="${color}" opacity="0.1"/>`;
+                        }
+                    }
+                }
+            }
+            
+            svg += '</svg>';
+            document.getElementById('fretboard').innerHTML = svg;
+        }
+        
+        function renderChordGrid(root, scaleType, modeIndex, useFlats, activeDegrees) {
+            const scale = SCALES[scaleType];
+            const noteCount = scale.noteCount || 7;
+            const isSymmetric = scale.isSymmetric || false;
+            const effectiveModeIndex = isSymmetric ? 0 : modeIndex;
+            const { notes: scaleNotes } = getScaleNotes(root, scaleType, effectiveModeIndex);
+            const positionValue = document.getElementById('position-select').value;
+            
+            // Update position label
+            if (positionValue === 'all') {
+                document.getElementById('position-label').style.display = 'none';
+                document.getElementById('position-number').textContent = '';
+            } else {
+                document.getElementById('position-label').style.display = 'inline';
+                document.getElementById('position-number').textContent = parseInt(positionValue) + 1;
+            }
+            
+            // Store for later use
+            currentScaleNotes = scaleNotes;
+            currentUseFlats = useFlats;
+            
+            // Get chord qualities (rotate for mode if not symmetric)
+            const chordQualities = [];
+            const chordTypes = [];
+            for (let i = 0; i < noteCount; i++) {
+                const idx = isSymmetric ? i : (effectiveModeIndex + i) % noteCount;
+                chordQualities.push(scale.chordQualities[idx]);
+                chordTypes.push(scale.chordTypes[idx]);
+            }
+            
+            currentChordQualities = chordQualities;
+            
+            // Get triad qualities
+            let triadQualities;
+            if (DIATONIC_TRIAD_QUALITIES[scaleType]) {
+                triadQualities = DIATONIC_TRIAD_QUALITIES[scaleType];
+            } else {
+                triadQualities = Array(noteCount).fill('maj');
+            }
+            
+            // Roman numerals for different scale sizes
+            const romans7 = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+            const romans8 = ['1', '♭2', '2', '♭3', '3', '4', '♯4/♭5', '5'];
+            const romans6 = ['1', '2', '3', '♯4/♭5', '♯5/♭6', '♯6/♭7'];
+            
+            let romans;
+            if (noteCount === 8) romans = romans8;
+            else if (noteCount === 6) romans = romans6;
+            else romans = romans7;
+            
+            // Build chord data based on voicing type
+            const isTriadMode = currentVoicingType === 'triad';
+            
+            const html = scaleNotes.map((note, idx) => {
+                const noteName = getNoteName(note, useFlats);
+                const isRoot = idx === 0;
+                const isActive = activeDegrees.includes(idx);
+                const isSelected = selectedChordIndex === idx;
+                
+                let chordName, chordNotes;
+                if (isTriadMode) {
+                    const quality = triadQualities[idx] || 'maj';
+                    const qualitySymbol = quality === 'maj' ? '' : quality === 'min' ? 'm' : quality === 'dim' ? '°' : '+';
+                    chordName = noteName + qualitySymbol;
+                    
+                    // Get triad notes
+                    const intervals = TRIAD_INTERVALS[quality];
+                    if (intervals) {
+                        const triadNoteClasses = intervals.map(interval => (note + interval) % 12);
+                        chordNotes = triadNoteClasses.map(n => getNoteName(n, useFlats)).join(' - ');
+                    } else {
+                        chordNotes = '';
+                    }
+                } else {
+                    const quality = chordQualities[idx];
+                    chordName = `${noteName}<sup>${quality}</sup>`;
+                    
+                    // Get 7th chord notes
+                    const chordType = chordTypes[idx];
+                    const intervals = CHORD_INTERVALS[chordType];
+                    if (intervals) {
+                        const chordNoteClasses = intervals.map(interval => (note + interval) % 12);
+                        chordNotes = chordNoteClasses.map(n => getNoteName(n, useFlats)).join(' - ');
+                    } else {
+                        chordNotes = '';
+                    }
+                }
+                
+                return `
+                    <div class="chord-card ${isRoot ? 'active' : ''} ${isSelected ? 'selected' : ''}" 
+                         style="opacity: ${isActive ? 1 : 0.3}" 
+                         data-chord-idx="${idx}">
+                        <div class="chord-degree" style="color: ${DEGREE_COLORS[idx]}">${romans[idx] || (idx + 1)}</div>
+                        <div class="chord-name">${chordName}</div>
+                        <div class="chord-notes">${chordNotes}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('chord-grid').innerHTML = html;
+            
+            // Add click handlers to chord cards
+            document.querySelectorAll('.chord-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const chordIdx = parseInt(card.dataset.chordIdx);
+                    handleChordClick(chordIdx, scaleNotes, chordQualities, triadQualities, useFlats);
+                });
+            });
+            
+            // Render progressions
+            renderProgressions(root, scaleType, effectiveModeIndex, useFlats, scaleNotes, chordQualities);
+            
+            // Re-render selected chord if one was selected
+            if (selectedChordIndex !== null && selectedChordIndex < noteCount) {
+                handleChordClick(selectedChordIndex, scaleNotes, chordQualities, triadQualities, useFlats);
+            } else {
+                selectedChordIndex = null;
+                document.getElementById('chord-inversions-section').style.display = 'none';
+            }
+        }
+        
+        function handleChordClick(chordIdx, scaleNotes, chordQualities, triadQualities, useFlats) {
+            selectedChordIndex = chordIdx;
+            
+            // Update card selection visual
+            document.querySelectorAll('.chord-card').forEach((card, idx) => {
+                card.classList.toggle('selected', idx === chordIdx);
+            });
+            
+            const noteClass = scaleNotes[chordIdx];
+            const noteName = getNoteName(noteClass, useFlats);
+            const positionValue = document.getElementById('position-select').value;
+            
+            if (currentVoicingType === 'triad') {
+                // Highlight triad on fretboard
+                const quality = triadQualities[chordIdx] || 'maj';
+                const intervals = TRIAD_INTERVALS[quality];
+                const triadNotes = intervals ? intervals.map(interval => (noteClass + interval) % 12) : [];
+                
+                const qualitySymbol = quality === 'maj' ? '' : quality === 'min' ? 'm' : quality === 'dim' ? '°' : '+';
+                
+                const triad = {
+                    degree: chordIdx,
+                    root: noteClass,
+                    name: noteName + qualitySymbol,
+                    quality: quality,
+                    notes: triadNotes,
+                    noteNames: triadNotes.map(n => getNoteName(n, useFlats))
+                };
+                
+                selectedTriad = triad;
+                
+                if (positionValue === 'all') {
+                    highlightTriadAcrossNeck(triad);
+                } else {
+                    const root = parseInt(document.getElementById('root-select').value);
+                    const positions = getPositionRanges(root);
+                    const posIdx = parseInt(positionValue);
+                    const pos = positions[posIdx];
+                    highlightTriadOnFretboard(triad, pos.startFret, pos.endFret);
+                }
+                
+                // Hide inversions section for triads (could show triad inversions later)
+                document.getElementById('chord-inversions-section').style.display = 'none';
+            } else {
+                // Show Drop 2 or Drop 3 inversions
+                const quality = chordQualities[chordIdx];
+                document.getElementById('chord-inversions-section').style.display = 'block';
+                document.getElementById('chord-inversions-title').textContent = `${noteName}${quality} Inversions`;
+                
+                // Get chord tones as scale degrees
+                const chordDegrees = getChordDegreesFromQuality(quality, chordIdx);
+                const degreesHtml = chordDegrees.map((deg, i) => {
+                    const colors = ['#e85d4c', '#4a90a4', '#7db87d', '#c9a227'];
+                    const labels = ['R', '3', '5', '7'];
+                    return `<span class="degree" style="background: ${colors[i]}; color: white;">${labels[i]}</span>`;
+                }).join(' - ');
+                document.getElementById('chord-inversions-degrees').innerHTML = `Chord Tones: ${degreesHtml}`;
+                
+                // Render inversions
+                renderChordInversions(noteClass, quality, chordIdx, useFlats);
+                
+                // Highlight chord tones on fretboard
+                highlightChordOnFretboard(chordIdx, scaleNotes);
+            }
+        }
+        
+        function selectChord(chordIdx, scaleNotes, chordQualities, useFlats) {
+            selectedChordIndex = chordIdx;
+            
+            // Update card selection visual
+            document.querySelectorAll('.chord-card').forEach((card, idx) => {
+                card.classList.toggle('selected', idx === chordIdx);
+            });
+            
+            // Show voicing toggle and inversions section
+            document.getElementById('voicing-toggle').style.display = 'flex';
+            document.getElementById('chord-inversions-section').style.display = 'block';
+            
+            const noteClass = scaleNotes[chordIdx];
+            const noteName = getNoteName(noteClass, useFlats);
+            const quality = chordQualities[chordIdx];
+            
+            document.getElementById('chord-inversions-title').textContent = `${noteName}${quality} Inversions`;
+            
+            // Get chord tones as scale degrees
+            const chordDegrees = getChordDegreesFromQuality(quality, chordIdx);
+            const degreesHtml = chordDegrees.map((deg, i) => {
+                const colors = ['#e85d4c', '#c9a227', '#7db87d', '#4a90a4']; // R, 3, 5, 7 colors
+                const labels = currentVoicingType === 'triad' ? ['R', '3', '5'] : ['R', '3', '5', '7'];
+                return `<span class="degree" style="background: ${colors[i]}; color: white;">${labels[i]} (${deg})</span>`;
+            }).join(' - ');
+            document.getElementById('chord-inversions-degrees').innerHTML = `Chord Tones: ${degreesHtml}`;
+            
+            // Render inversions
+            renderChordInversions(noteClass, quality, chordIdx, useFlats);
+            
+            // Update fretboard to highlight chord tones
+            highlightChordOnFretboard(chordIdx, scaleNotes);
+        }
+        
+        function getChordDegreesFromQuality(quality, chordIdx) {
+            // Return the scale degrees that make up this chord
+            // chordIdx is 0-based (0 = I, 1 = ii, etc.)
+            const root = chordIdx + 1;
+            const third = ((chordIdx + 2) % 7) + 1;
+            const fifth = ((chordIdx + 4) % 7) + 1;
+            const seventh = ((chordIdx + 6) % 7) + 1;
+            
+            if (currentVoicingType === 'triad') {
+                return [root, third, fifth];
+            }
+            return [root, third, fifth, seventh];
+        }
+        
+        function renderChordInversions(noteClass, quality, chordIdx, useFlats) {
+            const grid = document.getElementById('chord-inversions-grid');
+            const noteName = getNoteName(noteClass, useFlats);
+            const rootMidi = 48 + noteClass;
+            
+            const qualityToType = {
+                'Maj7': 'maj7', 'm7': 'min7', '7': 'dom7', 'm7♭5': 'min7b5',
+                'dim7': 'dim7', 'mMaj7': 'minmaj7', 'Maj7♯5': 'maj7sharp5'
+            };
+            
+            const qualityToTriad = {
+                'Maj7': 'maj', 'm7': 'min', '7': 'maj', 'm7♭5': 'dim',
+                'dim7': 'dim', 'mMaj7': 'min', 'Maj7♯5': 'aug'
+            };
+            
+            let inversions = [];
+            
+            if (currentVoicingType === 'triad') {
+                const triadType = qualityToTriad[quality] || 'maj';
+                TRIAD_INVERSION_NAMES.forEach(invName => {
+                    const voicing = calculateTriadVoicing(rootMidi, triadType, invName, 5);
+                    if (voicing) inversions.push({ voicing, invName });
+                });
+            } else {
+                const chordType = qualityToType[quality] || 'maj7';
+                const dropInversions = currentVoicingType === 'drop2' ? DROP2_INVERSIONS : DROP3_INVERSIONS;
+                
+                INVERSION_NAMES.forEach(invName => {
+                    const voicing = currentVoicingType === 'drop2' 
+                        ? calculateDrop2Voicing(rootMidi, chordType, invName, 5)
+                        : calculateDrop3Voicing(rootMidi, chordType, invName, 5);
+                    if (voicing) inversions.push({ voicing, invName });
+                });
+            }
+            
+            grid.innerHTML = inversions.map(({ voicing, invName }) => {
+                const svg = createChordDiagramSVG(voicing, currentVoicingType);
+                const invLabel = getInversionDisplayName(invName);
+                return `
+                    <div class="chord-diagram-card">
+                        <div class="chord-name">${noteName}<sup>${currentVoicingType === 'triad' ? getTriadQuality(quality) : quality}</sup></div>
+                        <div class="fretboard-container">${svg}</div>
+                        <div class="inversion-label">${invLabel}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function getTriadQuality(seventh_quality) {
+            const map = {
+                'Maj7': '', 'm7': 'm', '7': '', 'm7♭5': '°',
+                'dim7': '°', 'mMaj7': 'm', 'Maj7♯5': '+'
+            };
+            return map[seventh_quality] || '';
+        }
+        
+        function calculateDrop3Voicing(rootNote, chordType, inversionName, targetFret) {
+            const intervals = CHORD_INTERVALS[chordType];
+            if (!intervals) return null;
+            
+            const dropOrder = DROP3_INVERSIONS[inversionName];
+            const voicing = [];
+            
+            // Drop 3 uses strings 6, 5, 4, 3 but with different spacing
+            for (let i = 0; i < 4; i++) {
+                const chordToneIndex = dropOrder[i];
+                const interval = intervals[chordToneIndex];
+                const stringMidi = LOW_STRINGS_MIDI[i];
+                
+                const targetMidi = rootNote + interval;
+                let fret = targetMidi - stringMidi;
+                
+                while (fret < targetFret - 6) fret += 12;
+                while (fret > targetFret + 6) fret -= 12;
+                
+                if (fret < 0) fret += 12;
+                if (fret > 18) fret -= 12;
+                
+                voicing.push({
+                    stringIndex: LOW_STRING_INDICES[i],
+                    fret: fret,
+                    chordTone: chordToneIndex
+                });
+            }
+            
+            const avgFret = voicing.reduce((sum, v) => sum + v.fret, 0) / 4;
+            return { notes: voicing, avgFret, inversion: inversionName };
+        }
+        
+        function calculateTriadVoicing(rootNote, triadType, inversionName, targetFret) {
+            const intervals = TRIAD_INTERVALS[triadType];
+            if (!intervals) return null;
+            
+            const dropOrder = TRIAD_INVERSIONS[inversionName];
+            const voicing = [];
+            
+            // Triads use strings 6, 5, 4
+            for (let i = 0; i < 3; i++) {
+                const chordToneIndex = dropOrder[i];
+                const interval = intervals[chordToneIndex];
+                const stringMidi = LOW_STRINGS_MIDI[i];
+                
+                const targetMidi = rootNote + interval;
+                let fret = targetMidi - stringMidi;
+                
+                while (fret < targetFret - 6) fret += 12;
+                while (fret > targetFret + 6) fret -= 12;
+                
+                if (fret < 0) fret += 12;
+                if (fret > 18) fret -= 12;
+                
+                voicing.push({
+                    stringIndex: LOW_STRING_INDICES[i],
+                    fret: fret,
+                    chordTone: chordToneIndex
+                });
+            }
+            
+            const avgFret = voicing.reduce((sum, v) => sum + v.fret, 0) / 3;
+            return { notes: voicing, avgFret, inversion: inversionName };
+        }
+        
+        function highlightChordOnFretboard(chordIdx, scaleNotes) {
+            // Get the scale degrees that are in this chord
+            const chordDegreeIndices = [
+                chordIdx,
+                (chordIdx + 2) % 7,
+                (chordIdx + 4) % 7
+            ];
+            
+            if (currentVoicingType !== 'triad') {
+                chordDegreeIndices.push((chordIdx + 6) % 7);
+            }
+            
+            // Re-render fretboard with chord tones highlighted
+            const root = parseInt(document.getElementById('root-select').value);
+            const degreeValue = document.getElementById('degree-select').value;
+            
+            let activeDegrees = [0, 1, 2, 3, 4, 5, 6];
+            if (degreeValue !== 'all') {
+                const startDegree = parseInt(degreeValue);
+                activeDegrees = [];
+                for (let i = 0; i < 6; i++) {
+                    activeDegrees.push((startDegree + i) % 7);
+                }
+            }
+            
+            renderFretboardWithChordHighlight(root, scaleNotes, activeDegrees, chordDegreeIndices);
+        }
+        
+        function renderFretboardWithChordHighlight(root, scaleNotes, activeDegrees, chordDegreeIndices) {
+            const numFrets = 15;
+            const fretWidth = 55;
+            const stringSpacing = 25;
+            const leftMargin = 40;
+            const topMargin = 30;
+            const width = leftMargin + numFrets * fretWidth + 20;
+            const height = topMargin + 5 * stringSpacing + 40;
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret markers
+            const markerFrets = [3, 5, 7, 9, 12, 15];
+            markerFrets.forEach(fret => {
+                if (fret <= numFrets) {
+                    const x = leftMargin + (fret - 0.5) * fretWidth;
+                    if (fret === 12) {
+                        svg += `<circle cx="${x}" cy="${topMargin + 1.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                        svg += `<circle cx="${x}" cy="${topMargin + 3.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    } else {
+                        svg += `<circle cx="${x}" cy="${topMargin + 2.5 * stringSpacing}" r="6" fill="rgba(168, 159, 148, 0.2)"/>`;
+                    }
+                }
+            });
+            
+            // Nut
+            svg += `<rect x="${leftMargin - 4}" y="${topMargin - 5}" width="6" height="${5 * stringSpacing + 10}" fill="#f5f0e8" rx="2"/>`;
+            
+            // Frets
+            for (let fret = 1; fret <= numFrets; fret++) {
+                const x = leftMargin + fret * fretWidth;
+                svg += `<line x1="${x}" y1="${topMargin - 5}" x2="${x}" y2="${topMargin + 5 * stringSpacing + 5}" stroke="#8a8078" stroke-width="2"/>`;
+            }
+            
+            // Strings
+            for (let str = 0; str < 6; str++) {
+                const y = topMargin + str * stringSpacing;
+                const thickness = 1 + (5 - str) * 0.3;
+                svg += `<line x1="${leftMargin - 10}" y1="${y}" x2="${width - 10}" y2="${y}" stroke="#d4cfc5" stroke-width="${thickness}"/>`;
+                svg += `<text x="15" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#a89f94">${STRING_NAMES[5 - str]}</text>`;
+            }
+            
+            // Fret numbers
+            for (let fret = 0; fret <= numFrets; fret += 3) {
+                const x = leftMargin + (fret === 0 ? 0 : fret * fretWidth - fretWidth/2);
+                svg += `<text x="${x}" y="${height - 10}" font-family="JetBrains Mono, monospace" font-size="10" fill="#a89f94" text-anchor="middle">${fret}</text>`;
+            }
+            
+            // Scale notes with chord highlighting
+            for (let stringIdx = 0; stringIdx < 6; stringIdx++) {
+                const y = topMargin + (5 - stringIdx) * stringSpacing;
+                
+                for (let fret = 0; fret <= numFrets; fret++) {
+                    const degree = getScaleDegreeAtFret(stringIdx, fret, root, scaleNotes);
+                    
+                    if (degree >= 0) {
+                        const x = fret === 0 ? leftMargin - 15 : leftMargin + fret * fretWidth - fretWidth/2;
+                        const color = DEGREE_COLORS[degree];
+                        const isRoot = degree === 0;
+                        const isActive = activeDegrees.includes(degree);
+                        const isChordTone = chordDegreeIndices.includes(degree);
+                        
+                        if (isChordTone) {
+                            // Chord tones are fully visible and larger
+                            const radius = isRoot ? 14 : 12;
+                            svg += `<circle cx="${x}" cy="${y}" r="${radius}" fill="${color}" stroke="#fff" stroke-width="2"/>`;
+                            svg += `<text x="${x}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="white" text-anchor="middle" font-weight="600">${degree + 1}</text>`;
+                        } else if (isActive) {
+                            // Non-chord scale tones are smaller and dimmer
+                            svg += `<circle cx="${x}" cy="${y}" r="6" fill="${color}" opacity="0.3"/>`;
+                        } else {
+                            // Inactive degrees very faint
+                            svg += `<circle cx="${x}" cy="${y}" r="4" fill="${color}" opacity="0.1"/>`;
+                        }
+                    }
+                }
+            }
+            
+            svg += '</svg>';
+            document.getElementById('fretboard').innerHTML = svg;
+        }
+        
+        function renderProgressions(root, scaleType, modeIndex, useFlats, scaleNotes, chordQualities) {
+            const modeData = MODE_PROGRESSIONS[scaleType]?.[modeIndex];
+            
+            if (!modeData) {
+                document.getElementById('progression-title').textContent = 'No progression data';
+                document.getElementById('progression-description').textContent = '';
+                document.getElementById('progression-examples').innerHTML = '';
+                return;
+            }
+            
+            document.getElementById('progression-title').textContent = modeData.name;
+            document.getElementById('progression-description').textContent = modeData.description;
+            
+            const progressionsHtml = modeData.progressions.map((prog, progIdx) => {
+                // Convert degree numbers to actual chord names
+                const chordsHtml = prog.chords.map((deg, idx) => {
+                    const degIdx = deg - 1; // Convert 1-indexed to 0-indexed
+                    const noteName = getNoteName(scaleNotes[degIdx], useFlats);
+                    const quality = chordQualities[degIdx];
+                    const arrow = idx < prog.chords.length - 1 ? '<span class="arrow">→</span>' : '';
+                    return `<span class="chord">${noteName}<sup>${quality}</sup></span>${arrow}`;
+                }).join('');
+                
+                return `
+                    <div class="progression-card" data-prog-idx="${progIdx}">
+                        <div class="progression-style">${prog.style}</div>
+                        <div class="progression-chords">${chordsHtml}</div>
+                        <div class="progression-name">${prog.name}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('progression-examples').innerHTML = progressionsHtml;
+            
+            // Add click handlers to progression cards
+            document.querySelectorAll('.progression-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const progIdx = parseInt(card.dataset.progIdx);
+                    showChordDiagrams(modeData.progressions[progIdx], scaleNotes, chordQualities, useFlats);
+                    
+                    // Highlight active card
+                    document.querySelectorAll('.progression-card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                });
+            });
+        }
+
+        // ============ CHORD VOICING FUNCTIONS ============
+
+        function calculateDrop2Voicing(rootNote, chordType, inversionName, targetFret) {
+            const intervals = CHORD_INTERVALS[chordType];
+            if (!intervals) return null;
+            
+            const dropOrder = DROP2_INVERSIONS[inversionName];
+            const voicing = [];
+            
+            for (let i = 0; i < 4; i++) {
+                const chordToneIndex = dropOrder[i];
+                const interval = intervals[chordToneIndex];
+                const stringMidi = LOW_STRINGS_MIDI[i];
+                
+                const targetMidi = rootNote + interval;
+                let fret = targetMidi - stringMidi;
+                
+                // Adjust octave to be near target fret
+                while (fret < targetFret - 6) fret += 12;
+                while (fret > targetFret + 6) fret -= 12;
+                
+                if (fret < 0) fret += 12;
+                if (fret > 18) fret -= 12;
+                
+                voicing.push({
+                    stringIndex: LOW_STRING_INDICES[i],
+                    fret: fret,
+                    chordTone: chordToneIndex
+                });
+            }
+            
+            const avgFret = voicing.reduce((sum, v) => sum + v.fret, 0) / 4;
+            return { notes: voicing, avgFret, inversion: inversionName };
+        }
+
+        function findBestVoicing(rootMidi, chordType, prevVoicing) {
+            const candidates = [];
+            
+            for (const invName of INVERSION_NAMES) {
+                for (let octave = -1; octave <= 2; octave++) {
+                    const adjustedRoot = rootMidi + (octave * 12);
+                    const targetFret = prevVoicing ? prevVoicing.avgFret : 5;
+                    
+                    const voicing = calculateDrop2Voicing(adjustedRoot, chordType, invName, targetFret);
+                    if (!voicing) continue;
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        let score = 0;
+                        
+                        if (prevVoicing) {
+                            // Calculate voice leading quality
+                            for (let i = 0; i < 4; i++) {
+                                score += Math.abs(voicing.notes[i].fret - prevVoicing.notes[i].fret);
+                            }
+                        } else {
+                            // Prefer lower positions for first chord
+                            score = voicing.avgFret;
+                        }
+                        
+                        candidates.push({ voicing, score });
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) return null;
+            
+            candidates.sort((a, b) => a.score - b.score);
+            return candidates[0].voicing;
+        }
+
+        function showChordDiagrams(progression, scaleNotes, chordQualities, useFlats) {
+            const section = document.getElementById('chord-diagrams-section');
+            const grid = document.getElementById('chord-diagrams-grid');
+            const title = document.getElementById('chord-diagrams-title');
+            
+            title.textContent = `${progression.name} - ${progression.style}`;
+            
+            // Map chord quality display names to interval keys
+            const qualityToType = {
+                'Maj7': 'maj7',
+                'm7': 'min7',
+                '7': 'dom7',
+                'm7♭5': 'min7b5',
+                'dim7': 'dim7',
+                'mMaj7': 'minmaj7',
+                'Maj7♯5': 'maj7sharp5'
+            };
+            
+            let prevVoicing = null;
+            const diagrams = [];
+            
+            for (const deg of progression.chords) {
+                const degIdx = deg - 1;
+                const noteClass = scaleNotes[degIdx];
+                const noteName = getNoteName(noteClass, useFlats);
+                const quality = chordQualities[degIdx];
+                const chordType = qualityToType[quality] || 'maj7';
+                const rootMidi = 48 + noteClass; // C3 = 48
+                
+                const voicing = findBestVoicing(rootMidi, chordType, prevVoicing);
+                
+                if (voicing) {
+                    diagrams.push({
+                        noteName,
+                        quality,
+                        voicing
+                    });
+                    prevVoicing = voicing;
+                }
+            }
+            
+            // Render diagrams
+            grid.innerHTML = diagrams.map(d => {
+                const svg = createChordDiagramSVG(d.voicing);
+                const invLabel = getInversionDisplayName(d.voicing.inversion);
+                return `
+                    <div class="chord-diagram-card">
+                        <div class="chord-name">${d.noteName}<sup>${d.quality}</sup></div>
+                        <div class="fretboard-container">${svg}</div>
+                        <div class="inversion-label">${invLabel}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            section.classList.add('visible');
+        }
+
+        function getInversionDisplayName(inv) {
+            return {
+                'root': 'Root Position',
+                '1st': '1st Inversion',
+                '2nd': '2nd Inversion',
+                '3rd': '3rd Inversion'
+            }[inv] || inv;
+        }
+
+        // ============ PIANO RENDERING ============
+        
+        function renderPiano() {
+            const root = parseInt(document.getElementById('root-select').value);
+            const scaleType = document.getElementById('scale-select').value;
+            const modeIndex = parseInt(document.getElementById('mode-select').value);
+            
+            currentRoot = root;
+            currentScaleType = scaleType;
+            currentModeIndex = modeIndex;
+            
+            const scale = SCALES[scaleType];
+            const isSymmetric = scale.isSymmetric || false;
+            const effectiveModeIndex = isSymmetric ? 0 : modeIndex;
+            const { notes: scaleNotes } = getScaleNotes(root, scaleType, effectiveModeIndex);
+            
+            const flatNoteClasses = [1, 3, 6, 8, 10];
+            const scaleHasFlatNotes = scaleNotes.some(note => flatNoteClasses.includes(note));
+            const useFlats = FLAT_KEYS.includes(root) || scaleHasFlatNotes;
+            
+            // Piano dimensions
+            const whiteKeyWidth = 30;
+            const whiteKeyHeight = 160;
+            const blackKeyWidth = 18;
+            const blackKeyHeight = 100;
+            const padding = 15;
+            
+            // 2 octaves = 14 white keys (2 * 7)
+            const totalWidth = padding * 2 + whiteKeyWidth * 14;
+            const totalHeight = padding * 2 + whiteKeyHeight;
+            
+            let svg = `<svg viewBox="0 0 ${totalWidth} ${totalHeight}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Background
+            svg += `<rect width="${totalWidth}" height="${totalHeight}" fill="#1f1b17"/>`;
+            
+            // White keys - absolute pitch class mapping from C
+            const whiteNoteSequence = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+            const whiteKeyAbsolutePitches = [0, 2, 4, 5, 7, 9, 11]; // C D E F G A B as absolute pitch classes
+            const whiteKeyNotes = [...whiteNoteSequence, ...whiteNoteSequence]; // 2 octaves
+            
+            for (let i = 0; i < whiteKeyNotes.length; i++) {
+                const x = padding + i * whiteKeyWidth;
+                const y = padding;
+                // FIX BUG 1: Use absolute pitch class mapping from C (not relative to root)
+                const absolutePitchClass = whiteKeyAbsolutePitches[i % 7];
+                const noteIdx = absolutePitchClass; // Pitch class, 0-11
+                const isInScale = scaleNotes.includes(noteIdx);
+                const isRoot = noteIdx === root;
+                
+                // FIX BUG 2: Outline-based styling instead of fill
+                let fillColor = '#f5f0e8'; // Always white background
+                let strokeColor = '#8a8078'; // Default stroke for non-scale notes
+                let strokeWidth = 1.5;
+                let hasRootMarker = false;
+                
+                if (isInScale) {
+                    const degreeIdx = scaleNotes.indexOf(noteIdx);
+                    strokeColor = DEGREE_COLORS[degreeIdx] || '#888';
+                    strokeWidth = 3; // Thicker stroke for scale notes
+                    if (isRoot) {
+                        hasRootMarker = true;
+                    }
+                }
+                
+                svg += `<rect x="${x}" y="${y}" width="${whiteKeyWidth}" height="${whiteKeyHeight}" fill="${fillColor}" stroke="${strokeColor}" stroke-width="${strokeWidth}" rx="4" ry="4"/>`;
+                
+                // Root marker - small filled circle near bottom
+                if (hasRootMarker) {
+                    const circleX = x + whiteKeyWidth / 2;
+                    const circleY = y + whiteKeyHeight - 20;
+                    const degreeIdx = scaleNotes.indexOf(noteIdx);
+                    svg += `<circle cx="${circleX}" cy="${circleY}" r="4" fill="${DEGREE_COLORS[degreeIdx]}"/>`;
+                }
+                
+                // Key label
+                const textColor = isInScale ? DEGREE_COLORS[scaleNotes.indexOf(noteIdx)] : '#2a2520';
+                svg += `<text x="${x + whiteKeyWidth/2}" y="${y + whiteKeyHeight - 8}" font-family="JetBrains Mono, monospace" font-size="10" fill="${textColor}" text-anchor="middle" font-weight="600">${whiteKeyNotes[i]}</text>`;
+            }
+            
+            // Black keys (positioned between white keys)
+            const blackKeyOffsets = [0.5, 1.5, 3.5, 4.5, 5.5];
+            
+            for (let octave = 0; octave < 2; octave++) {
+                for (let offset of blackKeyOffsets) {
+                    const whiteKeyIdx = octave * 7 + offset;
+                    const x = padding + whiteKeyWidth * whiteKeyIdx - blackKeyWidth / 2;
+                    const y = padding;
+                    
+                    // Get note class for this black key
+                    const whiteKeyNoteIdx = Math.floor(whiteKeyIdx);
+                    const lowerWhitePitch = whiteKeyAbsolutePitches[whiteKeyNoteIdx % 7];
+                    
+                    // Black key is always the semitone between white keys (except between E-F and B-C where there's no black key)
+                    const noteIdx = (lowerWhitePitch + 1) % 12;
+                    
+                    const isInScale = scaleNotes.includes(noteIdx);
+                    
+                    // FIX BUG 2: Black keys have fixed fill with stroke styling
+                    let fillColor = '#2a2520'; // Always dark
+                    let strokeColor = 'none';
+                    let strokeWidth = 0;
+                    
+                    if (isInScale) {
+                        const degreeIdx = scaleNotes.indexOf(noteIdx);
+                        strokeColor = DEGREE_COLORS[degreeIdx] || '#888';
+                        strokeWidth = 2;
+                    }
+                    
+                    const strokeAttr = strokeColor === 'none' ? '' : `stroke="${strokeColor}" stroke-width="${strokeWidth}"`;
+                    svg += `<rect x="${x}" y="${y}" width="${blackKeyWidth}" height="${blackKeyHeight}" fill="${fillColor}" ${strokeAttr} rx="3" ry="3"/>`;
+                }
+            }
+            
+            svg += '</svg>';
+            
+            document.getElementById('piano-container').innerHTML = svg;
+        }
+        
+        function getWhiteKeyOffset(whiteKeyIndex) {
+            // DEPRECATED: Use absolute pitch class mapping instead
+            // This function kept for compatibility but piano now uses absolute pitch classes
+            const offsets = [0, 2, 4, 5, 7, 9, 11]; // C D E F G A B
+            return offsets[whiteKeyIndex] || 0;
+        }
+
+        function createChordDiagramSVG(voicing, voicingType = 'drop2') {
+            const width = 140;
+            const height = 190;
+            const numStrings = 6;
+            const numFrets = 5;
+            const stringSpacing = 16;
+            const fretSpacing = 30;
+            const leftMargin = 36;
+            const topMargin = 30;
+            
+            const isTriad = voicingType === 'triad';
+            const usedStringIndices = isTriad ? [0, 1, 2] : LOW_STRING_INDICES;
+            
+            const frets = voicing.notes.map(n => n.fret);
+            const minFret = Math.min(...frets);
+            const maxFret = Math.max(...frets);
+            
+            let displayStartFret = Math.max(1, minFret);
+            const hasOpenString = minFret === 0;
+            
+            if (hasOpenString) {
+                displayStartFret = 1;
+            } else if (maxFret - displayStartFret >= numFrets) {
+                displayStartFret = Math.max(1, maxFret - numFrets + 1);
+            }
+            
+            const showNut = displayStartFret === 1;
+            
+            const colors = { 0: '#e85d4c', 1: '#4a90a4', 2: '#7db87d', 3: '#c9a227' };
+            const labels = { 0: 'R', 1: '3', 2: '5', 3: '7' };
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret number
+            svg += `<text x="8" y="${topMargin + fretSpacing/2 + 4}" font-family="JetBrains Mono, monospace" font-size="11" fill="#a89f94">${displayStartFret}</text>`;
+            
+            // String indicators at top (X for unused, chord tone indicator for used)
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                
+                if (!isUsed) {
+                    svg += `<text x="${x}" y="14" font-family="JetBrains Mono, monospace" font-size="12" fill="#a89f94" text-anchor="middle">×</text>`;
+                } else {
+                    // Find the note on this string
+                    const noteOnString = voicing.notes.find(n => n.stringIndex === i);
+                    if (noteOnString) {
+                        const color = colors[noteOnString.chordTone];
+                        const label = labels[noteOnString.chordTone];
+                        // Show colored letter for all chord tones at top
+                        svg += `<text x="${x}" y="14" font-family="JetBrains Mono, monospace" font-size="10" fill="${color}" text-anchor="middle" font-weight="600">${label}</text>`;
+                    }
+                }
+            }
+            
+            // Nut
+            if (showNut) {
+                svg += `<rect x="${leftMargin - 3}" y="${topMargin - 3}" width="${stringSpacing * (numStrings - 1) + 6}" height="5" fill="#f5f0e8" rx="1"/>`;
+            }
+            
+            // Frets
+            for (let i = 0; i <= numFrets; i++) {
+                const y = topMargin + i * fretSpacing;
+                svg += `<line x1="${leftMargin - 3}" y1="${y}" x2="${leftMargin + stringSpacing * (numStrings - 1) + 3}" y2="${y}" stroke="#8a8078" stroke-width="${i === 0 && !showNut ? 2 : 1}"/>`;
+            }
+            
+            // Strings
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                svg += `<line x1="${x}" y1="${topMargin}" x2="${x}" y2="${topMargin + numFrets * fretSpacing}" stroke="#d4cfc5" stroke-width="1.5" opacity="${isUsed ? 1 : 0.35}"/>`;
+            }
+            
+            // Finger positions (fretted notes and open strings)
+            voicing.notes.forEach((note) => {
+                const x = leftMargin + note.stringIndex * stringSpacing;
+                
+                if (note.fret === 0) {
+                    // Open string - show circle just above the nut
+                    const y = topMargin - 10;
+                    svg += `<circle cx="${x}" cy="${y}" r="8" fill="${colors[note.chordTone]}"/>`;
+                    svg += `<text x="${x}" y="${y + 3}" font-family="JetBrains Mono, monospace" font-size="8" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                } else {
+                    const fretOffset = note.fret - displayStartFret;
+                    
+                    if (fretOffset >= 0 && fretOffset < numFrets) {
+                        const y = topMargin + fretOffset * fretSpacing + fretSpacing / 2;
+                        svg += `<circle cx="${x}" cy="${y}" r="10" fill="${colors[note.chordTone]}"/>`;
+                        svg += `<text x="${x}" y="${y + 4}" font-family="JetBrains Mono, monospace" font-size="10" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                    }
+                }
+            });
+            
+            svg += '</svg>';
+            return svg;
+        }
+
+        // ============ EVENT LISTENERS ============
+        
+        // View toggle buttons
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const view = btn.dataset.view;
+                currentView = view;
+                
+                // Update active button
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                // Toggle visibility
+                const fretboardSection = document.querySelector('.fretboard-section');
+                const pianoSection = document.getElementById('piano-section');
+                
+                if (view === 'guitar') {
+                    fretboardSection.classList.add('visible');
+                    pianoSection.classList.remove('visible');
+                } else if (view === 'piano') {
+                    fretboardSection.classList.remove('visible');
+                    pianoSection.classList.add('visible');
+                    renderPiano();
+                }
+            });
+        });
+        
+        document.getElementById('root-select').addEventListener('change', () => {
+            selectedChordIndex = null;
+            selectedTriad = null;
+            document.getElementById('chord-inversions-section').style.display = 'none';
+            renderFretboard();
+            if (currentView === 'piano') renderPiano();
+        });
+        document.getElementById('scale-select').addEventListener('change', () => {
+            selectedChordIndex = null;
+            selectedTriad = null;
+            document.getElementById('chord-inversions-section').style.display = 'none';
+            renderFretboard();
+            if (currentView === 'piano') renderPiano();
+        });
+        document.getElementById('mode-select').addEventListener('change', () => {
+            selectedChordIndex = null;
+            selectedTriad = null;
+            document.getElementById('chord-inversions-section').style.display = 'none';
+            renderFretboard();
+            if (currentView === 'piano') renderPiano();
+        });
+        document.getElementById('degree-select').addEventListener('change', renderFretboard);
+        document.getElementById('position-select').addEventListener('change', () => {
+            selectedTriad = null;
+            renderFretboard();
+        });
+        
+        // Voicing toggle buttons - re-render chord grid when changed
+        document.querySelectorAll('.voicing-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.voicing-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentVoicingType = btn.dataset.voicing;
+                selectedChordIndex = null;
+                document.getElementById('chord-inversions-section').style.display = 'none';
+                renderFretboard();
+            });
+        });
+        
+        document.getElementById('close-diagrams').addEventListener('click', () => {
+            document.getElementById('chord-diagrams-section').classList.remove('visible');
+            document.querySelectorAll('.progression-card').forEach(c => c.classList.remove('active'));
+        });
+        
+        // Initial render
+        renderFretboard();
+
+        // Register service worker for PWA offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => {
+                console.warn('Service Worker registration failed:', err);
+            });
+        }
+    </script>
+</body>
+</html>

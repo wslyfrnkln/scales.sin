@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Leading — Scales.sin</title>
+    <link rel="manifest" href="./manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Voice Leading">
+    <link rel="apple-touch-icon" href="../Assets/Icons/icon-192.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1a1814;
+            --bg-secondary: #242018;
+            --bg-card: #2a2520;
+            --text-primary: #f5f0e8;
+            --text-secondary: #a89f94;
+            --accent-root: #e85d4c;
+            --accent-third: #4a90a4;
+            --accent-fifth: #7db87d;
+            --accent-seventh: #c9a227;
+            --fret-wire: #8a8078;
+            --string: #d4cfc5;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        header {
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        h1 {
+            font-family: 'Instrument Serif', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.15);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .control-group label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+        }
+
+        select {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            padding: 0.35rem 1.5rem 0.35rem 0.5rem;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 1px solid rgba(168, 159, 148, 0.3);
+            border-radius: 4px;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 12 12'%3E%3Cpath fill='%23a89f94' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.4rem center;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: var(--accent-root);
+        }
+
+        .direction-toggle {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 4px;
+            border: 1px solid rgba(168, 159, 148, 0.3);
+            overflow: hidden;
+        }
+
+        .direction-toggle button {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .direction-toggle button.active {
+            background: var(--accent-root);
+            color: white;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 0.75rem 1rem;
+            background: var(--bg-secondary);
+            flex-wrap: wrap;
+        }
+
+        .cycle-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            padding: 0.35rem 0.75rem;
+            border-radius: 4px;
+            border: 1px solid rgba(168, 159, 148, 0.2);
+            margin-left: 0.5rem;
+        }
+
+        .cycle-display .arrow {
+            color: rgba(168, 159, 148, 0.4);
+            margin: 0 0.15rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.root { background: var(--accent-root); }
+        .legend-dot.third { background: var(--accent-third); }
+        .legend-dot.fifth { background: var(--accent-fifth); }
+        .legend-dot.seventh { background: var(--accent-seventh); }
+
+        .exercise-section {
+            padding: 1.5rem 0;
+        }
+
+        .section-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-root);
+            padding: 0.75rem 1.5rem 0.5rem;
+            border-top: 1px solid rgba(168, 159, 148, 0.15);
+            margin-top: 0.5rem;
+        }
+        
+        .section-label:first-child {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .row-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .row-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem 0.75rem;
+        }
+
+        .row-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+
+        .scroll-hint {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+        }
+
+        .chord-scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 0.5rem 1.5rem 1rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent-root) var(--bg-secondary);
+            cursor: grab;
+        }
+
+        .chord-scroll-container:active {
+            cursor: grabbing;
+        }
+
+        .chord-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .chord-scroll-container::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        .chord-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--accent-root);
+            border-radius: 3px;
+        }
+
+        .chord-row {
+            display: flex;
+            gap: 0.6rem;
+            width: max-content;
+        }
+
+        .chord-card {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 0.6rem 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            min-width: 95px;
+            border: 1px solid rgba(168, 159, 148, 0.1);
+            transition: transform 0.15s, box-shadow 0.15s;
+            user-select: none;
+        }
+
+        .chord-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+        }
+
+        .chord-card.tonic-chord {
+            border-color: var(--accent-root);
+            box-shadow: 0 0 0 1px var(--accent-root), 0 0 12px rgba(232, 93, 76, 0.15);
+        }
+        
+        .chord-card.tonic-chord .degree-label {
+            color: var(--accent-root);
+            font-weight: 600;
+        }
+
+        .chord-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .chord-name sup {
+            font-size: 0.55em;
+        }
+
+        .fretboard-container {
+            width: 85px;
+            height: 120px;
+        }
+
+        .fretboard-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .inversion-label {
+            font-size: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+        }
+
+        .degree-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: rgba(168, 159, 148, 0.5);
+            margin-top: -2px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            border-top: 1px solid rgba(168, 159, 148, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-nav" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace;">
+            <a href="index.html" class="back-link" style="font-size: 0.85rem; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; cursor: pointer;">← Back</a>
+            <span style="font-size: 0.9rem; color: var(--text-secondary); letter-spacing: 0.05em;">SinAudio / Scales.sin</span>
+            <div style="width: 60px;"></div>
+        </div>
+        <h1>Voice Leading</h1>
+        <p class="subtitle">Built by WESLEYFRANKLIN</p>
+    </header>
+
+    <div class="controls">
+        <div class="control-group">
+            <label>Scale</label>
+            <div class="direction-toggle" id="scale-toggle" style="display: flex; background: var(--bg-card); border-radius: 4px; border: 1px solid rgba(168, 159, 148, 0.3); overflow: hidden;">
+                <button id="scale-major" class="active" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.35rem 0.75rem; background: var(--accent-root); color: white; border: none; cursor: pointer; transition: all 0.2s;">Major</button>
+                <button id="scale-minor" style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; padding: 0.35rem 0.75rem; background: transparent; color: var(--text-secondary); border: none; cursor: pointer; transition: all 0.2s;">Minor</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label>Key</label>
+            <select id="key-select">
+                <option value="0" selected>C</option>
+                <option value="1">C♯/D♭</option>
+                <option value="2">D</option>
+                <option value="3">D♯/E♭</option>
+                <option value="4">E</option>
+                <option value="5">F</option>
+                <option value="6">F♯/G♭</option>
+                <option value="7">G</option>
+                <option value="8">G♯/A♭</option>
+                <option value="9">A</option>
+                <option value="10">A♯/B♭</option>
+                <option value="11">B</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Stringset</label>
+            <select id="string-select">
+                <option value="4321" selected>4,3,2,1</option>
+                <option value="5432">5,4,3,2</option>
+                <option value="6543">6,5,4,3</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Interval</label>
+            <select id="interval-select">
+                <option value="4" selected>4ths / 5ths</option>
+                <option value="5">5ths / 4ths</option>
+                <option value="3">3rds / 6ths</option>
+                <option value="6">6ths / 3rds</option>
+                <option value="2">2nds / 7ths</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label>Direction</label>
+            <div class="direction-toggle">
+                <button id="dir-up" class="active">↑ Low to High</button>
+                <button id="dir-down">↓ High to Low</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-dot root"></div><span>Root</span></div>
+        <div class="legend-item"><div class="legend-dot third"></div><span>3rd</span></div>
+        <div class="legend-item"><div class="legend-dot fifth"></div><span>5th</span></div>
+        <div class="legend-item"><div class="legend-dot seventh"></div><span>7th</span></div>
+        <div class="cycle-display" id="cycle-display"></div>
+    </div>
+
+    <div class="exercise-section">
+        <div class="section-label">Triads</div>
+        <div class="row-container">
+            <div class="row-header">
+                <div class="row-title">Root Position | 1st Inversion</div>
+                <div class="scroll-hint">← scroll →</div>
+            </div>
+            <div class="chord-scroll-container" id="scroll-triad1">
+                <div class="chord-row" id="grid-triad1"></div>
+            </div>
+        </div>
+
+        <div class="section-label">7th Chords (Drop 2)</div>
+        <div class="row-container">
+            <div class="row-header">
+                <div class="row-title">Root Position | 2nd Inversion</div>
+                <div class="scroll-hint">← scroll →</div>
+            </div>
+            <div class="chord-scroll-container" id="scroll-row1">
+                <div class="chord-row" id="grid-row1"></div>
+            </div>
+        </div>
+
+        <div class="row-container">
+            <div class="row-header">
+                <div class="row-title">1st Inversion | 3rd Inversion</div>
+                <div class="scroll-hint">← scroll →</div>
+            </div>
+            <div class="chord-scroll-container" id="scroll-row2">
+                <div class="chord-row" id="grid-row2"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Scroll horizontally through the chord progression • First card (highlighted) is the starting position</p>
+    </footer>
+
+    <script>
+        // ============ CONSTANTS ============
+        const NOTE_NAMES_SHARP = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+        const NOTE_NAMES_FLAT = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+        const FLAT_KEYS = [5, 10, 3, 8, 1, 6];
+        
+        // MAJOR SCALE chord qualities
+        const CHORD_QUALITIES_MAJOR = ['Maj7', 'm7', 'm7', 'Maj7', '7', 'm7', 'm7♭5'];
+        const CHORD_QUALITY_TYPES_MAJOR = ['maj7', 'min7', 'min7', 'maj7', 'dom7', 'min7', 'min7b5'];
+        
+        // NATURAL MINOR chord qualities
+        const CHORD_QUALITIES_MINOR = ['m7', 'm7♭5', 'Maj7', 'm7', 'm7', 'Maj7', '7'];
+        const CHORD_QUALITY_TYPES_MINOR = ['min7', 'min7b5', 'maj7', 'min7', 'min7', 'maj7', 'dom7'];
+        
+        // Default to major scale (can be changed via toggle)
+        let CHORD_QUALITIES = CHORD_QUALITIES_MAJOR;
+        let CHORD_QUALITY_TYPES = CHORD_QUALITY_TYPES_MAJOR;
+        let currentScale = 'major'; // 'major' or 'minor'
+        
+        const CHORD_INTERVALS = {
+            'maj7': [0, 4, 7, 11],
+            'min7': [0, 3, 7, 10],
+            'dom7': [0, 4, 7, 10],
+            'min7b5': [0, 3, 6, 10]
+        };
+        
+        // MAJOR scale intervals
+        const SCALE_INTERVALS_MAJOR = [0, 2, 4, 5, 7, 9, 11];
+        // NATURAL MINOR scale intervals
+        const SCALE_INTERVALS_MINOR = [0, 2, 3, 5, 7, 8, 10];
+        // Default to major
+        let SCALE_INTERVALS = SCALE_INTERVALS_MAJOR;
+        
+        // Drop 2: 2nd voice from top dropped down an octave
+        // Index = string position (0=bass), Value = chord tone (0=R, 1=3, 2=5, 3=7)
+        const DROP2_INVERSIONS = {
+            'root': [0, 2, 3, 1],  // R-5-7-3 (Root in bass)
+            '1st':  [1, 3, 0, 2],  // 3-7-R-5 (3rd in bass)
+            '2nd':  [2, 0, 1, 3],  // 5-R-3-7 (5th in bass)
+            '3rd':  [3, 1, 2, 0]   // 7-3-5-R (7th in bass)
+        };
+        
+        // Triad intervals
+        const TRIAD_INTERVALS = {
+            'maj': [0, 4, 7],
+            'min': [0, 3, 7],
+            'dim': [0, 3, 6]
+        };
+        
+        // Triad qualities for MAJOR scale (I ii iii IV V vi vii°)
+        const TRIAD_QUALITIES_MAJOR = ['', 'm', 'm', '', '', 'm', '°'];
+        const TRIAD_QUALITY_TYPES_MAJOR = ['maj', 'min', 'min', 'maj', 'maj', 'min', 'dim'];
+        
+        // Triad qualities for NATURAL MINOR scale (i ii° III iv v VI VII)
+        const TRIAD_QUALITIES_MINOR = ['m', '°', '', 'm', 'm', '', ''];
+        const TRIAD_QUALITY_TYPES_MINOR = ['min', 'dim', 'maj', 'min', 'min', 'maj', 'maj'];
+        
+        // Default to major
+        let TRIAD_QUALITIES = TRIAD_QUALITIES_MAJOR;
+        let TRIAD_QUALITY_TYPES = TRIAD_QUALITY_TYPES_MAJOR;
+        
+        // Triad inversions (close voicing on 3 adjacent strings)
+        // Index = string position (0=bass), Value = chord tone (0=R, 1=3, 2=5)
+        const TRIAD_INVERSIONS = {
+            'root': [0, 1, 2],  // R-3-5
+            '1st':  [1, 2, 0],  // 3-5-R
+            '2nd':  [2, 0, 1]   // 5-R-3
+        };
+        
+        // String sets for triads (3 strings) - use TOP 3 of the 4-string set
+        const TRIAD_STRING_SET_INDICES = {
+            '6543': [1, 2, 3],    // 5,4,3 strings
+            '5432': [2, 3, 4],    // 4,3,2 strings
+            '4321': [3, 4, 5]     // 3,2,1 strings
+        };
+        
+        const ALL_STRINGS_MIDI = [40, 45, 50, 55, 59, 64];
+        
+        const STRING_SET_INDICES = {
+            '6543': [0, 1, 2, 3],
+            '5432': [1, 2, 3, 4],
+            '4321': [2, 3, 4, 5]
+        };
+        
+        // Base cycle patterns
+        // For "4ths/5ths": down uses 4ths pattern, up uses 5ths pattern (inverse)
+        // Note: down by X and up by (7-X) produce the same sequence
+        // So the TRUE inverse is: down by X <-> up by X
+        const CYCLE_PATTERNS = {
+            '4': {
+                // 4ths / 5ths: down by 4ths, up by 5ths
+                down: [0, 3, 6, 2, 5, 1, 4], // Down by 4ths: I-IV-vii-iii-vi-ii-V
+                up: [0, 4, 1, 5, 2, 6, 3]    // Up by 5ths: I-V-ii-vi-iii-vii-IV
+            },
+            '5': {
+                // 5ths / 4ths: down by 5ths, up by 4ths
+                down: [0, 4, 1, 5, 2, 6, 3], // Down by 5ths: I-V-ii-vi-iii-vii-IV
+                up: [0, 3, 6, 2, 5, 1, 4]    // Up by 4ths: I-IV-vii-iii-vi-ii-V
+            },
+            '3': {
+                // 3rds / 6ths: down by 3rds, up by 3rds (ascending fretboard)
+                // Down by 3rds: I-vi-IV-ii-vii-V-iii (subtract 2 scale degrees mod 7)
+                // Up by 3rds (reverse): I-iii-V-vii-ii-IV-vi (add 2 scale degrees mod 7)
+                down: [0, 5, 3, 1, 6, 4, 2], // Down by 3rds: I-vi-IV-ii-vii-V-iii
+                up: [0, 2, 4, 6, 1, 3, 5]    // Up by 3rds: I-iii-V-vii-ii-IV-vi
+            },
+            '6': {
+                // 6ths / 3rds: down by 6ths, up by 6ths (ascending fretboard)
+                // Down by 6ths = up by 3rds in pitch: I-iii-V-vii-ii-IV-vi
+                // Up by 6ths = down by 3rds in pitch: I-vi-IV-ii-vii-V-iii
+                down: [0, 2, 4, 6, 1, 3, 5], // Down by 6ths: I-iii-V-vii-ii-IV-vi
+                up: [0, 5, 3, 1, 6, 4, 2]    // Up by 6ths: I-vi-IV-ii-vii-V-iii
+            },
+            '2': {
+                // 2nds / 7ths: down by 2nds, up by 2nds (ascending fretboard)
+                down: [0, 6, 5, 4, 3, 2, 1], // Down by 2nds: I-vii-vi-V-IV-iii-ii
+                up: [0, 1, 2, 3, 4, 5, 6]    // Up by 2nds: I-ii-iii-IV-V-vi-vii
+            }
+        };
+
+        let currentDirection = 'up';
+
+        // ============ HELPERS ============
+        
+        function getNoteName(noteIndex, useFlats) {
+            const idx = ((noteIndex % 12) + 12) % 12;
+            return useFlats ? NOTE_NAMES_FLAT[idx] : NOTE_NAMES_SHARP[idx];
+        }
+        
+        function getChordRoot(keyRoot, scaleDegree) {
+            return (keyRoot + SCALE_INTERVALS[scaleDegree]) % 12;
+        }
+
+        // ============ VOICING CALCULATION ============
+        
+        function calculateVoicing(rootNote, chordType, inversionName, stringSet, targetFret) {
+            const intervals = CHORD_INTERVALS[chordType];
+            const dropOrder = DROP2_INVERSIONS[inversionName];
+            const stringIndices = STRING_SET_INDICES[stringSet];
+            
+            const voicing = [];
+            
+            for (let i = 0; i < 4; i++) {
+                const chordToneIndex = dropOrder[i];
+                const interval = intervals[chordToneIndex];
+                const stringIdx = stringIndices[i];
+                const stringMidi = ALL_STRINGS_MIDI[stringIdx];
+                
+                const targetMidi = rootNote + interval;
+                let fret = targetMidi - stringMidi;
+                
+                while (fret < targetFret - 6) fret += 12;
+                while (fret > targetFret + 6) fret -= 12;
+                
+                if (fret < 0) fret += 12;
+                if (fret > 17) fret -= 12;
+                
+                voicing.push({
+                    stringIndex: stringIdx,
+                    fret: fret,
+                    chordTone: chordToneIndex
+                });
+            }
+            
+            const avgFret = voicing.reduce((sum, v) => sum + v.fret, 0) / 4;
+            
+            return { notes: voicing, avgFret, inversion: inversionName };
+        }
+        
+        function findLowestVoicing(rootMidi, chordType, inversionName, stringSet) {
+            const candidates = [];
+            
+            for (let octave = -2; octave <= 1; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 15; targetFret++) {
+                    const voicing = calculateVoicing(adjustedRoot, chordType, inversionName, stringSet, targetFret);
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        candidates.push(voicing);
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) return null;
+            
+            candidates.sort((a, b) => a.avgFret - b.avgFret);
+            return candidates[0];
+        }
+        
+        function findHighestVoicing(rootMidi, chordType, inversionName, stringSet) {
+            const candidates = [];
+            
+            for (let octave = -1; octave <= 2; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 15; targetFret++) {
+                    const voicing = calculateVoicing(adjustedRoot, chordType, inversionName, stringSet, targetFret);
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        candidates.push(voicing);
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) return null;
+            
+            candidates.sort((a, b) => b.avgFret - a.avgFret);
+            return candidates[0];
+        }
+        
+        function findVoiceledVoicing(rootMidi, chordType, inversionName, stringSet, prevVoicing, direction) {
+            const candidates = [];
+            
+            // Search a wider range of octaves and target frets
+            for (let octave = -2; octave <= 3; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 17; targetFret++) {
+                    const voicing = calculateVoicing(adjustedRoot, chordType, inversionName, stringSet, targetFret);
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        // Calculate voice leading quality (total finger movement)
+                        let totalMovement = 0;
+                        let maxVoiceMovement = 0;
+                        for (let i = 0; i < 4; i++) {
+                            const movement = Math.abs(voicing.notes[i].fret - prevVoicing.notes[i].fret);
+                            totalMovement += movement;
+                            maxVoiceMovement = Math.max(maxVoiceMovement, movement);
+                        }
+                        
+                        // Direction preference
+                        const fretDiff = voicing.avgFret - prevVoicing.avgFret;
+                        let score = totalMovement * 10;
+                        
+                        // Penalize large jumps heavily
+                        if (maxVoiceMovement > 5) {
+                            score += (maxVoiceMovement - 5) * 50;
+                        }
+                        
+                        if (direction === 'up') {
+                            if (fretDiff < -2) score += 30; // Penalize going down
+                            else if (fretDiff > 0) score -= 2; // Reward going up
+                        } else {
+                            if (fretDiff > 2) score += 30; // Penalize going up
+                            else if (fretDiff < 0) score -= 2; // Reward going down
+                        }
+                        
+                        candidates.push({ voicing, score, totalMovement, maxVoiceMovement });
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) {
+                return calculateVoicing(rootMidi, chordType, inversionName, stringSet, prevVoicing.avgFret);
+            }
+            
+            candidates.sort((a, b) => a.score - b.score);
+            return candidates[0].voicing;
+        }
+
+        // ============ TRIAD VOICING CALCULATION ============
+        
+        function calculateTriadVoicing(rootNote, triadType, inversionName, stringSet, targetFret) {
+            const intervals = TRIAD_INTERVALS[triadType];
+            if (!intervals) return null;
+            
+            const dropOrder = TRIAD_INVERSIONS[inversionName];
+            const stringIndices = TRIAD_STRING_SET_INDICES[stringSet];
+            
+            const voicing = [];
+            
+            for (let i = 0; i < 3; i++) {
+                const chordToneIndex = dropOrder[i];
+                const interval = intervals[chordToneIndex];
+                const stringIdx = stringIndices[i];
+                const stringMidi = ALL_STRINGS_MIDI[stringIdx];
+                
+                const targetMidi = rootNote + interval;
+                let fret = targetMidi - stringMidi;
+                
+                while (fret < targetFret - 6) fret += 12;
+                while (fret > targetFret + 6) fret -= 12;
+                
+                if (fret < 0) fret += 12;
+                if (fret > 17) fret -= 12;
+                
+                voicing.push({
+                    stringIndex: stringIdx,
+                    fret: fret,
+                    chordTone: chordToneIndex
+                });
+            }
+            
+            const avgFret = voicing.reduce((sum, v) => sum + v.fret, 0) / 3;
+            
+            return { notes: voicing, avgFret, inversion: inversionName };
+        }
+        
+        function findLowestTriadVoicing(rootMidi, triadType, inversionName, stringSet) {
+            const candidates = [];
+            
+            for (let octave = -2; octave <= 1; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 15; targetFret++) {
+                    const voicing = calculateTriadVoicing(adjustedRoot, triadType, inversionName, stringSet, targetFret);
+                    if (!voicing) continue;
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        candidates.push(voicing);
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) return null;
+            
+            candidates.sort((a, b) => a.avgFret - b.avgFret);
+            return candidates[0];
+        }
+        
+        function findHighestTriadVoicing(rootMidi, triadType, inversionName, stringSet) {
+            const candidates = [];
+            
+            for (let octave = -1; octave <= 2; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 15; targetFret++) {
+                    const voicing = calculateTriadVoicing(adjustedRoot, triadType, inversionName, stringSet, targetFret);
+                    if (!voicing) continue;
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        candidates.push(voicing);
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) return null;
+            
+            candidates.sort((a, b) => b.avgFret - a.avgFret);
+            return candidates[0];
+        }
+        
+        function findVoiceledTriadVoicing(rootMidi, triadType, inversionName, stringSet, prevVoicing, direction) {
+            const candidates = [];
+            
+            for (let octave = -2; octave <= 3; octave++) {
+                const adjustedRoot = rootMidi + (octave * 12);
+                
+                for (let targetFret = 0; targetFret <= 17; targetFret++) {
+                    const voicing = calculateTriadVoicing(adjustedRoot, triadType, inversionName, stringSet, targetFret);
+                    if (!voicing) continue;
+                    
+                    const frets = voicing.notes.map(n => n.fret);
+                    const minFret = Math.min(...frets);
+                    const maxFret = Math.max(...frets);
+                    const span = maxFret - minFret;
+                    
+                    if (minFret >= 0 && maxFret <= 18 && span <= 5) {
+                        let totalMovement = 0;
+                        let maxVoiceMovement = 0;
+                        for (let i = 0; i < 3; i++) {
+                            const movement = Math.abs(voicing.notes[i].fret - prevVoicing.notes[i].fret);
+                            totalMovement += movement;
+                            maxVoiceMovement = Math.max(maxVoiceMovement, movement);
+                        }
+                        
+                        const fretDiff = voicing.avgFret - prevVoicing.avgFret;
+                        let score = totalMovement * 10;
+                        
+                        if (maxVoiceMovement > 5) {
+                            score += (maxVoiceMovement - 5) * 50;
+                        }
+                        
+                        if (direction === 'up') {
+                            if (fretDiff < -2) score += 30;
+                            else if (fretDiff > 0) score -= 2;
+                        } else {
+                            if (fretDiff > 2) score += 30;
+                            else if (fretDiff < 0) score -= 2;
+                        }
+                        
+                        candidates.push({ voicing, score, totalMovement, maxVoiceMovement });
+                    }
+                }
+            }
+            
+            if (candidates.length === 0) {
+                return calculateTriadVoicing(rootMidi, triadType, inversionName, stringSet, prevVoicing.avgFret);
+            }
+            
+            candidates.sort((a, b) => a.score - b.score);
+            return candidates[0].voicing;
+        }
+        
+        // ============ TRIAD ROW GENERATION ============
+        
+        function generateTriadRow(keyRoot, stringSet, inv1, inv2, intervalKey, direction) {
+            const baseCycle = CYCLE_PATTERNS[intervalKey][direction];
+            
+            const allChords = [];
+            for (let i = 0; i < baseCycle.length; i++) {
+                const degree = baseCycle[i];
+                const chordRoot = getChordRoot(keyRoot, degree);
+                const triadType = TRIAD_QUALITY_TYPES[degree];
+                const quality = TRIAD_QUALITIES[degree];
+                const rootMidi = 48 + chordRoot;
+                
+                const lowestInv1 = findLowestTriadVoicing(rootMidi, triadType, inv1, stringSet);
+                const lowestInv2 = findLowestTriadVoicing(rootMidi, triadType, inv2, stringSet);
+                const highestInv1 = findHighestTriadVoicing(rootMidi, triadType, inv1, stringSet);
+                const highestInv2 = findHighestTriadVoicing(rootMidi, triadType, inv2, stringSet);
+                
+                const lowestVoicing = (lowestInv1 && lowestInv2) 
+                    ? (lowestInv1.avgFret < lowestInv2.avgFret ? lowestInv1 : lowestInv2)
+                    : (lowestInv1 || lowestInv2);
+                    
+                const highestVoicing = (highestInv1 && highestInv2)
+                    ? (highestInv1.avgFret > highestInv2.avgFret ? highestInv1 : highestInv2)
+                    : (highestInv1 || highestInv2);
+                
+                allChords.push({
+                    cycleIndex: i,
+                    degree,
+                    degreeLabel: degree + 1,
+                    root: chordRoot,
+                    triadType,
+                    quality,
+                    rootMidi,
+                    lowestVoicing,
+                    highestVoicing,
+                    lowestAvgFret: lowestVoicing ? lowestVoicing.avgFret : 100,
+                    highestAvgFret: highestVoicing ? highestVoicing.avgFret : 0
+                });
+            }
+            
+            let startIdx;
+            if (direction === 'up') {
+                startIdx = allChords.reduce((minIdx, curr, idx, arr) => 
+                    curr.lowestAvgFret < arr[minIdx].lowestAvgFret ? idx : minIdx, 0);
+            } else {
+                startIdx = allChords.reduce((maxIdx, curr, idx, arr) => 
+                    curr.highestAvgFret > arr[maxIdx].highestAvgFret ? idx : maxIdx, 0);
+            }
+            
+            const orderedChords = [];
+            for (let loop = 0; loop < 10; loop++) {
+                for (let i = 0; i < allChords.length; i++) {
+                    const idx = (startIdx + i) % allChords.length;
+                    orderedChords.push({ 
+                        ...allChords[idx], 
+                        isTonic: allChords[idx].degree === 0
+                    });
+                }
+            }
+            
+            const row = [];
+            let prevVoicing = null;
+            
+            for (let i = 0; i < orderedChords.length; i++) {
+                const chord = orderedChords[i];
+                const inversion = (i % 2 === 0) ? inv1 : inv2;
+                let voicing;
+                
+                if (i === 0) {
+                    if (direction === 'up') {
+                        voicing = findLowestTriadVoicing(chord.rootMidi, chord.triadType, inversion, stringSet);
+                    } else {
+                        voicing = findHighestTriadVoicing(chord.rootMidi, chord.triadType, inversion, stringSet);
+                    }
+                } else {
+                    voicing = findVoiceledTriadVoicing(chord.rootMidi, chord.triadType, inversion, stringSet, prevVoicing, direction);
+                }
+                
+                if (!voicing) continue;
+                
+                row.push({
+                    voicing,
+                    root: chord.root,
+                    quality: chord.quality,
+                    inversion,
+                    degreeLabel: chord.degreeLabel,
+                    isTonic: chord.isTonic
+                });
+                
+                prevVoicing = voicing;
+            }
+            
+            return row;
+        }
+
+        // ============ ROW GENERATION ============
+        
+        function generateRow(keyRoot, stringSet, inv1, inv2, intervalKey, direction) {
+            // Select the correct cycle pattern based on direction
+            const baseCycle = CYCLE_PATTERNS[intervalKey][direction];
+            
+            // Build all chord data first (without inversions yet)
+            const allChords = [];
+            for (let i = 0; i < baseCycle.length; i++) {
+                const degree = baseCycle[i];
+                const chordRoot = getChordRoot(keyRoot, degree);
+                const chordType = CHORD_QUALITY_TYPES[degree];
+                const quality = CHORD_QUALITIES[degree];
+                const rootMidi = 48 + chordRoot;
+                
+                // Find extreme voicings for BOTH inversions to determine best starting chord
+                const lowestInv1 = findLowestVoicing(rootMidi, chordType, inv1, stringSet);
+                const lowestInv2 = findLowestVoicing(rootMidi, chordType, inv2, stringSet);
+                const highestInv1 = findHighestVoicing(rootMidi, chordType, inv1, stringSet);
+                const highestInv2 = findHighestVoicing(rootMidi, chordType, inv2, stringSet);
+                
+                const lowestVoicing = (lowestInv1 && lowestInv2) 
+                    ? (lowestInv1.avgFret < lowestInv2.avgFret ? lowestInv1 : lowestInv2)
+                    : (lowestInv1 || lowestInv2);
+                    
+                const highestVoicing = (highestInv1 && highestInv2)
+                    ? (highestInv1.avgFret > highestInv2.avgFret ? highestInv1 : highestInv2)
+                    : (highestInv1 || highestInv2);
+                
+                allChords.push({
+                    cycleIndex: i,
+                    degree,
+                    degreeLabel: degree + 1, // 1-indexed for display
+                    root: chordRoot,
+                    chordType,
+                    quality,
+                    rootMidi,
+                    lowestVoicing,
+                    highestVoicing,
+                    lowestAvgFret: lowestVoicing ? lowestVoicing.avgFret : 100,
+                    highestAvgFret: highestVoicing ? highestVoicing.avgFret : 0
+                });
+            }
+            
+            // Find which chord should start (lowest for up, highest for down)
+            let startIdx;
+            if (direction === 'up') {
+                startIdx = allChords.reduce((minIdx, curr, idx, arr) => 
+                    curr.lowestAvgFret < arr[minIdx].lowestAvgFret ? idx : minIdx, 0);
+            } else {
+                startIdx = allChords.reduce((maxIdx, curr, idx, arr) => 
+                    curr.highestAvgFret > arr[maxIdx].highestAvgFret ? idx : maxIdx, 0);
+            }
+            
+            // Reorder cycle to start from optimal chord
+            const orderedChords = [];
+            // Add 10 full cycles for smooth infinite scrolling
+            for (let loop = 0; loop < 10; loop++) {
+                for (let i = 0; i < allChords.length; i++) {
+                    const idx = (startIdx + i) % allChords.length;
+                    orderedChords.push({ 
+                        ...allChords[idx], 
+                        isTonic: allChords[idx].degree === 0  // Mark if this is the I chord
+                    });
+                }
+            }
+            
+            // Generate voice-led voicings with ALTERNATING inversions based on ROW position
+            const row = [];
+            let prevVoicing = null;
+            
+            for (let i = 0; i < orderedChords.length; i++) {
+                const chord = orderedChords[i];
+                // Alternate inversions based on position in the row
+                const inversion = (i % 2 === 0) ? inv1 : inv2;
+                let voicing;
+                
+                if (i === 0) {
+                    // First chord: find extreme position with the assigned inversion
+                    if (direction === 'up') {
+                        voicing = findLowestVoicing(chord.rootMidi, chord.chordType, inversion, stringSet);
+                    } else {
+                        voicing = findHighestVoicing(chord.rootMidi, chord.chordType, inversion, stringSet);
+                    }
+                } else {
+                    voicing = findVoiceledVoicing(chord.rootMidi, chord.chordType, inversion, stringSet, prevVoicing, direction);
+                }
+                
+                if (!voicing) continue;
+                
+                row.push({
+                    voicing,
+                    root: chord.root,
+                    quality: chord.quality,
+                    inversion,
+                    degreeLabel: chord.degreeLabel,
+                    isTonic: chord.isTonic
+                });
+                
+                prevVoicing = voicing;
+            }
+            
+            return row;
+        }
+
+        // ============ SVG RENDERING ============
+        
+        function createFretboardSVG(voicing, stringSet) {
+            const width = 85;
+            const height = 120;
+            const numStrings = 6;
+            const numFrets = 5;
+            const stringSpacing = 10;
+            const fretSpacing = 19;
+            const leftMargin = 22;
+            const topMargin = 20;
+            
+            const usedStringIndices = STRING_SET_INDICES[stringSet];
+            
+            const frets = voicing.notes.map(n => n.fret);
+            const minFret = Math.min(...frets);
+            const maxFret = Math.max(...frets);
+            
+            let displayStartFret = Math.max(1, minFret);
+            const hasOpenString = minFret === 0;
+            
+            if (hasOpenString) {
+                displayStartFret = 1;
+            } else if (maxFret - displayStartFret >= numFrets) {
+                displayStartFret = Math.max(1, maxFret - numFrets + 1);
+            }
+            
+            const showNut = displayStartFret === 1;
+            
+            const colors = { 0: '#e85d4c', 1: '#4a90a4', 2: '#7db87d', 3: '#c9a227' };
+            const labels = { 0: 'R', 1: '3', 2: '5', 3: '7' };
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            // Fret number
+            svg += `<text x="5" y="${topMargin + fretSpacing/2 + 3}" font-family="JetBrains Mono, monospace" font-size="8" fill="#a89f94">${displayStartFret}</text>`;
+            
+            // String indicators at top (X for unused, chord tone indicator for used)
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                
+                if (!isUsed) {
+                    svg += `<text x="${x}" y="10" font-family="JetBrains Mono, monospace" font-size="8" fill="#a89f94" text-anchor="middle">×</text>`;
+                } else {
+                    // Find the note on this string
+                    const noteOnString = voicing.notes.find(n => n.stringIndex === i);
+                    if (noteOnString) {
+                        const color = colors[noteOnString.chordTone];
+                        const label = labels[noteOnString.chordTone];
+                        // Show colored letter for all chord tones at top
+                        svg += `<text x="${x}" y="10" font-family="JetBrains Mono, monospace" font-size="7" fill="${color}" text-anchor="middle" font-weight="600">${label}</text>`;
+                    }
+                }
+            }
+            
+            // Nut
+            if (showNut) {
+                svg += `<rect x="${leftMargin - 2}" y="${topMargin - 2}" width="${stringSpacing * (numStrings - 1) + 4}" height="3" fill="#f5f0e8" rx="1"/>`;
+            }
+            
+            // Frets
+            for (let i = 0; i <= numFrets; i++) {
+                const y = topMargin + i * fretSpacing;
+                svg += `<line x1="${leftMargin - 2}" y1="${y}" x2="${leftMargin + stringSpacing * (numStrings - 1) + 2}" y2="${y}" stroke="#8a8078" stroke-width="${i === 0 && !showNut ? 1.5 : 1}"/>`;
+            }
+            
+            // Strings
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                svg += `<line x1="${x}" y1="${topMargin}" x2="${x}" y2="${topMargin + numFrets * fretSpacing}" stroke="#d4cfc5" stroke-width="1.2" opacity="${isUsed ? 1 : 0.35}"/>`;
+            }
+            
+            // Finger positions (fretted notes)
+            voicing.notes.forEach((note) => {
+                const x = leftMargin + note.stringIndex * stringSpacing;
+                
+                if (note.fret === 0) {
+                    // Open string - show circle just above the nut
+                    const y = topMargin - 8;
+                    svg += `<circle cx="${x}" cy="${y}" r="5" fill="${colors[note.chordTone]}"/>`;
+                    svg += `<text x="${x}" y="${y + 2.5}" font-family="JetBrains Mono, monospace" font-size="5" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                } else {
+                    const fretOffset = note.fret - displayStartFret;
+                    
+                    if (fretOffset >= 0 && fretOffset < numFrets) {
+                        const y = topMargin + fretOffset * fretSpacing + fretSpacing / 2;
+                        svg += `<circle cx="${x}" cy="${y}" r="7" fill="${colors[note.chordTone]}"/>`;
+                        svg += `<text x="${x}" y="${y + 2.5}" font-family="JetBrains Mono, monospace" font-size="7" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                    }
+                }
+            });
+            
+            svg += '</svg>';
+            return svg;
+        }
+        
+        function formatChordName(noteName, quality) {
+            const map = { 'Maj7': '<sup>Maj7</sup>', 'm7': '<sup>m7</sup>', '7': '<sup>7</sup>', 'm7♭5': '<sup>m7♭5</sup>' };
+            return noteName + (map[quality] || quality);
+        }
+        
+        function formatTriadName(noteName, quality) {
+            return noteName + quality;
+        }
+        
+        function getInversionLabel(inv) {
+            return { 'root': 'Root', '1st': '1st', '2nd': '2nd', '3rd': '3rd' }[inv];
+        }
+        
+        function createTriadFretboardSVG(voicing, stringSet) {
+            const width = 85;
+            const height = 120;
+            const numStrings = 6;
+            const numFrets = 5;
+            const stringSpacing = 10;
+            const fretSpacing = 19;
+            const leftMargin = 22;
+            const topMargin = 20;
+            
+            const usedStringIndices = TRIAD_STRING_SET_INDICES[stringSet];
+            
+            const frets = voicing.notes.map(n => n.fret);
+            const minFret = Math.min(...frets);
+            const maxFret = Math.max(...frets);
+            
+            let displayStartFret = Math.max(1, minFret);
+            const hasOpenString = minFret === 0;
+            
+            if (hasOpenString) {
+                displayStartFret = 1;
+            } else if (maxFret - displayStartFret >= numFrets) {
+                displayStartFret = Math.max(1, maxFret - numFrets + 1);
+            }
+            
+            const showNut = displayStartFret === 1;
+            
+            const colors = { 0: '#e85d4c', 1: '#4a90a4', 2: '#7db87d' };
+            const labels = { 0: 'R', 1: '3', 2: '5' };
+            
+            let svg = `<svg viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+            
+            svg += `<text x="5" y="${topMargin + fretSpacing/2 + 3}" font-family="JetBrains Mono, monospace" font-size="8" fill="#a89f94">${displayStartFret}</text>`;
+            
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                
+                if (!isUsed) {
+                    svg += `<text x="${x}" y="10" font-family="JetBrains Mono, monospace" font-size="8" fill="#a89f94" text-anchor="middle">×</text>`;
+                } else {
+                    const noteOnString = voicing.notes.find(n => n.stringIndex === i);
+                    if (noteOnString) {
+                        const color = colors[noteOnString.chordTone];
+                        const label = labels[noteOnString.chordTone];
+                        svg += `<text x="${x}" y="10" font-family="JetBrains Mono, monospace" font-size="7" fill="${color}" text-anchor="middle" font-weight="600">${label}</text>`;
+                    }
+                }
+            }
+            
+            if (showNut) {
+                svg += `<rect x="${leftMargin - 2}" y="${topMargin - 2}" width="${stringSpacing * (numStrings - 1) + 4}" height="3" fill="#f5f0e8" rx="1"/>`;
+            }
+            
+            for (let i = 0; i <= numFrets; i++) {
+                const y = topMargin + i * fretSpacing;
+                svg += `<line x1="${leftMargin - 2}" y1="${y}" x2="${leftMargin + stringSpacing * (numStrings - 1) + 2}" y2="${y}" stroke="#8a8078" stroke-width="${i === 0 && !showNut ? 1.5 : 1}"/>`;
+            }
+            
+            for (let i = 0; i < numStrings; i++) {
+                const x = leftMargin + i * stringSpacing;
+                const isUsed = usedStringIndices.includes(i);
+                svg += `<line x1="${x}" y1="${topMargin}" x2="${x}" y2="${topMargin + numFrets * fretSpacing}" stroke="#d4cfc5" stroke-width="1.2" opacity="${isUsed ? 1 : 0.35}"/>`;
+            }
+            
+            voicing.notes.forEach((note) => {
+                const x = leftMargin + note.stringIndex * stringSpacing;
+                
+                if (note.fret === 0) {
+                    const y = topMargin - 8;
+                    svg += `<circle cx="${x}" cy="${y}" r="5" fill="${colors[note.chordTone]}"/>`;
+                    svg += `<text x="${x}" y="${y + 2.5}" font-family="JetBrains Mono, monospace" font-size="5" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                } else {
+                    const fretOffset = note.fret - displayStartFret;
+                    
+                    if (fretOffset >= 0 && fretOffset < numFrets) {
+                        const y = topMargin + fretOffset * fretSpacing + fretSpacing / 2;
+                        svg += `<circle cx="${x}" cy="${y}" r="7" fill="${colors[note.chordTone]}"/>`;
+                        svg += `<text x="${x}" y="${y + 2.5}" font-family="JetBrains Mono, monospace" font-size="7" fill="white" text-anchor="middle" font-weight="600">${labels[note.chordTone]}</text>`;
+                    }
+                }
+            });
+            
+            svg += '</svg>';
+            return svg;
+        }
+
+        // ============ RENDER ============
+        
+        function renderRow(gridId, inv1, inv2) {
+            const keyRoot = parseInt(document.getElementById('key-select').value);
+            const stringSet = document.getElementById('string-select').value;
+            const intervalKey = document.getElementById('interval-select').value;
+            const useFlats = FLAT_KEYS.includes(keyRoot);
+            
+            const row = generateRow(keyRoot, stringSet, inv1, inv2, intervalKey, currentDirection);
+            
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = row.map((chord, idx) => {
+                const rootName = getNoteName(chord.root, useFlats);
+                const chordName = formatChordName(rootName, chord.quality);
+                const svg = createFretboardSVG(chord.voicing, stringSet);
+                const invLabel = getInversionLabel(chord.inversion);
+                const tonicClass = chord.isTonic ? 'tonic-chord' : '';
+                const degreeRoman = toRoman(chord.degreeLabel);
+                
+                return `
+                    <div class="chord-card ${tonicClass}">
+                        <div class="chord-name">${chordName}</div>
+                        <div class="fretboard-container">${svg}</div>
+                        <div class="inversion-label">${invLabel}</div>
+                        <div class="degree-label">${degreeRoman}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderTriadRow(gridId, inv1, inv2) {
+            const keyRoot = parseInt(document.getElementById('key-select').value);
+            const stringSet = document.getElementById('string-select').value;
+            const intervalKey = document.getElementById('interval-select').value;
+            const useFlats = FLAT_KEYS.includes(keyRoot);
+            
+            const row = generateTriadRow(keyRoot, stringSet, inv1, inv2, intervalKey, currentDirection);
+            
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = row.map((chord, idx) => {
+                const rootName = getNoteName(chord.root, useFlats);
+                const chordName = formatTriadName(rootName, chord.quality);
+                const svg = createTriadFretboardSVG(chord.voicing, stringSet);
+                const invLabel = getInversionLabel(chord.inversion);
+                const tonicClass = chord.isTonic ? 'tonic-chord' : '';
+                const degreeRoman = toRoman(chord.degreeLabel);
+                
+                return `
+                    <div class="chord-card ${tonicClass}">
+                        <div class="chord-name">${chordName}</div>
+                        <div class="fretboard-container">${svg}</div>
+                        <div class="inversion-label">${invLabel}</div>
+                        <div class="degree-label">${degreeRoman}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function toRoman(num) {
+            const romans = ['I', 'ii', 'iii', 'IV', 'V', 'vi', 'vii°'];
+            return romans[num - 1] || num;
+        }
+        
+        function updateCycleDisplay() {
+            const intervalKey = document.getElementById('interval-select').value;
+            const cycle = CYCLE_PATTERNS[intervalKey][currentDirection];
+            
+            // Convert to 1-indexed scale degrees
+            const degrees = cycle.map(d => d + 1);
+            
+            // Create display string with arrows
+            const displayHTML = degrees.map((d, i) => {
+                const arrow = i < degrees.length - 1 ? '<span class="arrow">→</span>' : '';
+                return `${d}${arrow}`;
+            }).join('');
+            
+            document.getElementById('cycle-display').innerHTML = displayHTML;
+        }
+        
+        function render() {
+            updateCycleDisplay();
+            // 7th chord rows
+            renderRow('grid-row1', 'root', '2nd');
+            renderRow('grid-row2', '1st', '3rd');
+            // Triad row
+            renderTriadRow('grid-triad1', 'root', '1st');
+        }
+
+        // ============ DRAG SCROLL & INFINITE LOOP ============
+        
+        function enableDragScroll(container) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            });
+            
+            container.addEventListener('mouseleave', () => isDown = false);
+            container.addEventListener('mouseup', () => isDown = false);
+            
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                container.scrollLeft = scrollLeft - walk;
+            });
+        }
+        
+        function enableInfiniteScroll(container) {
+            const row = container.querySelector('.chord-row');
+            
+            container.addEventListener('scroll', () => {
+                const cardWidth = 101; // approximate card width + gap
+                const cycleWidth = cardWidth * 7; // 7 chords per cycle
+                const totalWidth = row.scrollWidth;
+                const visibleWidth = container.clientWidth;
+                const scrollPos = container.scrollLeft;
+                
+                // If scrolled past 70% of total, jump back to 30%
+                if (scrollPos > totalWidth * 0.7) {
+                    container.scrollLeft = totalWidth * 0.3;
+                }
+                // If scrolled before 10%, jump forward to 40%
+                else if (scrollPos < totalWidth * 0.1 && scrollPos > 0) {
+                    container.scrollLeft = totalWidth * 0.4;
+                }
+            });
+            
+            // Start in the middle
+            setTimeout(() => {
+                container.scrollLeft = row.scrollWidth * 0.3;
+            }, 50);
+        }
+
+        // ============ EVENT LISTENERS ============
+        
+        document.getElementById('key-select').addEventListener('change', render);
+        document.getElementById('string-select').addEventListener('change', render);
+        document.getElementById('interval-select').addEventListener('change', render);
+        
+        document.getElementById('dir-up').addEventListener('click', () => {
+            currentDirection = 'up';
+            document.getElementById('dir-up').classList.add('active');
+            document.getElementById('dir-down').classList.remove('active');
+            render();
+        });
+        
+        document.getElementById('dir-down').addEventListener('click', () => {
+            currentDirection = 'down';
+            document.getElementById('dir-down').classList.add('active');
+            document.getElementById('dir-up').classList.remove('active');
+            render();
+        });
+        
+        // Scale toggle buttons
+        document.getElementById('scale-major').addEventListener('click', () => {
+            currentScale = 'major';
+            CHORD_QUALITIES = CHORD_QUALITIES_MAJOR;
+            CHORD_QUALITY_TYPES = CHORD_QUALITY_TYPES_MAJOR;
+            TRIAD_QUALITIES = TRIAD_QUALITIES_MAJOR;
+            TRIAD_QUALITY_TYPES = TRIAD_QUALITY_TYPES_MAJOR;
+            SCALE_INTERVALS = SCALE_INTERVALS_MAJOR;
+            
+            document.getElementById('scale-major').classList.add('active');
+            document.getElementById('scale-major').style.background = 'var(--accent-root)';
+            document.getElementById('scale-major').style.color = 'white';
+            document.getElementById('scale-minor').classList.remove('active');
+            document.getElementById('scale-minor').style.background = 'transparent';
+            document.getElementById('scale-minor').style.color = 'var(--text-secondary)';
+            render();
+        });
+        
+        document.getElementById('scale-minor').addEventListener('click', () => {
+            currentScale = 'minor';
+            CHORD_QUALITIES = CHORD_QUALITIES_MINOR;
+            CHORD_QUALITY_TYPES = CHORD_QUALITY_TYPES_MINOR;
+            TRIAD_QUALITIES = TRIAD_QUALITIES_MINOR;
+            TRIAD_QUALITY_TYPES = TRIAD_QUALITY_TYPES_MINOR;
+            SCALE_INTERVALS = SCALE_INTERVALS_MINOR;
+            
+            document.getElementById('scale-minor').classList.add('active');
+            document.getElementById('scale-minor').style.background = 'var(--accent-root)';
+            document.getElementById('scale-minor').style.color = 'white';
+            document.getElementById('scale-major').classList.remove('active');
+            document.getElementById('scale-major').style.background = 'transparent';
+            document.getElementById('scale-major').style.color = 'var(--text-secondary)';
+            render();
+        });
+        
+        // Enable drag scrolling and infinite scroll
+        enableDragScroll(document.getElementById('scroll-row1'));
+        enableDragScroll(document.getElementById('scroll-row2'));
+        enableDragScroll(document.getElementById('scroll-triad1'));
+        enableInfiniteScroll(document.getElementById('scroll-row1'));
+        enableInfiniteScroll(document.getElementById('scroll-row2'));
+        enableInfiniteScroll(document.getElementById('scroll-triad1'));
+        
+        render();
+        
+        // Register service worker for PWA offline support
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js').catch(err => {
+                console.warn('Service Worker registration failed:', err);
+            });
+        }
+    </script>
+</body>
+</html>

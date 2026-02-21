@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <!-- Dark background -->
+  <rect width="192" height="192" fill="#1a1814"/>
+  
+  <!-- Red accent circle -->
+  <circle cx="96" cy="96" r="85" fill="none" stroke="#e85d4c" stroke-width="2"/>
+  
+  <!-- S.sin text -->
+  <text x="96" y="110" font-family="serif" font-size="48" font-weight="400" fill="#f5f0e8" text-anchor="middle" dominant-baseline="middle">
+    S.sin
+  </text>
+</svg>

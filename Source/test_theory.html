@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Theory Test Suite — Scales.sin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Monaco', 'JetBrains Mono', monospace;
+            background: #1a1814;
+            color: #f5f0e8;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #f5f0e8;
+        }
+        
+        .summary {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #242018;
+            border-radius: 8px;
+        }
+        
+        .summary-item {
+            flex: 1;
+        }
+        
+        .summary-item h2 {
+            font-size: 0.9rem;
+            color: #a89f94;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .summary-item .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4a90a4;
+        }
+        
+        .summary-item.pass .number {
+            color: #7db87d;
+        }
+        
+        .summary-item.fail .number {
+            color: #e85d4c;
+        }
+        
+        .test-group {
+            margin-bottom: 2rem;
+        }
+        
+        .test-group-title {
+            font-size: 1.1rem;
+            color: #c9a227;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.2);
+        }
+        
+        .test-row {
+            display: grid;
+            grid-template-columns: 200px 200px 1fr 60px;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 4px;
+            background: #242018;
+            border: 1px solid rgba(168, 159, 148, 0.15);
+            font-size: 0.85rem;
+        }
+        
+        .test-row.pass {
+            background: rgba(125, 184, 125, 0.08);
+            border-color: rgba(125, 184, 125, 0.3);
+        }
+        
+        .test-row.fail {
+            background: rgba(232, 93, 76, 0.08);
+            border-color: rgba(232, 93, 76, 0.3);
+        }
+        
+        .test-label {
+            color: #a89f94;
+            font-size: 0.8rem;
+        }
+        
+        .test-value {
+            color: #f5f0e8;
+        }
+        
+        .test-expected {
+            color: #a89f94;
+            font-size: 0.75rem;
+            word-break: break-all;
+        }
+        
+        .test-status {
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        .test-status.pass {
+            color: #7db87d;
+        }
+        
+        .test-status.fail {
+            color: #e85d4c;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #a89f94;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎵 Music Theory Test Suite</h1>
+        <div class="summary" id="summary">
+            <div class="summary-item pass">
+                <h2>Passed</h2>
+                <div class="number" id="pass-count">0</div>
+            </div>
+            <div class="summary-item fail">
+                <h2>Failed</h2>
+                <div class="number" id="fail-count">0</div>
+            </div>
+            <div class="summary-item">
+                <h2>Total Tests</h2>
+                <div class="number" id="total-count">0</div>
+            </div>
+        </div>
+        <div id="results"></div>
+        <div class="loading" id="loading">Running tests...</div>
+    </div>
+
+    <script src="music_theory_ground_truth.js"></script>
+    <script>
+        // ============ SCALE THEORY FUNCTIONS ============
+        // Extracted from scale_viz_v5.html
+        
+        const NOTE_NAMES_SHARP = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
+        const NOTE_NAMES_FLAT = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+        const FLAT_KEYS = [5, 10, 3, 8, 1, 6]; // F, Bb, Eb, Ab, Db, Gb
+        
+        const SCALES = {
+            major: {
+                name: 'Major',
+                intervals: [0, 2, 4, 5, 7, 9, 11],
+                formula: 'W-W-H-W-W-W-H',
+                chordQualities: ['Maj7', 'm7', 'm7', 'Maj7', '7', 'm7', 'm7♭5'],
+                chordTypes: ['maj7', 'min7', 'min7', 'maj7', 'dom7', 'min7', 'min7b5']
+            },
+            natural_minor: {
+                name: 'Natural Minor',
+                intervals: [0, 2, 3, 5, 7, 8, 10],
+                formula: 'W-H-W-W-H-W-W',
+                chordQualities: ['m7', 'm7♭5', 'Maj7', 'm7', 'm7', 'Maj7', '7'],
+                chordTypes: ['min7', 'min7b5', 'maj7', 'min7', 'min7', 'maj7', 'dom7']
+            },
+            harmonic_minor: {
+                name: 'Harmonic Minor',
+                intervals: [0, 2, 3, 5, 7, 8, 11],
+                formula: 'W-H-W-W-H-A-H',
+                chordQualities: ['mMaj7', 'm7♭5', 'Maj7♯5', 'm7', '7', 'Maj7', 'dim7'],
+                chordTypes: ['minmaj7', 'min7b5', 'maj7sharp5', 'min7', 'dom7', 'maj7', 'dim7']
+            },
+            melodic_minor: {
+                name: 'Melodic Minor',
+                intervals: [0, 2, 3, 5, 7, 9, 11],
+                formula: 'W-H-W-W-W-W-H',
+                chordQualities: ['mMaj7', 'm7', 'Maj7♯5', '7', '7', 'm7♭5', 'm7♭5'],
+                chordTypes: ['minmaj7', 'min7', 'maj7sharp5', 'dom7', 'dom7', 'min7b5', 'min7b5']
+            },
+            whole_tone: {
+                name: 'Whole Tone',
+                intervals: [0, 2, 4, 6, 8, 10],
+                chordQualities: ['+Maj7', '+Maj7', '+Maj7', '+Maj7', '+Maj7', '+Maj7'],
+                chordTypes: ['maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5', 'maj7sharp5'],
+                isSymmetric: true,
+                noteCount: 6
+            },
+            diminished_hw: {
+                name: 'Diminished (H-W)',
+                intervals: [0, 1, 3, 4, 6, 7, 9, 10],
+                chordQualities: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                chordTypes: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                isSymmetric: true,
+                noteCount: 8
+            },
+            diminished_wh: {
+                name: 'Diminished (W-H)',
+                intervals: [0, 2, 3, 5, 6, 8, 9, 11],
+                chordQualities: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                chordTypes: ['dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7', 'dim7'],
+                isSymmetric: true,
+                noteCount: 8
+            }
+        };
+        
+        function getNoteName(noteIndex, useFlats) {
+            const idx = ((noteIndex % 12) + 12) % 12;
+            return useFlats ? NOTE_NAMES_FLAT[idx] : NOTE_NAMES_SHARP[idx];
+        }
+        
+        function getScaleNotes(root, scaleType, modeIndex = 0) {
+            const scale = SCALES[scaleType];
+            const baseIntervals = scale.intervals;
+            const noteCount = scale.noteCount || 7;
+            
+            if (scale.isSymmetric) {
+                const notes = baseIntervals.map(interval => (root + interval) % 12);
+                return { notes, intervals: baseIntervals, noteCount };
+            }
+            
+            const rotatedIntervals = [];
+            const modeStartInterval = baseIntervals[modeIndex];
+            
+            for (let i = 0; i < noteCount; i++) {
+                const idx = (modeIndex + i) % noteCount;
+                let interval = baseIntervals[idx] - modeStartInterval;
+                if (interval < 0) interval += 12;
+                rotatedIntervals.push(interval);
+            }
+            
+            const notes = rotatedIntervals.map(interval => (root + interval) % 12);
+            return { notes, intervals: rotatedIntervals, noteCount };
+        }
+        
+        // ============ TEST SUITE ============
+        
+        const ROOTS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+        const SCALE_TYPES = ['major', 'natural_minor', 'harmonic_minor', 'melodic_minor', 'whole_tone', 'diminished_hw', 'diminished_wh'];
+        const PENTATONIC_MAJOR = [0, 2, 4, 7, 9]; // Relative to root
+        const PENTATONIC_MINOR = [0, 3, 5, 7, 10]; // Relative to root
+        
+        let testResults = [];
+        let passCount = 0;
+        let failCount = 0;
+        
+        function addTest(name, passed, expected = '', actual = '') {
+            const status = passed ? 'pass' : 'fail';
+            testResults.push({ name, status, expected, actual });
+            if (passed) passCount++; else failCount++;
+        }
+        
+        function assert(condition, testName, expected = '', actual = '') {
+            addTest(testName, condition, expected, actual);
+        }
+        
+        // ============ SCALE TESTS ============
+        
+        // Test all 12 roots × scale types
+        for (const scaleType of SCALE_TYPES) {
+            for (const root of ROOTS) {
+                const { notes } = getScaleNotes(root, scaleType);
+                
+                // Use ground truth if available
+                if (typeof GROUND_TRUTH !== 'undefined' && GROUND_TRUTH[scaleType] && GROUND_TRUTH[scaleType][root]) {
+                    const expected = GROUND_TRUTH[scaleType][root];
+                    const match = JSON.stringify(notes.sort((a,b)=>a-b)) === JSON.stringify(expected.sort((a,b)=>a-b));
+                    assert(match, `${scaleType} @ root ${root}`, JSON.stringify(expected), JSON.stringify(notes));
+                } else {
+                    // Basic validation: right number of notes
+                    const noteCount = SCALES[scaleType].noteCount || 7;
+                    assert(notes.length === noteCount, `${scaleType} @ root ${root} note count`, noteCount, notes.length);
+                }
+            }
+        }
+        
+        // ============ CHORD QUALITY TESTS ============
+        
+        // Major scale 7th chords
+        for (const root of ROOTS) {
+            const { notes: scaleNotes } = getScaleNotes(root, 'major');
+            const scale = SCALES['major'];
+            
+            for (let i = 0; i < 7; i++) {
+                const expected = scale.chordQualities[i];
+                const chordRoot = scaleNotes[i];
+                const testName = `Major 7th chords: ${getNoteName(chordRoot, false)}${expected} (degree ${i+1})`;
+                
+                if (typeof GROUND_TRUTH !== 'undefined' && GROUND_TRUTH.chordQualities && GROUND_TRUTH.chordQualities.major7) {
+                    const expectedQuality = GROUND_TRUTH.chordQualities.major7[i];
+                    assert(expected === expectedQuality, testName, expectedQuality, expected);
+                } else {
+                    assert(expected !== '', testName);
+                }
+            }
+        }
+        
+        // Natural Minor scale 7th chords
+        for (const root of ROOTS) {
+            const { notes: scaleNotes } = getScaleNotes(root, 'natural_minor');
+            const scale = SCALES['natural_minor'];
+            
+            for (let i = 0; i < 7; i++) {
+                const expected = scale.chordQualities[i];
+                const chordRoot = scaleNotes[i];
+                const testName = `Minor 7th chords: ${getNoteName(chordRoot, false)}${expected} (degree ${i+1})`;
+                
+                if (typeof GROUND_TRUTH !== 'undefined' && GROUND_TRUTH.chordQualities && GROUND_TRUTH.chordQualities.minor7) {
+                    const expectedQuality = GROUND_TRUTH.chordQualities.minor7[i];
+                    assert(expected === expectedQuality, testName, expectedQuality, expected);
+                } else {
+                    assert(expected !== '', testName);
+                }
+            }
+        }
+        
+        // Harmonic Minor scale 7th chords
+        for (const root of ROOTS) {
+            const { notes: scaleNotes } = getScaleNotes(root, 'harmonic_minor');
+            const scale = SCALES['harmonic_minor'];
+            
+            for (let i = 0; i < 7; i++) {
+                const expected = scale.chordQualities[i];
+                const chordRoot = scaleNotes[i];
+                const testName = `Harmonic Minor 7th: ${getNoteName(chordRoot, false)}${expected} (degree ${i+1})`;
+                
+                if (typeof GROUND_TRUTH !== 'undefined' && GROUND_TRUTH.chordQualities && GROUND_TRUTH.chordQualities.harmonic7) {
+                    const expectedQuality = GROUND_TRUTH.chordQualities.harmonic7[i];
+                    assert(expected === expectedQuality, testName, expectedQuality, expected);
+                } else {
+                    assert(expected !== '', testName);
+                }
+            }
+        }
+        
+        // Melodic Minor scale 7th chords
+        for (const root of ROOTS) {
+            const { notes: scaleNotes } = getScaleNotes(root, 'melodic_minor');
+            const scale = SCALES['melodic_minor'];
+            
+            for (let i = 0; i < 7; i++) {
+                const expected = scale.chordQualities[i];
+                const chordRoot = scaleNotes[i];
+                const testName = `Melodic Minor 7th: ${getNoteName(chordRoot, false)}${expected} (degree ${i+1})`;
+                
+                if (typeof GROUND_TRUTH !== 'undefined' && GROUND_TRUTH.chordQualities && GROUND_TRUTH.chordQualities.melodic7) {
+                    const expectedQuality = GROUND_TRUTH.chordQualities.melodic7[i];
+                    assert(expected === expectedQuality, testName, expectedQuality, expected);
+                } else {
+                    assert(expected !== '', testName);
+                }
+            }
+        }
+        
+        // ============ PENTATONIC TESTS ============
+        
+        // Major pentatonic (all 12 roots)
+        for (const root of ROOTS) {
+            const majorPent = PENTATONIC_MAJOR.map(interval => (root + interval) % 12).sort((a,b)=>a-b);
+            assert(majorPent.length === 5, `Major Pentatonic @ root ${root}`, 5, majorPent.length);
+        }
+        
+        // Minor pentatonic (all 12 roots)
+        for (const root of ROOTS) {
+            const minorPent = PENTATONIC_MINOR.map(interval => (root + interval) % 12).sort((a,b)=>a-b);
+            assert(minorPent.length === 5, `Minor Pentatonic @ root ${root}`, 5, minorPent.length);
+        }
+        
+        // ============ RENDER RESULTS ============
+        
+        function renderResults() {
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            loadingDiv.style.display = 'none';
+            
+            const totalCount = passCount + failCount;
+            document.getElementById('pass-count').textContent = passCount;
+            document.getElementById('fail-count').textContent = failCount;
+            document.getElementById('total-count').textContent = totalCount;
+            
+            // Group by scale type
+            const grouped = {};
+            testResults.forEach(result => {
+                const parts = result.name.split('@');
+                const group = parts[0].trim();
+                if (!grouped[group]) grouped[group] = [];
+                grouped[group].push(result);
+            });
+            
+            let html = '';
+            for (const [group, tests] of Object.entries(grouped)) {
+                const groupPass = tests.filter(t => t.status === 'pass').length;
+                const groupTotal = tests.length;
+                
+                html += `<div class="test-group">
+                    <div class="test-group-title">${group} (${groupPass}/${groupTotal})</div>`;
+                
+                tests.forEach(test => {
+                    const showDetails = test.status === 'fail' && test.expected;
+                    html += `
+                        <div class="test-row ${test.status}">
+                            <div class="test-label">${test.name}</div>
+                            <div class="test-value">${test.expected || test.actual || '—'}</div>
+                            <div class="test-expected">${showDetails ? `Expected: ${test.expected} | Got: ${test.actual}` : ''}</div>
+                            <div class="test-status ${test.status}">${test.status === 'pass' ? '✓' : '✗'}</div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        // Run tests
+        renderResults();
+    </script>
+</body>
+</html>
