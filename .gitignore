@@ -1,0 +1,40 @@
+# =============================================================================
+# Scales.sin — .gitignore
+# =============================================================================
+
+# Javelin pipeline files — never on git
+JAVELIN_*.txt
+JAVELIN_*.md
+JAVELIN_CONTEXT.txt
+JAVELIN_OPERATING_PREFERENCES.txt
+JAVELIN_PROMPT.txt
+task_*.txt
+TASK.txt
+COMPLETION_REPORT*.txt
+HEARTBEAT.*
+STATE.md
+SYNC_PROTOCOL.txt
+WAKEUP_PROTOCOL.txt
+ONBOARDING_PROMPT.txt
+
+# Research and internal reference docs — local only unless approved
+Documentation/harmony_theory_reference.md
+Source/music_theory_ground_truth.js
+music_theory_validation_report*.txt
+
+# Environment and credentials — never on git
+.env
+.env.*
+*.key
+*.pem
+secrets.*
+credentials.*
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Test output (keep test file, not results)
+test_results/
