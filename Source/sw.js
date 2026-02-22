@@ -4,14 +4,14 @@
  * Offline support: All HTML, CSS, JS, and icons cached on install
  */
 
-const CACHE_NAME = 'scales-sin-v1';
+const CACHE_NAME = 'scales-sin-v2';
 const FILES_TO_CACHE = [
     './index.html',
     './scale_viz_v5.html',
     './chord_voice_leading.html',
     './manifest.json',
-    '../Assets/Icons/icon-192.svg',
-    '../Assets/Icons/icon-512.svg'
+    '../Assets/Icons/icon-192.png',
+    '../Assets/Icons/icon-512.png'
 ];
 
 /**
