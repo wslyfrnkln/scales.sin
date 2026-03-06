@@ -30,10 +30,10 @@
             --deg-6: #8a6aa4;
             --deg-7: #a4586a;
 
-            --white-key-w: 44px;
-            --white-key-h: 180px;
-            --black-key-w: 28px;
-            --black-key-h: 115px;
+            --white-key-w: 57px;
+            --white-key-h: 234px;
+            --black-key-w: 36px;
+            --black-key-h: 150px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -231,12 +231,15 @@
             pointer-events: none;
         }
 
-        /* Highlighted keys */
+        /* Highlighted keys — unified glow */
         .key-white.active {
-            background: linear-gradient(to bottom, #fff 0%, #f5f0e8 100%);
+            background: linear-gradient(to bottom,
+                color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, #fff) 0%,
+                color-mix(in srgb, var(--highlight-color, var(--accent)) 10%, #f5f0e8) 100%);
             border-color: var(--highlight-color, var(--accent));
-            box-shadow: 0 0 12px color-mix(in srgb, var(--highlight-color, var(--accent)) 40%, transparent),
-                        inset 0 0 20px color-mix(in srgb, var(--highlight-color, var(--accent)) 15%, transparent);
+            box-shadow: 0 0 16px color-mix(in srgb, var(--highlight-color, var(--accent)) 50%, transparent),
+                        0 0 40px color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, transparent),
+                        inset 0 0 24px color-mix(in srgb, var(--highlight-color, var(--accent)) 12%, transparent);
         }
 
         .key-white.active .key-label {
@@ -246,10 +249,11 @@
 
         .key-black.active {
             background: linear-gradient(to bottom,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 30%, #2a2520) 0%,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 15%, #1a1814) 100%);
+                color-mix(in srgb, var(--highlight-color, var(--accent)) 35%, #2a2520) 0%,
+                color-mix(in srgb, var(--highlight-color, var(--accent)) 18%, #1a1814) 100%);
             border-color: var(--highlight-color, var(--accent));
-            box-shadow: 0 0 10px color-mix(in srgb, var(--highlight-color, var(--accent)) 30%, transparent),
+            box-shadow: 0 0 16px color-mix(in srgb, var(--highlight-color, var(--accent)) 50%, transparent),
+                        0 0 40px color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, transparent),
                         0 4px 6px rgba(0,0,0,0.4);
         }
 
@@ -299,10 +303,10 @@
         /* --- Responsive --- */
         @media (max-width: 600px) {
             :root {
-                --white-key-w: 36px;
-                --white-key-h: 150px;
-                --black-key-w: 22px;
-                --black-key-h: 95px;
+                --white-key-w: 46px;
+                --white-key-h: 195px;
+                --black-key-w: 29px;
+                --black-key-h: 124px;
             }
 
             header { padding: 1rem 1rem; }
@@ -313,10 +317,10 @@
 
         @media (max-width: 400px) {
             :root {
-                --white-key-w: 30px;
-                --white-key-h: 130px;
-                --black-key-w: 18px;
-                --black-key-h: 82px;
+                --white-key-w: 39px;
+                --white-key-h: 170px;
+                --black-key-w: 24px;
+                --black-key-h: 108px;
             }
         }
     </style>
@@ -398,14 +402,15 @@
         const WHITE_NOTES = [0,2,4,5,7,9,11]; // C D E F G A B pitch classes
         const BLACK_NOTES = [1,3,6,8,10];      // C# D# F# G# A#
 
-        // Black key positions: offset from left edge of the white key to the left
-        // Each black key sits between two white keys, shifted right
+        // Black key positions as fraction of white key index
+        // Real piano: C#/D# grouped as pair, F#/G#/A# grouped as trio
+        // Each value = center of black key in white-key units from octave start
         const BLACK_KEY_POSITIONS = {
-            1:  0.55, // C# — after C
-            3:  1.55, // D# — after D
-            6:  3.55, // F# — after F
-            8:  4.55, // G# — after G
-            10: 5.55, // A# — after A
+            1:  0.6,  // C# — slightly right of center between C and D
+            3:  1.7,  // D# — slightly left of center between D and E
+            6:  3.55, // F# — slightly right of center between F and G
+            8:  4.5,  // G# — centered between G and A
+            10: 5.6,  // A# — slightly right of center between A and B
         };
 
         // --- Build controls ---
