@@ -30,10 +30,13 @@
             --deg-6: #8a6aa4;
             --deg-7: #a4586a;
 
-            --white-key-w: 57px;
-            --white-key-h: 234px;
-            --black-key-w: 36px;
-            --black-key-h: 150px;
+            --chord-color: #7db87d;
+            --bass-color: #4a90a4;
+
+            --white-key-w: 86px;
+            --white-key-h: 336px;
+            --black-key-w: 53px;
+            --black-key-h: 216px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -90,23 +93,18 @@
             text-transform: uppercase;
         }
 
-        /* --- Controls --- */
-        .controls {
+        /* --- Key center control --- */
+        .key-center {
             display: flex;
             gap: 1rem;
             justify-content: center;
+            align-items: center;
             flex-wrap: wrap;
-            padding: 1.25rem 1.5rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--border);
         }
 
-        .control-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .control-group label {
+        .key-center label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.7rem;
             color: var(--text-secondary);
@@ -127,26 +125,6 @@
         }
 
         select:focus { border-color: var(--accent); }
-
-        /* --- Chord display --- */
-        .chord-display {
-            text-align: center;
-            padding: 1.25rem 1.5rem;
-        }
-
-        .chord-name {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2rem;
-            font-weight: 400;
-        }
-
-        .chord-notes {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 0.25rem;
-            letter-spacing: 0.05em;
-        }
 
         /* --- Piano keyboard --- */
         .piano-wrapper {
@@ -175,7 +153,7 @@
         .key-white {
             width: var(--white-key-w);
             height: var(--white-key-h);
-            background: linear-gradient(to bottom, #f5f0e8 0%, #e8e2d8 85%, #d8d0c4 100%);
+            background: linear-gradient(to bottom, #e5e0d6 0%, #d9d3c9 85%, #cbc4b8 100%);
             border: 1px solid #3a352e;
             border-radius: 0 0 5px 5px;
             z-index: 1;
@@ -195,7 +173,7 @@
             right: 0;
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.65rem;
+            font-size: 1.15rem;
             color: #6b6560;
             pointer-events: none;
         }
@@ -204,8 +182,8 @@
             position: absolute;
             width: var(--black-key-w);
             height: var(--black-key-h);
-            background: linear-gradient(to bottom, #2a2520 0%, #1a1814 60%, #0f0d0b 100%);
-            border: 1px solid #0a0908;
+            background: linear-gradient(to bottom, #232018 0%, #151210 60%, #0a0908 100%);
+            border: 1px solid #080706;
             border-top: none;
             border-radius: 0 0 4px 4px;
             z-index: 2;
@@ -226,62 +204,273 @@
             right: 0;
             text-align: center;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 0.55rem;
+            font-size: 0.9rem;
             color: #5a5550;
             pointer-events: none;
         }
 
-        /* Highlighted keys — unified glow */
-        .key-white.active {
+        /* Grip tone highlight — orange */
+        .key-white.active-chord {
             background: linear-gradient(to bottom,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, #fff) 0%,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 10%, #f5f0e8) 100%);
-            border-color: var(--highlight-color, var(--accent));
-            box-shadow: 0 0 16px color-mix(in srgb, var(--highlight-color, var(--accent)) 50%, transparent),
-                        0 0 40px color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, transparent),
-                        inset 0 0 24px color-mix(in srgb, var(--highlight-color, var(--accent)) 12%, transparent);
+                color-mix(in srgb, var(--deg-2) 45%, #fff) 0%,
+                color-mix(in srgb, var(--deg-2) 25%, #f5f0e8) 100%);
+            border: 2px solid var(--deg-2);
+            box-shadow: inset 0 0 30px color-mix(in srgb, var(--deg-2) 35%, transparent),
+                        inset 0 -12px 32px color-mix(in srgb, var(--deg-2) 20%, transparent);
         }
-
-        .key-white.active .key-label {
-            color: var(--highlight-color, var(--accent));
+        .key-white.active-chord .key-label {
+            color: var(--deg-2);
             font-weight: 600;
         }
-
-        .key-black.active {
+        .key-black.active-chord {
             background: linear-gradient(to bottom,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 35%, #2a2520) 0%,
-                color-mix(in srgb, var(--highlight-color, var(--accent)) 18%, #1a1814) 100%);
-            border-color: var(--highlight-color, var(--accent));
-            box-shadow: 0 0 16px color-mix(in srgb, var(--highlight-color, var(--accent)) 50%, transparent),
-                        0 0 40px color-mix(in srgb, var(--highlight-color, var(--accent)) 20%, transparent),
+                color-mix(in srgb, var(--deg-2) 40%, #2a2520) 0%,
+                color-mix(in srgb, var(--deg-2) 18%, #1a1814) 100%);
+            border: 2px solid var(--deg-2);
+            box-shadow: inset 0 0 16px color-mix(in srgb, var(--deg-2) 25%, transparent),
+                        inset 0 -6px 16px color-mix(in srgb, var(--deg-2) 12%, transparent),
                         0 4px 6px rgba(0,0,0,0.4);
         }
-
-        .key-black.active .key-label {
-            color: var(--highlight-color, var(--accent));
+        .key-black.active-chord .key-label {
+            color: var(--deg-2);
             font-weight: 600;
         }
 
-        /* Root indicator dot */
+        /* Bass note highlight — blue */
+        .key-white.active-bass {
+            background: linear-gradient(to bottom,
+                color-mix(in srgb, var(--bass-color) 50%, #fff) 0%,
+                color-mix(in srgb, var(--bass-color) 30%, #f5f0e8) 100%);
+            border: 2px solid var(--bass-color);
+            box-shadow: inset 0 0 30px color-mix(in srgb, var(--bass-color) 40%, transparent),
+                        inset 0 -12px 32px color-mix(in srgb, var(--bass-color) 25%, transparent);
+        }
+        .key-white.active-bass .key-label {
+            color: var(--bass-color);
+            font-weight: 600;
+        }
+        .key-black.active-bass {
+            background: linear-gradient(to bottom,
+                color-mix(in srgb, var(--bass-color) 45%, #2a2520) 0%,
+                color-mix(in srgb, var(--bass-color) 22%, #1a1814) 100%);
+            border: 2px solid var(--bass-color);
+            box-shadow: inset 0 0 16px color-mix(in srgb, var(--bass-color) 30%, transparent),
+                        inset 0 -6px 16px color-mix(in srgb, var(--bass-color) 15%, transparent),
+                        0 4px 6px rgba(0,0,0,0.4);
+        }
+        .key-black.active-bass .key-label {
+            color: var(--bass-color);
+            font-weight: 600;
+        }
+
+        /* Root dot */
         .root-dot {
             position: absolute;
             width: 8px;
             height: 8px;
             border-radius: 50%;
-            background: var(--highlight-color, var(--accent));
             pointer-events: none;
         }
-
         .key-white .root-dot {
-            bottom: 28px;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .key-black .root-dot {
+            bottom: 36px;
             left: 50%;
             transform: translateX(-50%);
         }
 
-        .key-black .root-dot {
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
+        /* --- 4 Chord Cards --- */
+        .cards-section {
+            padding: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cards-section h2 {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .chord-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .chord-card {
+            background: var(--bg-card);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            position: relative;
+        }
+
+        .chord-card:hover {
+            border-color: var(--text-secondary);
+        }
+
+        .chord-card.selected {
+            border-color: var(--chord-color);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--chord-color) 20%, transparent);
+        }
+
+        .chord-card .bar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .chord-card .card-chord-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            min-height: 2rem;
+        }
+
+        .chord-card .card-notes {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+            letter-spacing: 0.02em;
+        }
+
+        .chord-card .card-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            margin-top: 0.5rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        .card-grip-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .chord-card .card-grip {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--deg-2);
+        }
+
+        .grip-nav {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.6rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+        }
+
+        .grip-nav:hover {
+            border-color: var(--deg-2);
+            color: var(--deg-2);
+        }
+
+        .grip-count {
+            width: 100%;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .card-tag.diatonic {
+            color: var(--deg-4);
+            background: color-mix(in srgb, var(--deg-4) 12%, transparent);
+        }
+        .card-tag.parallel {
+            color: var(--deg-6);
+            background: color-mix(in srgb, var(--deg-6) 12%, transparent);
+        }
+        .card-tag.grip {
+            color: var(--deg-2);
+            background: color-mix(in srgb, var(--deg-2) 12%, transparent);
+        }
+        .card-tag.yours {
+            color: var(--text-secondary);
+            background: color-mix(in srgb, var(--text-secondary) 12%, transparent);
+        }
+
+        /* Card selectors (root + type dropdowns inside card) */
+        .card-selectors {
+            display: flex;
+            gap: 0.35rem;
+            justify-content: center;
+            margin-top: 0.5rem;
+        }
+
+        .card-selectors select {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.35rem;
+            max-width: 70px;
+        }
+
+        /* Suggest button */
+        .suggest-btn {
+            display: block;
+            margin: 1rem auto 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.6rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .suggest-btn:hover {
+            border-color: var(--chord-color);
+            color: var(--chord-color);
+        }
+
+        /* Legend */
+        .legend {
+            display: flex;
+            gap: 1.25rem;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
         }
 
         /* --- Footer --- */
@@ -303,24 +492,23 @@
         /* --- Responsive --- */
         @media (max-width: 600px) {
             :root {
-                --white-key-w: 46px;
-                --white-key-h: 195px;
-                --black-key-w: 29px;
-                --black-key-h: 124px;
+                --white-key-w: 67px;
+                --white-key-h: 276px;
+                --black-key-w: 41px;
+                --black-key-h: 178px;
             }
-
-            header { padding: 1rem 1rem; }
-            .controls { padding: 1rem; gap: 0.75rem; }
-            .chord-display { padding: 1rem; }
-            .chord-name { font-size: 1.5rem; }
+            header { padding: 1rem; }
+            .key-center { padding: 0.75rem 1rem; }
+            .chord-cards { grid-template-columns: repeat(2, 1fr); }
+            .cards-section { padding: 1rem; }
         }
 
         @media (max-width: 400px) {
             :root {
-                --white-key-w: 39px;
-                --white-key-h: 170px;
-                --black-key-w: 24px;
-                --black-key-h: 108px;
+                --white-key-w: 55px;
+                --white-key-h: 234px;
+                --black-key-w: 34px;
+                --black-key-h: 150px;
             }
         }
     </style>
@@ -335,24 +523,33 @@
         <p class="subtitle">Grips &amp; Voicings</p>
     </header>
 
-    <div class="controls">
-        <div class="control-group">
-            <label for="root-select">Root</label>
-            <select id="root-select"></select>
-        </div>
-        <div class="control-group">
-            <label for="chord-select">Chord</label>
-            <select id="chord-select"></select>
-        </div>
+    <div class="key-center">
+        <label for="key-root">Key</label>
+        <select id="key-root"></select>
+        <select id="key-quality">
+            <option value="major">Major</option>
+            <option value="minor">Minor</option>
+        </select>
     </div>
 
-    <div class="chord-display">
-        <div class="chord-name" id="chord-name">Cmaj7</div>
-        <div class="chord-notes" id="chord-notes">C  E  G  B</div>
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-dot" style="background: var(--deg-2)"></div>
+            <span>Grip shape</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot" style="background: var(--bass-color)"></div>
+            <span>Bass note</span>
+        </div>
     </div>
 
     <div class="piano-wrapper">
         <div class="piano" id="piano"></div>
+    </div>
+
+    <div class="cards-section">
+        <div class="chord-cards" id="chord-cards"></div>
+        <button class="suggest-btn" id="suggest-btn">Suggest bars 3 &amp; 4</button>
     </div>
 
     <footer>
@@ -362,91 +559,460 @@
     <script>
     (() => {
         // --- Music data ---
-        const NOTE_NAMES_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
-        const NOTE_NAMES_FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
-        const DISPLAY_NAMES    = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
-
-        const FLAT_ROOTS = [1,3,5,8,10]; // Db, Eb, F, Ab, Bb use flats
+        const NOTE_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+        const NOTE_FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+        const DISPLAY_NAMES = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+        const FLAT_ROOTS = [1,3,5,8,10];
 
         const CHORD_TYPES = {
-            'maj':     { intervals: [0,4,7],       suffix: '' },
-            'min':     { intervals: [0,3,7],       suffix: 'm' },
-            'maj7':    { intervals: [0,4,7,11],    suffix: 'maj7' },
-            'min7':    { intervals: [0,3,7,10],    suffix: 'm7' },
-            '7':       { intervals: [0,4,7,10],    suffix: '7' },
-            'dim':     { intervals: [0,3,6],       suffix: 'dim' },
-            'dim7':    { intervals: [0,3,6,9],     suffix: 'dim7' },
-            'aug':     { intervals: [0,4,8],       suffix: 'aug' },
-            'min7b5':  { intervals: [0,3,6,10],    suffix: 'm7b5' },
-            'sus2':    { intervals: [0,2,7],       suffix: 'sus2' },
-            'sus4':    { intervals: [0,5,7],       suffix: 'sus4' },
-            '9':       { intervals: [0,4,7,10,14], suffix: '9' },
-            'maj9':    { intervals: [0,4,7,11,14], suffix: 'maj9' },
-            'min9':    { intervals: [0,3,7,10,14], suffix: 'min9' },
-            '6':       { intervals: [0,4,7,9],     suffix: '6' },
-            'min6':    { intervals: [0,3,7,9],     suffix: 'm6' },
+            'maj':     { intervals: [0,4,7],       suffix: '',      name: 'maj' },
+            'min':     { intervals: [0,3,7],       suffix: 'm',     name: 'min' },
+            'maj7':    { intervals: [0,4,7,11],    suffix: 'maj7',  name: 'maj7' },
+            'min7':    { intervals: [0,3,7,10],    suffix: 'm7',    name: 'min7' },
+            '7':       { intervals: [0,4,7,10],    suffix: '7',     name: '7' },
+            'dim':     { intervals: [0,3,6],       suffix: 'dim',   name: 'dim' },
+            'dim7':    { intervals: [0,3,6,9],     suffix: 'dim7',  name: 'dim7' },
+            'aug':     { intervals: [0,4,8],       suffix: 'aug',   name: 'aug' },
+            'min7b5':  { intervals: [0,3,6,10],    suffix: 'm7b5',  name: 'min7b5' },
+            'sus2':    { intervals: [0,2,7],       suffix: 'sus2',  name: 'sus2' },
+            'sus4':    { intervals: [0,5,7],       suffix: 'sus4',  name: 'sus4' },
+            '9':       { intervals: [0,4,7,10,14], suffix: '9',     name: '9' },
+            'maj9':    { intervals: [0,4,7,11,14], suffix: 'maj9',  name: 'maj9' },
+            'min9':    { intervals: [0,3,7,10,14], suffix: 'min9',  name: 'min9' },
+            '6':       { intervals: [0,4,7,9],     suffix: '6',     name: '6' },
+            'min6':    { intervals: [0,3,7,9],     suffix: 'm6',    name: 'min6' },
         };
 
-        const DEGREE_COLORS = [
-            'var(--deg-1)', 'var(--deg-2)', 'var(--deg-3)', 'var(--deg-4)',
-            'var(--deg-5)', 'var(--deg-6)', 'var(--deg-7)'
-        ];
+        // Scale intervals
+        const MAJOR_SCALE = [0,2,4,5,7,9,11];
+        const MINOR_SCALE = [0,2,3,5,7,8,10];
+
+        // Diatonic chord quality by degree (0-indexed)
+        const MAJOR_DIATONIC = ['maj7','min7','min7','maj7','7','min7','min7b5'];
+        const MINOR_DIATONIC = ['min7','min7b5','maj7','min7','min7','maj7','7'];
 
         // --- State ---
-        let currentRoot = 0; // C
-        let currentChordType = 'maj7';
+        let keyRoot = 1; // Db
+        let keyQuality = 'major';
+        let selectedCard = 0;
+
+        // 4 bars: { root, type, tag, gripIdx }
+        let bars = [
+            { root: 1, type: 'maj7', tag: 'yours', gripIdx: 0 },
+            { root: null, type: null, tag: null, gripIdx: 0 },
+            { root: null, type: null, tag: null, gripIdx: 0 },
+            { root: null, type: null, tag: null, gripIdx: 0 },
+        ];
 
         // --- Keyboard config ---
         const START_OCTAVE = 3;
         const NUM_OCTAVES = 3;
-        const WHITE_NOTES = [0,2,4,5,7,9,11]; // C D E F G A B pitch classes
-        const BLACK_NOTES = [1,3,6,8,10];      // C# D# F# G# A#
+        const WHITE_NOTES = [0,2,4,5,7,9,11];
+        const BLACK_NOTES = [1,3,6,8,10];
+        const BLACK_KEYS = [
+            { pc: 1,  afterWhite: 0, nudge: -0.1 },
+            { pc: 3,  afterWhite: 1, nudge:  0.05 },
+            { pc: 6,  afterWhite: 3, nudge: -0.12 },
+            { pc: 8,  afterWhite: 4, nudge:  0.0 },
+            { pc: 10, afterWhite: 5, nudge:  0.08 },
+        ];
 
-        // Black key positions as fraction of white key index
-        // Real piano: C#/D# grouped as pair, F#/G#/A# grouped as trio
-        // Each value = center of black key in white-key units from octave start
-        const BLACK_KEY_POSITIONS = {
-            1:  0.6,  // C# — slightly right of center between C and D
-            3:  1.7,  // D# — slightly left of center between D and E
-            6:  3.55, // F# — slightly right of center between F and G
-            8:  4.5,  // G# — centered between G and A
-            10: 5.6,  // A# — slightly right of center between A and B
-        };
-
-        // --- Build controls ---
-        function initControls() {
-            const rootSelect = document.getElementById('root-select');
-            const chordSelect = document.getElementById('chord-select');
-
-            DISPLAY_NAMES.forEach((name, i) => {
-                const opt = document.createElement('option');
-                opt.value = i;
-                opt.textContent = name;
-                rootSelect.appendChild(opt);
-            });
-
-            Object.keys(CHORD_TYPES).forEach(type => {
-                const opt = document.createElement('option');
-                opt.value = type;
-                opt.textContent = type;
-                if (type === 'maj7') opt.selected = true;
-                chordSelect.appendChild(opt);
-            });
-
-            rootSelect.addEventListener('change', () => {
-                currentRoot = parseInt(rootSelect.value);
-                render();
-            });
-
-            chordSelect.addEventListener('change', () => {
-                currentChordType = chordSelect.value;
-                render();
-            });
+        // --- Helpers ---
+        function nn(pc, useFlats) {
+            return useFlats ? NOTE_FLAT[pc % 12] : NOTE_SHARP[pc % 12];
         }
 
-        // --- Get note name ---
-        function noteName(pitchClass, useFlats) {
-            return useFlats ? NOTE_NAMES_FLAT[pitchClass] : NOTE_NAMES_SHARP[pitchClass];
+        function useFlats(root) {
+            return FLAT_ROOTS.includes(root % 12);
+        }
+
+        function chordPCs(root, type) {
+            const ct = CHORD_TYPES[type];
+            if (!ct) return [];
+            return ct.intervals.map(i => (root + i) % 12);
+        }
+
+        function chordName(root, type) {
+            const ct = CHORD_TYPES[type];
+            if (!ct) return '—';
+            return nn(root, useFlats(root)) + ct.suffix;
+        }
+
+        function chordNoteNames(root, type) {
+            return chordPCs(root, type).map(pc => nn(pc, useFlats(root)));
+        }
+
+        // Get diatonic chords for a key
+        function getDiatonic(root, quality) {
+            const scale = quality === 'major' ? MAJOR_SCALE : MINOR_SCALE;
+            const types = quality === 'major' ? MAJOR_DIATONIC : MINOR_DIATONIC;
+            return scale.map((interval, i) => ({
+                root: (root + interval) % 12,
+                type: types[i],
+                tag: 'diatonic'
+            }));
+        }
+
+        // Get parallel key chords (if major, get minor chords and vice versa)
+        function getParallel(root, quality) {
+            const parallelQ = quality === 'major' ? 'minor' : 'major';
+            return getDiatonic(root, parallelQ).map(c => ({ ...c, tag: 'parallel' }));
+        }
+
+        // Count common tones between two chords
+        function commonTones(rootA, typeA, rootB, typeB) {
+            const a = new Set(chordPCs(rootA, typeA));
+            const b = chordPCs(rootB, typeB);
+            return b.filter(pc => a.has(pc)).length;
+        }
+
+        // --- Grip detection ---
+        // Given a chord (root + type), find what 4-note grip shape sits on top
+        // e.g., Em9 = E(bass) + Gmaj7(grip) → returns { gripRoot: 7, gripType: 'maj7', bass: 4 }
+        const GRIP_SHAPES = {
+            'maj7':  [0,4,7,11],
+            'min7':  [0,3,7,10],
+            'dim7':  [0,3,6,9],
+            '7':     [0,4,7,10],
+            'maj':   [0,4,7],
+            'min':   [0,3,7],
+        };
+
+        function detectGrip(root, type) {
+            const ct = CHORD_TYPES[type];
+            if (!ct || ct.intervals.length < 4) return [];
+
+            const allPCs = ct.intervals.map(i => (root + i) % 12);
+            const upperPCs = allPCs.slice(1);
+            const results = [];
+            const seen = new Set();
+
+            // Prioritize 4-note shapes over triads
+            const shapeOrder = ['maj7','min7','dim7','7','maj','min'];
+
+            for (const gripRoot of upperPCs) {
+                for (const shapeName of shapeOrder) {
+                    const shapeIntervals = GRIP_SHAPES[shapeName];
+                    if (shapeIntervals.length > upperPCs.length) continue;
+                    const shapePCs = shapeIntervals.map(i => (gripRoot + i) % 12);
+                    const allMatch = shapePCs.every(pc => upperPCs.includes(pc));
+                    const key = `${gripRoot}-${shapeName}`;
+                    if (allMatch && shapePCs.length >= 3 && !seen.has(key)) {
+                        seen.add(key);
+                        results.push({
+                            gripRoot,
+                            gripType: shapeName,
+                            gripPCs: shapePCs,
+                            gripName: nn(gripRoot, useFlats(gripRoot)) + CHORD_TYPES[shapeName].suffix,
+                            bass: root,
+                            bassName: nn(root, useFlats(root)),
+                        });
+                    }
+                }
+            }
+            return results;
+        }
+
+        // --- Theory-based suggestion engine ---
+
+        // Harmonic function: which scale degrees tend to follow which
+        // Each degree (0-6) maps to an array of likely next degrees, ordered by strength
+        // Source: Kostka/Payne common-practice tendencies + jazz extensions
+        const MAJOR_TENDENCIES = {
+            0: [3,4,5,1],     // I  → IV, V, vi, ii
+            1: [4,6,3],       // ii → V, vii°, IV
+            2: [5,3,1],       // iii→ vi, IV, ii
+            3: [4,1,0],       // IV → V, ii, I
+            4: [0,5,3],       // V  → I, vi, IV (deceptive)
+            5: [3,1,4],       // vi → IV, ii, V
+            6: [0,4],         // vii°→ I, V
+        };
+
+        const MINOR_TENDENCIES = {
+            0: [3,4,2,5],     // i   → iv, v/V, III, VI
+            1: [4,2],         // ii° → V, III
+            2: [5,3],         // III → VI, iv
+            3: [4,0,6],       // iv  → V, i, VII
+            4: [0,5],         // v/V → i, VI (deceptive)
+            5: [3,1,4],       // VI  → iv, ii°, V
+            6: [2,0],         // VII → III, i
+        };
+
+        // Harmonic minor scale — gives V7 and vii°7 in minor keys
+        const HARMONIC_MINOR_SCALE = [0,2,3,5,7,8,11];
+        const HARMONIC_MINOR_TYPES = ['min7','min7b5','maj7','min7','7','maj7','dim7'];
+
+        // Identify what degree a chord is in a given key (returns 0-6 or -1)
+        function findDegree(chordRoot, kr, quality) {
+            const scale = quality === 'major' ? MAJOR_SCALE : MINOR_SCALE;
+            for (let i = 0; i < scale.length; i++) {
+                if ((kr + scale[i]) % 12 === chordRoot % 12) return i;
+            }
+            return -1;
+        }
+
+        // Secondary dominant: V7 of a target diatonic chord
+        function getSecondaryDominants(kr, quality) {
+            const scale = quality === 'major' ? MAJOR_SCALE : MINOR_SCALE;
+            const results = [];
+            // V7/ii, V7/iii, V7/IV, V7/V, V7/vi (major) — dom7 a P5 above target
+            for (let deg = 1; deg <= 6; deg++) {
+                const target = (kr + scale[deg]) % 12;
+                const secDom = (target + 7) % 12; // P5 above = root of V7/x
+                results.push({
+                    root: secDom, type: '7', tag: 'diatonic',
+                    reason: `V7/${['I','ii','iii','IV','V','vi','vii°'][deg]}`
+                });
+                // Also the ii of that secondary key (for ii-V patterns)
+                const secII = (target + 5) % 12; // minor 3rd below target = ii of target
+                results.push({
+                    root: secII, type: 'min7', tag: 'diatonic',
+                    reason: `ii/${['I','ii','iii','IV','V','vi','vii°'][deg]}`
+                });
+            }
+            return results;
+        }
+
+        // Tritone substitution: bII7 for V7
+        function getTritonesSubs(kr, quality) {
+            const scale = quality === 'major' ? MAJOR_SCALE : MINOR_SCALE;
+            const V = (kr + scale[4]) % 12;
+            const tritoneSub = (V + 6) % 12; // tritone away from V
+            return [
+                { root: tritoneSub, type: '7', tag: 'parallel', reason: 'bII7 (tritone sub for V7)' },
+                // Tritone sub for secondary dominants too
+                ...getSecondaryDominants(kr, quality)
+                    .filter(c => c.type === '7')
+                    .map(c => ({
+                        root: (c.root + 6) % 12, type: '7', tag: 'parallel',
+                        reason: `tritone sub for ${c.reason}`
+                    }))
+            ];
+        }
+
+        // Modal interchange: specific useful borrowed chords
+        function getModalInterchange(kr, quality) {
+            const results = [];
+            if (quality === 'major') {
+                // Borrow from parallel minor — the most common borrowings
+                const minorScale = MINOR_SCALE;
+                const borrowedDegrees = [
+                    { deg: 3, type: 'min7',   reason: 'iv from parallel minor' },
+                    { deg: 5, type: 'maj7',   reason: 'bVI from parallel minor' },
+                    { deg: 6, type: '7',      reason: 'bVII from parallel minor' },
+                    { deg: 2, type: 'maj7',   reason: 'bIII from parallel minor' },
+                    { deg: 1, type: 'min7b5', reason: 'ii° from parallel minor' },
+                ];
+                borrowedDegrees.forEach(b => {
+                    results.push({
+                        root: (kr + minorScale[b.deg]) % 12,
+                        type: b.type,
+                        tag: 'parallel',
+                        reason: b.reason
+                    });
+                });
+                // Harmonic minor V7 (usually already diatonic in major, but dim7 on vii is useful)
+                results.push({
+                    root: (kr + HARMONIC_MINOR_SCALE[6]) % 12,
+                    type: 'dim7',
+                    tag: 'parallel',
+                    reason: 'vii°7 from harmonic minor'
+                });
+            } else {
+                // In minor: borrow from parallel major
+                const majorScale = MAJOR_SCALE;
+                const borrowedDegrees = [
+                    { deg: 3, type: 'maj7', reason: 'IV from parallel major' },
+                    { deg: 0, type: 'maj7', reason: 'I from parallel major (picardy)' },
+                    { deg: 1, type: 'min7', reason: 'ii from parallel major' },
+                ];
+                borrowedDegrees.forEach(b => {
+                    results.push({
+                        root: (kr + majorScale[b.deg]) % 12,
+                        type: b.type,
+                        tag: 'parallel',
+                        reason: b.reason
+                    });
+                });
+                // Harmonic minor: V7 and vii°7
+                results.push({
+                    root: (kr + HARMONIC_MINOR_SCALE[4]) % 12,
+                    type: '7',
+                    tag: 'diatonic',
+                    reason: 'V7 from harmonic minor'
+                });
+                results.push({
+                    root: (kr + HARMONIC_MINOR_SCALE[6]) % 12,
+                    type: 'dim7',
+                    tag: 'diatonic',
+                    reason: 'vii°7 from harmonic minor'
+                });
+            }
+            return results;
+        }
+
+        // Build 9th/extended versions of chords (grip-based)
+        function extendChord(root, type) {
+            const extensions = [];
+            if (type === 'min7') {
+                extensions.push({ root, type: 'min9', tag: 'grip', reason: 'extended to min9' });
+            }
+            if (type === 'maj7') {
+                extensions.push({ root, type: 'maj9', tag: 'grip', reason: 'extended to maj9' });
+            }
+            if (type === '7') {
+                extensions.push({ root, type: '9', tag: 'grip', reason: 'extended to dom9' });
+            }
+            return extensions;
+        }
+
+        function suggest() {
+            if (bars[0].root === null) return;
+
+            const existing = bars.filter(b => b.root !== null);
+            const emptySlots = [];
+            for (let i = 0; i < 4; i++) {
+                if (bars[i].root === null) emptySlots.push(i);
+            }
+            if (emptySlots.length === 0) return;
+
+            // Get the last set chord — suggestions follow from it
+            const lastBar = existing[existing.length - 1];
+            const lastDegree = findDegree(lastBar.root, keyRoot, keyQuality);
+            const tendencies = keyQuality === 'major' ? MAJOR_TENDENCIES : MINOR_TENDENCIES;
+
+            const pool = [];
+
+            // 1. Tendency-based: what naturally follows the last chord
+            if (lastDegree >= 0 && tendencies[lastDegree]) {
+                const scale = keyQuality === 'major' ? MAJOR_SCALE : MINOR_SCALE;
+                const types = keyQuality === 'major' ? MAJOR_DIATONIC : MINOR_DIATONIC;
+                tendencies[lastDegree].forEach((nextDeg, priority) => {
+                    const root = (keyRoot + scale[nextDeg]) % 12;
+                    const type = types[nextDeg];
+                    pool.push({ root, type, tag: 'diatonic', score: 15 - priority * 2, reason: `tendency from ${['I','ii','iii','IV','V','vi','vii°'][lastDegree]}` });
+                    // Also offer extended version
+                    extendChord(root, type).forEach(ext => {
+                        pool.push({ ...ext, score: 14 - priority * 2 });
+                    });
+                });
+            }
+
+            // 2. All diatonic chords (lower priority)
+            getDiatonic(keyRoot, keyQuality).forEach((c, i) => {
+                pool.push({ ...c, score: 5, reason: ['I','ii','iii','IV','V','vi','vii°'][i] });
+                extendChord(c.root, c.type).forEach(ext => {
+                    pool.push({ ...ext, score: 6 });
+                });
+            });
+
+            // 3. Secondary dominants + their ii chords
+            getSecondaryDominants(keyRoot, keyQuality).forEach(c => {
+                pool.push({ ...c, score: 10 });
+            });
+
+            // 4. Tritone substitutions
+            getTritonesSubs(keyRoot, keyQuality).forEach(c => {
+                pool.push({ ...c, score: 9 });
+            });
+
+            // 5. Modal interchange
+            getModalInterchange(keyRoot, keyQuality).forEach(c => {
+                pool.push({ ...c, score: 11 });
+            });
+
+            // 6. Grip reharmonizations of existing chords
+            for (const bar of existing) {
+                const grips = detectGrip(bar.root, bar.type);
+                for (const grip of grips) {
+                    // Use this grip shape over different bass notes
+                    for (let bass = 0; bass < 12; bass++) {
+                        if (bass === bar.root) continue;
+                        // What chord does this grip produce over this bass?
+                        const gripPCs = grip.gripPCs;
+                        const allNotes = [bass, ...gripPCs];
+                        // Try to identify the resulting chord
+                        for (const [typeName, ct] of Object.entries(CHORD_TYPES)) {
+                            const expected = ct.intervals.map(i => (bass + i) % 12);
+                            if (expected.length <= allNotes.length &&
+                                expected.every(pc => allNotes.includes(pc))) {
+                                pool.push({
+                                    root: bass, type: typeName, tag: 'grip',
+                                    score: 7,
+                                    reason: `${grip.gripName} grip over ${nn(bass, useFlats(bass))}`
+                                });
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Score adjustments
+            const scored = pool.map(candidate => {
+                let score = candidate.score || 0;
+
+                // Common tones with last chord (voice leading)
+                score += commonTones(lastBar.root, lastBar.type, candidate.root, candidate.type) * 1.5;
+
+                // Bonus for root movement by 4th/5th (strongest progressions)
+                const interval = ((candidate.root - lastBar.root) + 12) % 12;
+                if (interval === 5 || interval === 7) score += 4; // P4 or P5
+                if (interval === 2 || interval === 10) score += 2; // M2 (stepwise)
+
+                // Variety from existing
+                const existingRoots = existing.map(b => b.root);
+                if (!existingRoots.includes(candidate.root)) score += 2;
+                const existingTypes = existing.map(b => b.type);
+                if (!existingTypes.includes(candidate.type)) score += 2;
+
+                // Penalty for duplicates
+                if (existing.some(b => b.root === candidate.root && b.type === candidate.type)) {
+                    score -= 100;
+                }
+
+                return { ...candidate, score };
+            });
+
+            scored.sort((a, b) => b.score - a.score);
+
+            // Deduplicate
+            const seen = new Set();
+            const results = [];
+            for (const c of scored) {
+                const key = `${c.root}-${c.type}`;
+                if (seen.has(key)) continue;
+                if (existing.some(b => b.root === c.root && b.type === c.type)) continue;
+                seen.add(key);
+                results.push(c);
+                if (results.length >= emptySlots.length + 3) break;
+            }
+
+            emptySlots.forEach((slotIdx, i) => {
+                if (results[i]) {
+                    bars[slotIdx] = { root: results[i].root, type: results[i].type, tag: results[i].tag, gripIdx: 0 };
+                }
+            });
+
+            renderCards();
+            selectCard(emptySlots[0]);
+        }
+
+        // Update button text based on state
+        function updateSuggestBtn() {
+            const btn = document.getElementById('suggest-btn');
+            const filled = bars.filter(b => b.root !== null).length;
+            const empty = 4 - filled;
+            if (empty === 0) {
+                btn.textContent = 'All bars set';
+                btn.disabled = true;
+            } else if (filled === 1) {
+                btn.textContent = `Suggest ${empty} chord${empty > 1 ? 's' : ''}`;
+                btn.disabled = false;
+            } else {
+                btn.textContent = `Suggest bar${empty > 1 ? 's' : ''} ${bars.map((b,i) => b.root === null ? i+1 : null).filter(Boolean).join(' & ')}`;
+                btn.disabled = false;
+            }
         }
 
         // --- Build keyboard ---
@@ -457,8 +1023,6 @@
             const whiteKeyW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--white-key-w'));
             const blackKeyW = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--black-key-w'));
 
-            // White keys first
-            let whiteIndex = 0;
             for (let oct = 0; oct < NUM_OCTAVES; oct++) {
                 for (let i = 0; i < 7; i++) {
                     const pc = WHITE_NOTES[i];
@@ -467,21 +1031,17 @@
                     key.className = 'key key-white';
                     key.dataset.midi = midi;
                     key.dataset.pc = pc;
-
                     const label = document.createElement('span');
                     label.className = 'key-label';
-                    label.textContent = NOTE_NAMES_SHARP[pc];
+                    label.textContent = NOTE_SHARP[pc];
                     key.appendChild(label);
-
                     piano.appendChild(key);
-                    whiteIndex++;
                 }
             }
-            // Extra C at the end to complete the range
-            const endMidi = (START_OCTAVE + NUM_OCTAVES) * 12;
+            // Extra C
             const endKey = document.createElement('div');
             endKey.className = 'key key-white';
-            endKey.dataset.midi = endMidi;
+            endKey.dataset.midi = (START_OCTAVE + NUM_OCTAVES) * 12;
             endKey.dataset.pc = 0;
             const endLabel = document.createElement('span');
             endLabel.className = 'key-label';
@@ -489,93 +1049,272 @@
             endKey.appendChild(endLabel);
             piano.appendChild(endKey);
 
-            // Black keys — positioned absolute over the white keys
+            // Black keys
+            const pianoLeft = parseFloat(getComputedStyle(piano).paddingLeft) || 24;
             for (let oct = 0; oct < NUM_OCTAVES; oct++) {
-                for (const pc of BLACK_NOTES) {
-                    const midi = (START_OCTAVE + oct) * 12 + pc;
-                    const posInOctave = BLACK_KEY_POSITIONS[pc];
-                    const absoluteWhitePos = oct * 7 + posInOctave;
-                    const leftPx = absoluteWhitePos * whiteKeyW - (blackKeyW / 2) + 24; // +24 for wrapper padding
+                for (const bk of BLACK_KEYS) {
+                    const midi = (START_OCTAVE + oct) * 12 + bk.pc;
+                    const whiteIdx = oct * 7 + bk.afterWhite;
+                    const seamPx = pianoLeft + (whiteIdx + 1) * whiteKeyW;
+                    const leftPx = seamPx - (blackKeyW / 2) + (bk.nudge * whiteKeyW);
 
                     const key = document.createElement('div');
                     key.className = 'key key-black';
                     key.dataset.midi = midi;
-                    key.dataset.pc = pc;
+                    key.dataset.pc = bk.pc;
                     key.style.left = leftPx + 'px';
 
                     const label = document.createElement('span');
                     label.className = 'key-label';
-                    const useFlats = FLAT_ROOTS.includes(currentRoot);
-                    label.textContent = noteName(pc, useFlats);
+                    label.textContent = nn(bk.pc, useFlats(keyRoot));
                     key.appendChild(label);
-
                     piano.appendChild(key);
                 }
             }
         }
 
-        // --- Highlight chord notes ---
-        function highlightChord() {
-            const chord = CHORD_TYPES[currentChordType];
-            if (!chord) return;
+        // --- Highlight a bar's chord on keyboard ---
+        function highlightBar(barIdx) {
+            const bar = bars[barIdx];
+            if (!bar || bar.root === null) return;
 
-            const chordPCs = chord.intervals.map(i => (currentRoot + i) % 12);
-            const useFlats = FLAT_ROOTS.includes(currentRoot);
+            const grips = detectGrip(bar.root, bar.type);
+            const grip = grips[bar.gripIdx % (grips.length || 1)] || null;
+            const bassPC = bar.root;
+            const uf = useFlats(keyRoot);
 
-            // Update display
-            const rootName = noteName(currentRoot, useFlats);
-            document.getElementById('chord-name').textContent = rootName + chord.suffix;
-            document.getElementById('chord-notes').textContent = chordPCs.map(pc => noteName(pc, useFlats)).join('  ');
+            // Grip note pitch classes repeat in every octave
+            const gripNotePCs = grip ? new Set(grip.gripPCs) : new Set();
+            // Fallback: all chord tones if no grip detected
+            const allPCs = grip ? new Set() : new Set(chordPCs(bar.root, bar.type));
 
-            // Update black key labels for current key context
             document.querySelectorAll('.key-black .key-label').forEach(label => {
                 const key = label.parentElement;
-                const pc = parseInt(key.dataset.pc);
-                label.textContent = noteName(pc, useFlats);
+                label.textContent = nn(parseInt(key.dataset.pc), uf);
             });
 
-            // Highlight keys
+            // Find lowest bass key midi for single-instance bass
+            let bassMarked = false;
+
             document.querySelectorAll('.key').forEach(key => {
                 const pc = parseInt(key.dataset.pc);
-                const chordIndex = chordPCs.indexOf(pc);
-                const isActive = chordIndex !== -1;
+                const midi = parseInt(key.dataset.midi);
+                const isBassPC = pc === bassPC;
 
-                key.classList.toggle('active', isActive);
-
-                // Remove old root dots
+                key.classList.remove('active-chord', 'active-bass');
                 const oldDot = key.querySelector('.root-dot');
                 if (oldDot) oldDot.remove();
 
-                if (isActive) {
-                    const colorIndex = chordIndex % DEGREE_COLORS.length;
-                    key.style.setProperty('--highlight-color', DEGREE_COLORS[colorIndex]);
-
-                    // Root gets a dot
-                    if (pc === currentRoot) {
-                        const dot = document.createElement('span');
-                        dot.className = 'root-dot';
-                        key.appendChild(dot);
-                    }
-                } else {
-                    key.style.removeProperty('--highlight-color');
+                // Bass: only first (lowest) instance
+                if (isBassPC && !bassMarked) {
+                    bassMarked = true;
+                    key.classList.add('active-bass');
+                    const dot = document.createElement('span');
+                    dot.className = 'root-dot';
+                    dot.style.background = 'var(--bass-color)';
+                    key.appendChild(dot);
+                }
+                // Grip notes: every octave (but not the bass key we already marked)
+                else if (gripNotePCs.has(pc) && !(isBassPC && key.classList.contains('active-bass'))) {
+                    key.classList.add('active-chord');
+                }
+                // Fallback chord tones (no grip detected)
+                else if (allPCs.has(pc) && !isBassPC) {
+                    key.classList.add('active-chord');
                 }
             });
         }
 
-        function render() {
+        // --- Chord cards ---
+        function renderCards() {
+            const container = document.getElementById('chord-cards');
+            container.innerHTML = '';
+            updateSuggestBtn();
+
+            bars.forEach((bar, i) => {
+                const card = document.createElement('div');
+                card.className = 'chord-card' + (i === selectedCard ? ' selected' : '');
+
+                const barLabel = document.createElement('div');
+                barLabel.className = 'bar-label';
+                barLabel.textContent = `Bar ${i + 1}`;
+                card.appendChild(barLabel);
+
+                const name = document.createElement('div');
+                name.className = 'card-chord-name';
+                name.textContent = bar.root !== null ? chordName(bar.root, bar.type) : '—';
+                card.appendChild(name);
+
+                const notes = document.createElement('div');
+                notes.className = 'card-notes';
+                notes.textContent = bar.root !== null ? chordNoteNames(bar.root, bar.type).join(' ') : '';
+                card.appendChild(notes);
+
+                // Grip selector
+                if (bar.root !== null) {
+                    const grips = detectGrip(bar.root, bar.type);
+                    if (grips.length > 0) {
+                        const gripRow = document.createElement('div');
+                        gripRow.className = 'card-grip-row';
+
+                        if (grips.length > 1) {
+                            const prevBtn = document.createElement('button');
+                            prevBtn.className = 'grip-nav';
+                            prevBtn.textContent = '\u25C0';
+                            prevBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                bars[i].gripIdx = (bars[i].gripIdx - 1 + grips.length) % grips.length;
+                                renderCards();
+                                if (i === selectedCard) { buildKeyboard(); highlightBar(i); }
+                            });
+                            gripRow.appendChild(prevBtn);
+                        }
+
+                        const currentGrip = grips[bar.gripIdx % grips.length];
+                        const gripLabel = document.createElement('div');
+                        gripLabel.className = 'card-grip';
+                        gripLabel.textContent = currentGrip.gripName + ' / ' + currentGrip.bassName;
+                        gripRow.appendChild(gripLabel);
+
+                        if (grips.length > 1) {
+                            const nextBtn = document.createElement('button');
+                            nextBtn.className = 'grip-nav';
+                            nextBtn.textContent = '\u25B6';
+                            nextBtn.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                bars[i].gripIdx = (bars[i].gripIdx + 1) % grips.length;
+                                renderCards();
+                                if (i === selectedCard) { buildKeyboard(); highlightBar(i); }
+                            });
+                            gripRow.appendChild(nextBtn);
+                        }
+
+                        if (grips.length > 1) {
+                            const count = document.createElement('div');
+                            count.className = 'grip-count';
+                            count.textContent = `${(bar.gripIdx % grips.length) + 1}/${grips.length} grips`;
+                            gripRow.appendChild(count);
+                        }
+
+                        card.appendChild(gripRow);
+                    }
+                }
+
+                if (bar.tag) {
+                    const tag = document.createElement('span');
+                    tag.className = 'card-tag ' + bar.tag;
+                    tag.textContent = bar.tag;
+                    card.appendChild(tag);
+                }
+
+                // Selectors for manual override
+                const selectors = document.createElement('div');
+                selectors.className = 'card-selectors';
+
+                const rootSel = document.createElement('select');
+                const emptyOpt = document.createElement('option');
+                emptyOpt.value = '';
+                emptyOpt.textContent = '—';
+                rootSel.appendChild(emptyOpt);
+                DISPLAY_NAMES.forEach((n, j) => {
+                    const opt = document.createElement('option');
+                    opt.value = j;
+                    opt.textContent = n;
+                    if (bar.root === j) opt.selected = true;
+                    rootSel.appendChild(opt);
+                });
+
+                const typeSel = document.createElement('select');
+                Object.keys(CHORD_TYPES).forEach(t => {
+                    const opt = document.createElement('option');
+                    opt.value = t;
+                    opt.textContent = t;
+                    if (bar.type === t) opt.selected = true;
+                    typeSel.appendChild(opt);
+                });
+
+                rootSel.addEventListener('change', () => {
+                    if (rootSel.value === '') {
+                        bars[i] = { root: null, type: null, tag: null, gripIdx: 0 };
+                    } else {
+                        bars[i].root = parseInt(rootSel.value);
+                        bars[i].type = bars[i].type || 'maj7';
+                        bars[i].tag = 'yours';
+                        bars[i].gripIdx = 0;
+                    }
+                    renderCards();
+                    selectCard(i);
+                });
+
+                typeSel.addEventListener('change', () => {
+                    if (bars[i].root !== null) {
+                        bars[i].type = typeSel.value;
+                        bars[i].tag = 'yours';
+                        bars[i].gripIdx = 0;
+                        renderCards();
+                        selectCard(i);
+                    }
+                });
+
+                selectors.appendChild(rootSel);
+                selectors.appendChild(typeSel);
+                card.appendChild(selectors);
+
+                card.addEventListener('click', (e) => {
+                    if (e.target.tagName === 'SELECT') return;
+                    selectCard(i);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function selectCard(idx) {
+            selectedCard = idx;
+            document.querySelectorAll('.chord-card').forEach((c, i) => {
+                c.classList.toggle('selected', i === idx);
+            });
             buildKeyboard();
-            highlightChord();
+            highlightBar(idx);
         }
 
         // --- Init ---
-        initControls();
-        render();
+        function init() {
+            const keyRootSel = document.getElementById('key-root');
+            DISPLAY_NAMES.forEach((name, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = name;
+                if (i === keyRoot) opt.selected = true;
+                keyRootSel.appendChild(opt);
+            });
 
-        // Rebuild on resize for correct key sizing
+            keyRootSel.addEventListener('change', () => {
+                keyRoot = parseInt(keyRootSel.value);
+                buildKeyboard();
+                highlightBar(selectedCard);
+            });
+
+            document.getElementById('key-quality').addEventListener('change', (e) => {
+                keyQuality = e.target.value;
+            });
+
+            document.getElementById('suggest-btn').addEventListener('click', suggest);
+
+            renderCards();
+            buildKeyboard();
+            highlightBar(0);
+        }
+
+        init();
+
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(render, 150);
+            resizeTimer = setTimeout(() => {
+                buildKeyboard();
+                highlightBar(selectedCard);
+            }, 150);
         });
     })();
     </script>
