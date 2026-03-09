@@ -1,72 +1,176 @@
 {
-  "_version": 1,
-  "_updated": "2026-03-09",
-  "_source": "Javelin research pipeline",
-  "chord_types": {},
-  "extension_map": {},
+  "_meta": {
+    "generated_by": "Javelin",
+    "last_updated": "2026-03-09",
+    "sources": [
+      "RESEARCH_ScalesSin_2026-03-09-dangelo-voodoo-chord-progressions.md",
+      "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md"
+    ],
+    "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
+  },
+
+  "chord_types": {
+    "7b9": {
+      "intervals": [0, 4, 7, 10, 13],
+      "suffix": "7b9",
+      "name": "Dominant 7 flat 9"
+    },
+    "7sharp9": {
+      "intervals": [0, 4, 7, 10, 15],
+      "suffix": "7#9",
+      "name": "Dominant 7 sharp 9 (Hendrix)"
+    },
+    "maj7sharp11": {
+      "intervals": [0, 4, 11, 18],
+      "suffix": "maj7#11",
+      "name": "Major 7 sharp 11 (Lydian)"
+    },
+    "min13": {
+      "intervals": [3, 10, 14, 17, 21],
+      "suffix": "m13",
+      "name": "Minor 13 (no root, no 5)"
+    },
+    "9sus4": {
+      "intervals": [0, 5, 10, 14],
+      "suffix": "9sus4",
+      "name": "9 suspended 4"
+    },
+    "13sus4": {
+      "intervals": [0, 5, 10, 21],
+      "suffix": "13sus4",
+      "name": "13 suspended 4"
+    }
+  },
+
+  "extension_map": {
+    "7": [
+      {
+        "suffix": "7#9b13",
+        "intervals": [0, 4, 10, 15, 20],
+        "label": "Alt dominant — #9 b13 (bebop altered scale)",
+        "source": "Joe Pass / bebop tradition"
+      },
+      {
+        "suffix": "7b9#11",
+        "intervals": [0, 4, 10, 13, 18],
+        "label": "Alt dominant — b9 #11 (Lydian dominant altered)",
+        "source": "Herbie Hancock / bebop"
+      },
+      {
+        "suffix": "7#5#9",
+        "intervals": [0, 4, 8, 10, 15],
+        "label": "Alt dominant — #5 #9 (whole-tone upper structure)",
+        "source": "Robert Glasper / jazz-hip-hop"
+      },
+      {
+        "suffix": "7b9",
+        "intervals": [0, 4, 10, 13],
+        "label": "Dominant b9 — tritone tension (omit 5)",
+        "source": "D'Angelo — Brown Sugar (F7 tritone sub for B7)"
+      },
+      {
+        "suffix": "9sus4",
+        "intervals": [0, 5, 10, 14],
+        "label": "9sus4 — dominant replacement, avoids tritone (D'Angelo signature)",
+        "source": "D'Angelo — Untitled (A7sus4), general neo-soul"
+      },
+      {
+        "suffix": "13sus4",
+        "intervals": [0, 5, 10, 21],
+        "label": "13sus4 — open dominant color, gospel + neo-soul",
+        "source": "Stevie Wonder / gospel tradition"
+      }
+    ],
+    "Maj7": [
+      {
+        "suffix": "maj7#11",
+        "intervals": [0, 4, 11, 18],
+        "label": "Maj7 #11 — Lydian sound (omit 5, tritone on top)",
+        "source": "Frank Ocean — White Ferrari / Ivy (Lydian mode center)"
+      },
+      {
+        "suffix": "maj7/9",
+        "intervals": [0, 4, 11, 14],
+        "label": "Maj7 add9 — clean open voicing (omit 5)",
+        "source": "D'Angelo — Dadd9 in Untitled"
+      }
+    ],
+    "m7": [
+      {
+        "suffix": "m13",
+        "intervals": [3, 10, 14, 17, 21],
+        "label": "Minor 13 — omit root + 5, keep b3 (distinguishes from sus4)",
+        "source": "Leon Thomas / Herbie Hancock jazz-funk tradition"
+      },
+      {
+        "suffix": "m9",
+        "intervals": [3, 10, 14],
+        "label": "Minor 9 — shell voicing (b3, b7, 9) — Leon Thomas signature",
+        "source": "Leon Thomas — MUTT (Fm7 center), modal neo-soul"
+      },
+      {
+        "suffix": "m11",
+        "intervals": [3, 10, 14, 17],
+        "label": "Minor 11 — omit root + 5, keep b3 (modal float)",
+        "source": "D'Angelo — Dorian/Aeolian ambiguity technique"
+      }
+    ]
+  },
+
   "style_templates": {
-    "pass": {
-      "name": "Joe Pass",
-      "description": "Bebop voice-leading. Always ii before V. Full cadential resolution. Drop 2/3 rootless voicings.",
-      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13b9" },
+    "frank_ocean": {
+      "name": "Frank Ocean",
+      "description": "Mixolydian bVII borrow as signature move. Modal mixture as atmosphere, not modulation. Avoids dominant resolution — sus chords or modal color replace V7. Sparse harmonic rhythm on Blonde; denser jazz vocab on Channel Orange.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "9sus4"
+      },
       "progressions": [
-        { "label": "ii–V–I (major)",    "degrees": ["ii9", "V13b9", "Imaj9"] },
-        { "label": "ii–V–i (minor)",    "degrees": ["iim7b5", "V7alt", "imMaj7"] },
-        { "label": "Chromatic descent", "degrees": ["bVI13sus4", "VI13sus4", "V13sus4", "IV13sus4"] }
+        {
+          "label": "Nikes — Mixolydian bVII borrow",
+          "degrees": ["bVIImaj7", "im", "bII", "vim"],
+          "notes": "Dbmaj7–Cm–Eb–Gm in Eb. Flat-VII (Dbmaj7) is Frank's most repeated harmonic move — Mixolydian borrow in a minor context."
+        },
+        {
+          "label": "Thinkin Bout You — major diatonic verse",
+          "degrees": ["Imaj7", "vim7", "viim7", "iiim"],
+          "notes": "Fmaj7–Dm7–Em7–Am in C major. Textbook diatonic but voiced with maj7 extensions throughout."
+        },
+        {
+          "label": "Super Rich Kids — jazz altered dominant",
+          "degrees": ["Imaj9", "IV13sus4", "bVIImaj9", "V9sus4", "V7#5b9"],
+          "notes": "Ebmaj9–Ab13sus4–Dbmaj9–Bb9sus4–Bb7#5b9. Most harmonically advanced track — jazz altered dominant at the turnaround. Hooktheory novelty: 98/100."
+        },
+        {
+          "label": "Pyramids — minor vamp, modal ambiguity",
+          "degrees": ["im", "vm", "bVI", "iim"],
+          "notes": "Fm–Cm–Ab–Gm in F minor. Aeolian/Dorian ambiguity, never raises 7th. Leon Thomas / D'Angelo shared vocabulary."
+        },
+        {
+          "label": "Pink + White — four-mode simultaneous mixture",
+          "degrees": ["Imaj7", "viim7", "VImaj7"],
+          "notes": "Cmaj7–Bm7–Amaj7 in A Dorian. Simultaneous modal mixture across 4 modes — most academically documented Frank Ocean progression."
+        },
+        {
+          "label": "Siegfried — Lydian II major borrow",
+          "degrees": ["Imaj7", "vim9", "iiim", "IImaj7"],
+          "notes": "Cmaj7–Am9–Em–Dmaj7 in C. Dmaj7 is Lydian-inflected borrow (IImaj7) — unresolved, floating."
+        },
+        {
+          "label": "Solo — gospel plagal cadence",
+          "degrees": ["I", "IV", "I", "iim"],
+          "notes": "Eb–Ab–Eb–Fm. IV-I plagal cadence, direct gospel reference. Same move as Kirk Franklin / Fred Hammond."
+        }
       ],
       "rules": [
-        "Always include ii chord before V",
-        "Use tritone sub (bII7) for V7 on repeat",
-        "Dominant voicings add b9 or #11",
-        "Always fully cadential — no unresolved suspended dominants"
-      ]
-    },
-    "wonder": {
-      "name": "Stevie Wonder",
-      "description": "Modal (Dorian/Mixolydian). Chromatic passing 9th chords. IV→IVm borrowed chord. V9sus4 replaces bare V7.",
-      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom9sus4" },
-      "progressions": [
-        { "label": "Dorian vamp",      "degrees": ["im9", "IVmaj7", "im9", "bVIImaj9"] },
-        { "label": "Isn't She Lovely", "degrees": ["vim7", "II9", "V9sus4", "Imaj7"] },
-        { "label": "Chromatic 9ths",   "degrees": ["IV9", "bIII9", "bII9", "II9"] }
-      ],
-      "rules": [
-        "Root in Dorian or Mixolydian",
-        "Replace V7 with V9sus4 — never bare dominant 7th in cadence",
-        "Insert bVII major as passing chord from IV to I",
-        "On chorus/bridge, substitute VIm with VI major (parallel major borrow)"
-      ]
-    },
-    "dangelo": {
-      "name": "D'Angelo",
-      "description": "Neo-soul. 2–3 chord cyclic loops, no functional resolution. m9 as default minor. 13sus4 or 7#9 as dominant.",
-      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13sus4" },
-      "progressions": [
-        { "label": "Neo-soul loop", "degrees": ["im9", "bVIImaj9", "IV13sus4"] },
-        { "label": "Brown Sugar",   "degrees": ["im7", "IV7", "vim7", "bII7#9"] },
-        { "label": "Untitled",      "degrees": ["Iadd9", "V7sus4", "IV6", "bVII9"] }
-      ],
-      "rules": [
-        "2–3 chords max — cyclic, no resolution",
-        "Default minor chord: m9 with #9 color available",
-        "Default dominant: 13sus4 or 7#9 (not plain 7th)",
-        "If progression repeats more than 4 bars, it's correct"
-      ]
-    },
-    "thomas": {
-      "name": "Leon Thomas",
-      "description": "Contemporary R&B. Four-chord functional loop. m9 minor, maj7/maj9 major, 13sus4 dominant resolves conventionally.",
-      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13sus4" },
-      "progressions": [
-        { "label": "Thomas loop",     "degrees": ["im9", "IVm9", "bVImaj9", "V13sus4"] },
-        { "label": "MUTT",            "degrees": ["im7", "IVm7", "bVImaj", "VImaj"] },
-        { "label": "Vibes Don't Lie", "degrees": ["im7", "IVm7", "bVImaj7", "V7"] }
-      ],
-      "rules": [
-        "im7 → IVm7 → bVImaj7 → V7 or V13sus4 (four-chord functional loop)",
-        "Default minor chord: m9",
-        "Default major chord: maj7",
-        "Dominant 13sus4 preferred over plain V7"
+        "bVII major chord (Mixolydian borrow) is the primary color move — use in both major and minor contexts",
+        "Avoid raised 7th in dominant context — use 9sus4 or 13sus4 instead of V7",
+        "Modal mixture as atmosphere: borrow from parallel modes without announcing it",
+        "Sparse harmonic rhythm — hold chords 2x longer than feels right",
+        "Extended chords (maj7, min9, maj9) as default voicing — triads only for contrast",
+        "Dorian as default minor (raised 6th, no leading tone) — shared with D'Angelo and Leon Thomas",
+        "Lydian IImaj7 or bVIImaj7 for unresolved, floating tonic feel"
       ]
     }
   }
