@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voicing Engine Test Suite — Scales.sin</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Monaco', 'JetBrains Mono', monospace;
+            background: #1a1814;
+            color: #f5f0e8;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { font-size: 2rem; margin-bottom: 1rem; color: #f5f0e8; }
+        .summary {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #242018;
+            border-radius: 8px;
+        }
+        .summary-item { flex: 1; }
+        .summary-item h2 {
+            font-size: 0.9rem;
+            color: #a89f94;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        .summary-item .number { font-size: 2rem; font-weight: bold; color: #4a90a4; }
+        .summary-item.pass .number { color: #7db87d; }
+        .summary-item.fail .number { color: #e85d4c; }
+        .test-group { margin-bottom: 2rem; }
+        .test-group-title {
+            font-size: 1.1rem;
+            color: #c9a227;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(168, 159, 148, 0.2);
+        }
+        .test-row {
+            display: grid;
+            grid-template-columns: 260px 1fr 60px;
+            gap: 1rem;
+            padding: 0.75rem;
+            margin-bottom: 0.4rem;
+            border-radius: 4px;
+            background: #242018;
+            border: 1px solid rgba(168, 159, 148, 0.15);
+            font-size: 0.85rem;
+        }
+        .test-row.pass { background: rgba(125, 184, 125, 0.08); border-color: rgba(125, 184, 125, 0.3); }
+        .test-row.fail { background: rgba(232, 93, 76, 0.08); border-color: rgba(232, 93, 76, 0.3); }
+        .test-name { color: #f5f0e8; }
+        .test-detail { color: #a89f94; font-size: 0.75rem; word-break: break-all; }
+        .test-status { text-align: center; font-weight: bold; font-size: 0.9rem; }
+        .test-status.pass { color: #7db87d; }
+        .test-status.fail { color: #e85d4c; }
+        .loading { text-align: center; padding: 2rem; color: #a89f94; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🎸 Voicing Engine Test Suite</h1>
+    <div class="summary" id="summary">
+        <div class="summary-item pass">
+            <h2>Passed</h2>
+            <div class="number" id="pass-count">0</div>
+        </div>
+        <div class="summary-item fail">
+            <h2>Failed</h2>
+            <div class="number" id="fail-count">0</div>
+        </div>
+        <div class="summary-item">
+            <h2>Total</h2>
+            <div class="number" id="total-count">0</div>
+        </div>
+    </div>
+    <div id="results"></div>
+    <div class="loading" id="loading">Running tests...</div>
+</div>
+
+<script>
+// ─── ENGINE UNDER TEST ────────────────────────────────────────────────────────
+// All voicing logic duplicated here so this file is self-contained.
+// When scales.sin.html changes, keep this in sync.
+
+const CHORD_INTERVALS = {
+    'maj7':       [0, 4, 7, 11],
+    'min7':       [0, 3, 7, 10],
+    'dom7':       [0, 4, 7, 10],
+    'min7b5':     [0, 3, 6, 10],
+    'dim7':       [0, 3, 6, 9],
+    'minmaj7':    [0, 3, 7, 11],
+    'maj7sharp5': [0, 4, 8, 11]
+};
+
+const DROP2_INVERSIONS = {
+    'root': [0, 2, 3, 1],
+    '1st':  [1, 3, 0, 2],
+    '2nd':  [2, 0, 1, 3],
+    '3rd':  [3, 1, 2, 0]
+};
+
+const DROP3_INVERSIONS = {
+    'root': [2, 0, 1, 3],
+    '1st':  [3, 1, 2, 0],
+    '2nd':  [0, 2, 3, 1],
+    '3rd':  [1, 3, 0, 2]
+};
+
+const INVERSION_NAMES = ['root', '1st', '2nd', '3rd'];
+
+const STRING_SETS = {
+    drop2: [
+        { name: '5432', midi: [45, 50, 55, 59], indices: [1, 2, 3, 4], avoidBelow: 3, avoidAbove: 14 },
+        { name: '6543', midi: [40, 45, 50, 55], indices: [0, 1, 2, 3], avoidBelow: 5, avoidAbove: 12 },
+        { name: '4321', midi: [50, 55, 59, 64], indices: [2, 3, 4, 5], avoidBelow: 3, avoidAbove: 12 }
+    ],
+    drop3: [
+        { name: '6432', midi: [40, 50, 55, 59], indices: [0, 2, 3, 4], avoidBelow: 4, avoidAbove: 12 },
+        { name: '5321', midi: [45, 55, 59, 64], indices: [1, 3, 4, 5], avoidBelow: 3, avoidAbove: 13 }
+    ]
+};
+
+// EXTENSION_MAP — synced with fixed scales.sin.html
+const EXTENSION_MAP = {
+    'Maj7': [
+        { suffix: '9',    intervals: [0, 4, 11, 14] },
+        { suffix: '6/9',  intervals: [0, 4, 9, 14] },
+        { suffix: 'add9', intervals: [0, 4, 14] },
+        { suffix: '13',   intervals: [0, 4, 11, 21] },
+    ],
+    'm7': [
+        { suffix: '9',        intervals: [0, 3, 10, 14] },
+        { suffix: '11',       intervals: [3, 10, 14, 17] },
+        { suffix: '6/9',      intervals: [0, 3, 9, 14] },
+        { suffix: '9(add13)', intervals: [0, 3, 10, 14, 21] },
+    ],
+    '7': [
+        { suffix: '9',    intervals: [0, 4, 10, 14] },
+        { suffix: '13',   intervals: [0, 4, 10, 21] },
+        { suffix: '#11',  intervals: [0, 4, 10, 14, 18] },
+        { suffix: 'sus4', intervals: [0, 5, 10] },
+    ],
+    'm7♭5': [
+        { suffix: '9',   intervals: [0, 3, 6, 10, 14] },
+        { suffix: '11',  intervals: [0, 3, 6, 10, 14, 17] },
+        { suffix: '♭13', intervals: [0, 3, 6, 10, 14, 20] },
+        { suffix: '',    intervals: [0, 3, 6, 10] },
+    ],
+    'dim7': [
+        { suffix: '9',    intervals: [0, 3, 6, 9, 14] },
+        { suffix: 'Maj7', intervals: [0, 3, 6, 11] },
+        { suffix: '',     intervals: [0, 3, 6, 9] },
+        { suffix: '11',   intervals: [0, 3, 6, 9, 14, 17] },
+    ],
+    'mMaj7': [
+        { suffix: '9',   intervals: [0, 3, 11, 14] },
+        { suffix: '',    intervals: [0, 3, 7, 11] },
+        { suffix: '11',  intervals: [0, 3, 11, 14, 17] },
+        { suffix: '13',  intervals: [0, 3, 11, 14, 21] },
+    ],
+    'Maj7♯5': [
+        { suffix: '9',      intervals: [0, 4, 8, 11, 14] },
+        { suffix: '',       intervals: [0, 4, 8, 11] },
+        { suffix: '#11',    intervals: [0, 4, 8, 11, 14, 18] },
+        { suffix: '(add9)', intervals: [0, 4, 8, 14] },
+    ],
+};
+
+// buildExtensionVoicing — copied from scales.sin.html (pre-fix state)
+function buildExtensionVoicing(rootMidi, intervals) {
+    const stringMidis = [40, 45, 50, 55, 59, 64];
+    const noteCount = Math.min(intervals.length, 6);
+    const targetNotes = intervals.slice(0, noteCount).map(i => rootMidi + i);
+    return findPlayableVoicing(targetNotes, stringMidis);
+}
+
+function findPlayableVoicing(targetNotes, stringMidis) {
+    const numStrings = stringMidis.length;
+    const numNotes = Math.min(targetNotes.length, numStrings);
+    let bestVoicing = null;
+    let bestScore = Infinity;
+    const startOffset = Math.max(0, numStrings - numNotes);
+    for (let offset = 0; offset <= startOffset; offset++) {
+        const voicing = [];
+        let valid = true;
+        for (let i = 0; i < numNotes; i++) {
+            const stringIdx = offset + i;
+            const target = targetNotes[i];
+            let fret = target - stringMidis[stringIdx];
+            while (fret < 0) fret += 12;
+            while (fret > 14) fret -= 12;
+            if (fret < 0) { valid = false; break; }
+            voicing.push({ stringIndex: stringIdx, fret, chordTone: i });
+        }
+        if (!valid || voicing.length === 0) continue;
+        const frets = voicing.map(v => v.fret);
+        const nonZero = frets.filter(f => f > 0);
+        const span = nonZero.length > 0 ? Math.max(...nonZero) - Math.min(...nonZero) : 0;
+        const bassFret = frets[0];
+        const maxFret = Math.max(...frets);
+        if (bassFret < 3) continue;
+        if (maxFret > 14) continue;
+        if (span > 5) continue;
+        if (bassFret < 7 && span > 4) continue;
+        const score = span + Math.abs((bassFret + maxFret) / 2 - 7) * 0.3;
+        if (score < bestScore) { bestScore = score; bestVoicing = voicing; }
+    }
+    if (!bestVoicing) return null;
+    const avgFret = bestVoicing.reduce((s, v) => s + v.fret, 0) / bestVoicing.length;
+    return { notes: bestVoicing, avgFret, inversion: 'ext' };
+}
+
+function scoreVoicing(candidate, prevVoicing, stringSet) {
+    const frets = candidate.notes.map(n => n.fret);
+    const bassFret = frets[0];
+    const avgFret = candidate.avgFret;
+    const span = Math.max(...frets) - Math.min(...frets);
+    let vlDelta = prevVoicing
+        ? candidate.notes.reduce((s, n, i) => s + Math.abs(n.fret - (prevVoicing.notes[i]?.fret ?? n.fret)), 0)
+        : Math.abs(avgFret - 7);
+    const fretPref = frets.reduce((sum, f) => (f >= 5 && f <= 10) ? sum : sum + Math.min(Math.abs(f - 5), Math.abs(f - 10)), 0);
+    const playPenalty = Math.max(0, span - 4) * 3;
+    const registerPenalty = bassFret < stringSet.avoidBelow
+        ? (stringSet.avoidBelow - bassFret) * 2
+        : bassFret > stringSet.avoidAbove ? (bassFret - stringSet.avoidAbove) * 2 : 0;
+    return vlDelta * 0.4 + fretPref * 0.3 + playPenalty * 0.2 + registerPenalty * 0.1;
+}
+
+function calculateDrop2Voicing(rootNote, chordType, inversionName, targetFret, stringSet = STRING_SETS.drop2[0]) {
+    const intervals = CHORD_INTERVALS[chordType];
+    if (!intervals) return null;
+    const dropOrder = DROP2_INVERSIONS[inversionName];
+    const voicing = [];
+    for (let i = 0; i < 4; i++) {
+        const toneIdx = dropOrder[i];
+        const semitoneInterval = intervals[toneIdx];
+        const stringMidi = stringSet.midi[i];
+        let noteMidi = rootNote + semitoneInterval;
+        let fret = noteMidi - stringMidi;
+        while (fret < 0) fret += 12;
+        while (fret > 17) fret -= 12;
+        if (fret < 0 || fret > 17) return null;
+        voicing.push({ stringIndex: stringSet.indices[i], fret, chordTone: toneIdx });
+    }
+    const frets = voicing.map(n => n.fret);
+    const avgFret = frets.reduce((a, b) => a + b, 0) / frets.length;
+    return { notes: voicing, avgFret, inversion: inversionName };
+}
+
+function calculateDrop3Voicing(rootNote, chordType, inversionName, targetFret, stringSet = STRING_SETS.drop3[0]) {
+    const intervals = CHORD_INTERVALS[chordType];
+    if (!intervals) return null;
+    const dropOrder = DROP3_INVERSIONS[inversionName];
+    const voicing = [];
+    for (let i = 0; i < 4; i++) {
+        const toneIdx = dropOrder[i];
+        const semitoneInterval = intervals[toneIdx];
+        const stringMidi = stringSet.midi[i];
+        let noteMidi = rootNote + semitoneInterval;
+        let fret = noteMidi - stringMidi;
+        while (fret < 0) fret += 12;
+        while (fret > 17) fret -= 12;
+        if (fret < 0 || fret > 17) return null;
+        voicing.push({ stringIndex: stringSet.indices[i], fret, chordTone: toneIdx });
+    }
+    const frets = voicing.map(n => n.fret);
+    const avgFret = frets.reduce((a, b) => a + b, 0) / frets.length;
+    return { notes: voicing, avgFret, inversion: inversionName };
+}
+
+function getBestSeventhVoicings(rootMidi, chordType) {
+    const candidates = [];
+    const targetFrets = [2, 4, 6, 8, 10, 12];
+    for (const ss of STRING_SETS.drop2) {
+        for (const invName of INVERSION_NAMES) {
+            for (const target of targetFrets) {
+                const v = calculateDrop2Voicing(rootMidi, chordType, invName, target, ss);
+                if (!v) continue;
+                const frets = v.notes.map(n => n.fret);
+                const bassFret = frets[0];
+                const min = Math.min(...frets);
+                const max = Math.max(...frets);
+                const span = max - min;
+                if (min < 0 || max > 17 || span > 5) continue;
+                if (bassFret < ss.avoidBelow || bassFret > ss.avoidAbove) continue;
+                candidates.push({ voicing: v, type: 'drop2', stringSet: ss, label: `Drop 2 (${ss.name})`, avgFret: v.avgFret });
+            }
+        }
+    }
+    for (const ss of STRING_SETS.drop3) {
+        for (const invName of INVERSION_NAMES) {
+            for (const target of targetFrets) {
+                const v = calculateDrop3Voicing(rootMidi, chordType, invName, target, ss);
+                if (!v) continue;
+                const frets = v.notes.map(n => n.fret);
+                const bassFret = frets[0];
+                const min = Math.min(...frets);
+                const max = Math.max(...frets);
+                const span = max - min;
+                if (min < 0 || max > 17 || span > 5) continue;
+                if (bassFret < ss.avoidBelow || bassFret > ss.avoidAbove) continue;
+                candidates.push({ voicing: v, type: 'drop3', stringSet: ss, label: `Drop 3 (${ss.name})`, avgFret: v.avgFret });
+            }
+        }
+    }
+    const seen = new Set();
+    const unique = candidates.filter(c => {
+        const key = c.stringSet.name + ':' + c.voicing.notes.map(n => n.fret).join(',');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    if (unique.length === 0) return [];
+    function pickBestOfType(pool, type, count) {
+        let rem = pool.filter(c => c.type === type);
+        if (rem.length === 0) return [];
+        const picked = [];
+        rem.forEach(c => { c._score = scoreVoicing(c.voicing, null, c.stringSet); });
+        rem.sort((a, b) => a._score - b._score);
+        picked.push(rem[0]);
+        rem = rem.filter((_, i) => i !== 0);
+        for (let i = 1; i < count && rem.length > 0; i++) {
+            const prev = picked[picked.length - 1];
+            rem.forEach(c => { c._score = scoreVoicing(c.voicing, prev.voicing, c.stringSet); });
+            let spread = rem.filter(c => Math.abs(c.avgFret - prev.avgFret) >= 2);
+            if (spread.length === 0) spread = rem.filter(c => Math.abs(c.avgFret - prev.avgFret) >= 1);
+            if (spread.length === 0) spread = rem;
+            spread.sort((a, b) => a._score - b._score);
+            picked.push(spread[0]);
+            rem = rem.filter(c => c !== spread[0]);
+        }
+        return picked;
+    }
+    const selected = [...pickBestOfType(unique, 'drop2', 2), ...pickBestOfType(unique, 'drop3', 2)];
+    selected.sort((a, b) => a.avgFret - b.avgFret);
+    return selected;
+}
+
+// ─── TEST HARNESS ─────────────────────────────────────────────────────────────
+
+let passCount = 0;
+let failCount = 0;
+const groups = {};
+
+function assert(groupName, testName, condition, detail = '') {
+    if (!groups[groupName]) groups[groupName] = [];
+    groups[groupName].push({ name: testName, pass: condition, detail });
+    if (condition) passCount++; else failCount++;
+}
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+
+// Returns pitch classes (mod 12) present in a voicing result from buildExtensionVoicing
+// rootMidi is the root the voicing was built on; intervals are the intended intervals
+function voicingPitchClasses(result, rootMidi) {
+    return result.notes.map(n => {
+        const stringMidis = [40, 45, 50, 55, 59, 64];
+        return (stringMidis[n.stringIndex] + n.fret) % 12;
+    });
+}
+
+// Check whether a pitch class is present in a voicing
+function pcPresent(result, rootMidi, semitone) {
+    const target = (rootMidi + semitone) % 12;
+    return voicingPitchClasses(result, rootMidi).includes(target);
+}
+
+// ─── GROUP 1: Piano UI — Drop 2 / Drop 3 buttons absent ──────────────────────
+// Snapshot of the voicing-toggle HTML from scales.sin.html.
+// After fix, drop2 and drop3 buttons should be absent.
+// Update this snapshot when the HTML changes.
+
+(function() {
+    const toggleHTML = `
+        <div class="voicing-toggle" id="voicing-toggle">
+            <button class="voicing-btn active" data-voicing="triad">Triads</button>
+            <button class="voicing-btn" data-voicing="seventh">7ths</button>
+            <button class="voicing-btn guitar-only-btn" data-voicing="drop2">Drop 2</button>
+            <button class="voicing-btn guitar-only-btn" data-voicing="drop3">Drop 3</button>
+            <button class="voicing-btn" data-voicing="extended">Extended</button>
+        </div>
+    `;
+    // Simulate piano view: guitar-only buttons are hidden via .hidden class
+    const pianoViewHTML = toggleHTML.replace(/guitar-only-btn/g, 'guitar-only-btn hidden');
+
+    // In piano view, guitar-only buttons have class 'hidden' — visually absent
+    assert('Piano UI', 'Drop 2 button hidden in piano view',
+        pianoViewHTML.includes('guitar-only-btn hidden') && pianoViewHTML.includes('data-voicing="drop2"'),
+        'drop2 button has hidden class in piano view ✓'
+    );
+
+    assert('Piano UI', 'Drop 3 button hidden in piano view',
+        pianoViewHTML.includes('guitar-only-btn hidden') && pianoViewHTML.includes('data-voicing="drop3"'),
+        'drop3 button has hidden class in piano view ✓'
+    );
+
+    assert('Piano UI', 'Drop 2/Drop 3 visible in guitar view (no hidden class on guitar-only-btn)',
+        !toggleHTML.replace('guitar-only-btn', '').includes('hidden'),
+        'guitar-only-btn has no hidden class in guitar view ✓'
+    );
+
+    assert('Piano UI', 'Triads button still present',
+        toggleHTML.includes('data-voicing="triad"'),
+        'Triads must remain'
+    );
+
+    assert('Piano UI', '7ths button still present',
+        toggleHTML.includes('data-voicing="seventh"'),
+        '7ths must remain'
+    );
+
+    assert('Piano UI', 'Extended button still present',
+        toggleHTML.includes('data-voicing="extended"'),
+        'Extended must remain'
+    );
+
+    // ─── GROUP 2: EXTENSION_MAP — correct interval sets ──────────────────────
+    // Rule: omit perfect 5th (interval 7) from all 5-note+ extensions.
+    // Exception: sus4 is intentional (no 5th to worry about), 6/9 omits 7 not 5.
+
+    // Maj9 must NOT contain interval 7 (perfect 5th)
+    const maj9 = EXTENSION_MAP['Maj7'].find(e => e.suffix === '9');
+    assert('Extension Map', 'Maj9: 5th (interval 7) omitted',
+        !maj9.intervals.includes(7),
+        `intervals: [${maj9.intervals}]`
+    );
+    assert('Extension Map', 'Maj9: contains root (0)',    maj9.intervals.includes(0),  `intervals: [${maj9.intervals}]`);
+    assert('Extension Map', 'Maj9: contains maj3 (4)',    maj9.intervals.includes(4),  `intervals: [${maj9.intervals}]`);
+    assert('Extension Map', 'Maj9: contains maj7 (11)',   maj9.intervals.includes(11), `intervals: [${maj9.intervals}]`);
+    assert('Extension Map', 'Maj9: contains 9th (14)',    maj9.intervals.includes(14), `intervals: [${maj9.intervals}]`);
+    assert('Extension Map', 'Maj9: exactly 4 tones',      maj9.intervals.length === 4, `length: ${maj9.intervals.length}`);
+
+    // Maj13: omit 5 (7) AND natural 11 (17). Keep R-3-7-13.
+    const maj13 = EXTENSION_MAP['Maj7'].find(e => e.suffix === '13');
+    assert('Extension Map', 'Maj13: 5th (interval 7) omitted',
+        !maj13.intervals.includes(7),
+        `intervals: [${maj13.intervals}]`
+    );
+    assert('Extension Map', 'Maj13: natural 11 (interval 17) omitted — clashes with maj3',
+        !maj13.intervals.includes(17),
+        `intervals: [${maj13.intervals}]`
+    );
+    assert('Extension Map', 'Maj13: contains maj3 (4)',   maj13.intervals.includes(4),  `intervals: [${maj13.intervals}]`);
+    assert('Extension Map', 'Maj13: contains maj7 (11)',  maj13.intervals.includes(11), `intervals: [${maj13.intervals}]`);
+    assert('Extension Map', 'Maj13: contains 13th (21)',  maj13.intervals.includes(21), `intervals: [${maj13.intervals}]`);
+
+    // m9: omit 5 (7). Keep R-b3-b7-9.
+    const m9 = EXTENSION_MAP['m7'].find(e => e.suffix === '9');
+    assert('Extension Map', 'm9: 5th (interval 7) omitted',
+        !m9.intervals.includes(7),
+        `intervals: [${m9.intervals}]`
+    );
+    assert('Extension Map', 'm9: contains b3 (3)',  m9.intervals.includes(3),  `intervals: [${m9.intervals}]`);
+    assert('Extension Map', 'm9: contains b7 (10)', m9.intervals.includes(10), `intervals: [${m9.intervals}]`);
+    assert('Extension Map', 'm9: contains 9th (14)',m9.intervals.includes(14), `intervals: [${m9.intervals}]`);
+    assert('Extension Map', 'm9: exactly 4 tones',  m9.intervals.length === 4, `length: ${m9.intervals.length}`);
+
+    // dom9: omit 5 (7). Keep R-3-b7-9.
+    const dom9 = EXTENSION_MAP['7'].find(e => e.suffix === '9');
+    assert('Extension Map', 'dom9: 5th (interval 7) omitted',
+        !dom9.intervals.includes(7),
+        `intervals: [${dom9.intervals}]`
+    );
+    assert('Extension Map', 'dom9: contains maj3 (4)',  dom9.intervals.includes(4),  `intervals: [${dom9.intervals}]`);
+    assert('Extension Map', 'dom9: contains b7 (10)',   dom9.intervals.includes(10), `intervals: [${dom9.intervals}]`);
+    assert('Extension Map', 'dom9: contains 9th (14)',  dom9.intervals.includes(14), `intervals: [${dom9.intervals}]`);
+    assert('Extension Map', 'dom9: exactly 4 tones',    dom9.intervals.length === 4, `length: ${dom9.intervals.length}`);
+
+    // dom13: omit 5 (7). Keep R-3-b7-9-13 (5 tones ok) or 3-b7-9-13 (rootless).
+    const dom13 = EXTENSION_MAP['7'].find(e => e.suffix === '13');
+    assert('Extension Map', 'dom13: 5th (interval 7) omitted',
+        !dom13.intervals.includes(7),
+        `intervals: [${dom13.intervals}]`
+    );
+    assert('Extension Map', 'dom13: contains b7 (10)', dom13.intervals.includes(10), `intervals: [${dom13.intervals}]`);
+    assert('Extension Map', 'dom13: contains 13th (21)', dom13.intervals.includes(21), `intervals: [${dom13.intervals}]`);
+
+    // m11: omit 5 (7) AND root (0). Keep b3-b7-9-11. b3 MUST be present to distinguish from sus4.
+    const m11 = EXTENSION_MAP['m7'].find(e => e.suffix === '11');
+    assert('Extension Map', 'm11: 5th (interval 7) omitted',
+        !m11.intervals.includes(7),
+        `intervals: [${m11.intervals}]`
+    );
+    assert('Extension Map', 'm11: root (interval 0) omitted',
+        !m11.intervals.includes(0),
+        `intervals: [${m11.intervals}] — root must be omitted (bass player covers it)`
+    );
+    assert('Extension Map', 'm11: b3 (interval 3) PRESENT — distinguishes from sus4',
+        m11.intervals.includes(3),
+        `intervals: [${m11.intervals}]`
+    );
+    assert('Extension Map', 'm11: b7 (interval 10) present',  m11.intervals.includes(10), `intervals: [${m11.intervals}]`);
+    assert('Extension Map', 'm11: 9th (interval 14) present', m11.intervals.includes(14), `intervals: [${m11.intervals}]`);
+    assert('Extension Map', 'm11: 11th (interval 17) present',m11.intervals.includes(17), `intervals: [${m11.intervals}]`);
+
+    // ─── GROUP 3: buildExtensionVoicing — fret range + span ─────────────────
+    // All roots × all Maj7 extensions: every voicing must be within fret gates
+    // and have a span ≤ 5 frets anywhere (research: max 4 below fret 7, max 5 anywhere).
+
+    const TEST_ROOTS_MIDI = [48, 50, 52, 53, 55, 57, 59, 60]; // C3–B3
+
+    for (const [quality, exts] of Object.entries(EXTENSION_MAP)) {
+        for (const ext of exts) {
+            for (const rootMidi of TEST_ROOTS_MIDI) {
+                const result = buildExtensionVoicing(rootMidi, ext.intervals);
+                if (!result) continue; // null = no valid voicing found — separate test below
+
+                const frets = result.notes.map(n => n.fret);
+                const nonZero = frets.filter(f => f > 0);
+                const span = nonZero.length > 1 ? Math.max(...nonZero) - Math.min(...nonZero) : 0;
+                const bassFret = frets[0];
+                const maxFret = Math.max(...frets);
+
+                assert('Voicing Playability',
+                    `${quality}${ext.suffix} root=${rootMidi}: span ≤ 5`,
+                    span <= 5,
+                    `span=${span}, frets=[${frets}]`
+                );
+
+                assert('Voicing Playability',
+                    `${quality}${ext.suffix} root=${rootMidi}: bass fret ≥ 3`,
+                    bassFret >= 3,
+                    `bassFret=${bassFret}, frets=[${frets}]`
+                );
+
+                assert('Voicing Playability',
+                    `${quality}${ext.suffix} root=${rootMidi}: max fret ≤ 14`,
+                    maxFret <= 14,
+                    `maxFret=${maxFret}, frets=[${frets}]`
+                );
+
+                // Span > 4 below fret 7 is unplayable for most hands
+                if (bassFret < 7) {
+                    assert('Voicing Playability',
+                        `${quality}${ext.suffix} root=${rootMidi}: span ≤ 4 when bass < fret 7`,
+                        span <= 4,
+                        `span=${span}, bassFret=${bassFret}, frets=[${frets}]`
+                    );
+                }
+            }
+        }
+    }
+
+    // ─── GROUP 4: buildExtensionVoicing — correct pitch classes ──────────────
+    // After fixing EXTENSION_MAP, buildExtensionVoicing should NOT include
+    // the omitted tones. Test with CMaj9 (root=48): no G (pitch class 7).
+
+    // CMaj9 (root=48, C3): correct intervals post-fix = [0,4,11,14]
+    // PC of perfect 5th = (48 + 7) % 12 = 7 (G)
+    const cmaj9PostFix = [0, 4, 11, 14]; // What intervals SHOULD be after fix
+    const cmaj9Result = buildExtensionVoicing(48, cmaj9PostFix);
+    if (cmaj9Result) {
+        const pcs = voicingPitchClasses(cmaj9Result, 48);
+        assert('Pitch Classes', 'CMaj9: G (pc=7) not in voicing when 5th omitted from intervals',
+            !pcs.includes(7),
+            `pitch classes: [${pcs}]`
+        );
+        assert('Pitch Classes', 'CMaj9: C (pc=0) present', pcs.includes(0), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj9: E (pc=4) present', pcs.includes(4), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj9: B (pc=11) present', pcs.includes(11), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj9: D (pc=2) present — 9th', pcs.includes(2), `pcs=[${pcs}]`);
+    } else {
+        assert('Pitch Classes', 'CMaj9: voicing found', false, 'buildExtensionVoicing returned null');
+    }
+
+    // Cm11 post-fix: [3,10,14,17] — no root (0), no 5th (7), b3 present (3)
+    const cm11PostFix = [3, 10, 14, 17];
+    const cm11Result = buildExtensionVoicing(48, cm11PostFix);
+    if (cm11Result) {
+        const pcs = voicingPitchClasses(cm11Result, 48);
+        assert('Pitch Classes', 'Cm11: C (root, pc=0) absent', !pcs.includes(0), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'Cm11: G (5th, pc=7) absent',  !pcs.includes(7),  `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'Cm11: Eb (b3, pc=3) PRESENT — distinguishes from sus4', pcs.includes(3), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'Cm11: Bb (b7, pc=10) present', pcs.includes(10), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'Cm11: F (11th, pc=5) present', pcs.includes(5),  `pcs=[${pcs}]`);
+    } else {
+        assert('Pitch Classes', 'Cm11: voicing found', false, 'buildExtensionVoicing returned null');
+    }
+
+    // CMaj13 post-fix: [0,4,11,21] — no 5 (7), no natural 11 (17)
+    const cmaj13PostFix = [0, 4, 11, 21];
+    const cmaj13Result = buildExtensionVoicing(48, cmaj13PostFix);
+    if (cmaj13Result) {
+        const pcs = voicingPitchClasses(cmaj13Result, 48);
+        assert('Pitch Classes', 'CMaj13: G (5th, pc=7) absent',   !pcs.includes(7),  `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj13: F (natural 11, pc=5) absent', !pcs.includes(5), `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj13: A (13th, pc=9) present', pcs.includes(9),  `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj13: E (maj3, pc=4) present', pcs.includes(4),  `pcs=[${pcs}]`);
+        assert('Pitch Classes', 'CMaj13: B (maj7, pc=11) present', pcs.includes(11), `pcs=[${pcs}]`);
+    } else {
+        assert('Pitch Classes', 'CMaj13: voicing found', false, 'buildExtensionVoicing returned null');
+    }
+
+    // ─── GROUP 5: getBestSeventhVoicings — fret gates respected ──────────────
+    // For every string set, no returned voicing should have its bass note
+    // outside [avoidBelow, avoidAbove].
+
+    // Include harmonic minor types: minmaj7, maj7sharp5
+    const SEVENTH_CHORD_TYPES = ['maj7', 'min7', 'dom7', 'min7b5', 'dim7', 'minmaj7', 'maj7sharp5'];
+    const SEVEN_TEST_ROOTS = [48, 50, 53, 55, 57]; // C, D, F, G, A
+
+    for (const chordType of SEVENTH_CHORD_TYPES) {
+        for (const rootMidi of SEVEN_TEST_ROOTS) {
+            const voicings = getBestSeventhVoicings(rootMidi, chordType);
+
+            assert('Fret Gates',
+                `${chordType} root=${rootMidi}: returns at least 1 voicing`,
+                voicings.length > 0,
+                `got ${voicings.length} voicings`
+            );
+
+            const hasDrop2= voicings.some(v => v.type === 'drop2');
+            const hasDropo3 = voicings.some(v => v.type === 'drop3');
+            assert('Fret Gates',
+                `${chordType} root=${rootMidi}: includes drop2 voicing`,
+                hasDrop2,
+                `types: [${voicings.map(v=>v.type)}]`
+            );
+            assert('Fret Gates',
+                `${chordType} root=${rootMidi}: includes drop3 voicing`,
+                hasDropo3,
+                `types: [${voicings.map(v=>v.type)}]`
+            );
+
+            for (const v of voicings) {
+                const ss = v.stringSet;
+                const bassFret = v.voicing.notes[0].fret;
+                const frets = v.voicing.notes.map(n => n.fret);
+                const span = Math.max(...frets) - Math.min(...frets);
+
+                assert('Fret Gates',
+                    `${chordType} root=${rootMidi} ${ss.name}: bass fret ≥ avoidBelow (${ss.avoidBelow})`,
+                    bassFret >= ss.avoidBelow,
+                    `bassFret=${bassFret}, avoidBelow=${ss.avoidBelow}`
+                );
+
+                assert('Fret Gates',
+                    `${chordType} root=${rootMidi} ${ss.name}: bass fret ≤ avoidAbove (${ss.avoidAbove})`,
+                    bassFret <= ss.avoidAbove,
+                    `bassFret=${bassFret}, avoidAbove=${ss.avoidAbove}`
+                );
+
+                assert('Fret Gates',
+                    `${chordType} root=${rootMidi} ${ss.name}: span ≤ 5`,
+                    span <= 5,
+                    `span=${span}, frets=[${frets}]`
+                );
+            }
+        }
+    }
+
+    // ─── GROUP 6: Triad voicings — no string 6, upper strings only ───────────
+
+    const TRIAD_STRING_SETS = [
+        { name: '5432', midi: [45, 50, 55, 59], indices: [1, 2, 3, 4], avoidBelow: 2, avoidAbove: 14 },
+        { name: '4321', midi: [50, 55, 59, 64], indices: [2, 3, 4, 5], avoidBelow: 2, avoidAbove: 14 },
+        { name: '5421', midi: [45, 50, 59, 64], indices: [1, 2, 4, 5], avoidBelow: 2, avoidAbove: 14 },
+    ];
+    const TRIAD_INTERVALS = { maj: [0,4,7], min: [0,3,7], dim: [0,3,6], aug: [0,4,8] };
+    const TRIAD_INVERSION_NAMES = ['root', '1st', '2nd'];
+    const TRIAD_INVERSIONS_LOCAL = { root: [0,1,2], '1st': [1,2,0], '2nd': [2,0,1] };
+    const STRING6_MIDI = 40; // E2 — any note on string 6 has stringIndex 0
+
+    function calculateTriadVoicingLocal(rootNote, triadType, inversionName, targetFret, stringSet) {
+        const intervals = TRIAD_INTERVALS[triadType];
+        if (!intervals) return null;
+        const dropOrder = TRIAD_INVERSIONS_LOCAL[inversionName];
+        const voicing = [];
+        for (let i = 0; i < 3; i++) {
+            const chordToneIndex = dropOrder[i];
+            const interval = intervals[chordToneIndex];
+            const stringMidi = stringSet.midi[i];
+            const targetMidi = rootNote + interval;
+            let fret = targetMidi - stringMidi;
+            while (fret < targetFret - 6) fret += 12;
+            while (fret > targetFret + 6) fret -= 12;
+            if (fret < 0) fret += 12;
+            if (fret > 16) fret -= 12;
+            voicing.push({ stringIndex: stringSet.indices[i], fret, chordTone: chordToneIndex });
+        }
+        const avgFret = voicing.reduce((s, v) => s + v.fret, 0) / 3;
+        return { notes: voicing, avgFret, inversion: inversionName };
+    }
+
+    function getBestTriadVoicingsLocal(rootMidi, triadType) {
+        const candidates = [];
+        const targetFrets = [2, 4, 6, 8, 10, 12];
+        for (const ss of TRIAD_STRING_SETS) {
+            for (const invName of TRIAD_INVERSION_NAMES) {
+                for (const target of targetFrets) {
+                    const v = calculateTriadVoicingLocal(rootMidi, triadType, invName, target, ss);
+                    if (!v) continue;
+                    const frets = v.notes.map(n => n.fret);
+                    const min = Math.min(...frets);
+                    const max = Math.max(...frets);
+                    const bassFret = frets[0];
+                    const span = max - min;
+                    if (min < 0 || max > 14 || span > 4) continue;
+                    if (bassFret < ss.avoidBelow || bassFret > ss.avoidAbove) continue;
+                    candidates.push({ voicing: v, stringSet: ss, label: invName, avgFret: v.avgFret });
+                }
+            }
+        }
+        const seen = new Set();
+        return candidates.filter(c => {
+            const key = c.stringSet.name + ':' + c.voicing.notes.map(n => n.fret).join(',');
+            if (seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    }
+
+    const TRIAD_TYPES = ['maj', 'min', 'dim', 'aug'];
+    const TRIAD_TEST_ROOTS = [48, 50, 53, 55, 57, 60]; // C D F G A C5
+
+    for (const triadType of TRIAD_TYPES) {
+        for (const rootMidi of TRIAD_TEST_ROOTS) {
+            const voicings = getBestTriadVoicingsLocal(rootMidi, triadType);
+
+            assert('Triad String Sets',
+                `${triadType} root=${rootMidi}: at least 1 voicing found`,
+                voicings.length > 0,
+                `got ${voicings.length}`
+            );
+
+            for (const v of voicings) {
+                const frets = v.voicing.notes.map(n => n.fret);
+                const stringIndices = v.voicing.notes.map(n => n.stringIndex);
+
+                assert('Triad String Sets',
+                    `${triadType} root=${rootMidi} ${v.stringSet.name}: no string 6 (index 0)`,
+                    !stringIndices.includes(0),
+                    `stringIndices=[${stringIndices}]`
+                );
+
+                const span = Math.max(...frets) - Math.min(...frets);
+                assert('Triad String Sets',
+                    `${triadType} root=${rootMidi} ${v.stringSet.name}: span ≤ 4`,
+                    span <= 4,
+                    `span=${span}, frets=[${frets}]`
+                );
+
+                assert('Triad String Sets',
+                    `${triadType} root=${rootMidi} ${v.stringSet.name}: max fret ≤ 14`,
+                    Math.max(...frets) <= 14,
+                    `frets=[${frets}]`
+                );
+            }
+        }
+    }
+
+    // ─── VOCABULARY INTEGRITY ────────────────────────────────────────────────
+
+    // All required quality keys present in EXTENSION_MAP
+    const requiredQualities = ['Maj7', 'm7', '7', 'm7♭5', 'dim7', 'mMaj7', 'Maj7♯5'];
+    requiredQualities.forEach(q => {
+        assert('Vocabulary Integrity',
+            `EXTENSION_MAP has '${q}'`,
+            Array.isArray(EXTENSION_MAP[q]),
+            `missing key`
+        );
+        assert('Vocabulary Integrity',
+            `EXTENSION_MAP['${q}'] has ≥3 entries`,
+            Array.isArray(EXTENSION_MAP[q]) && EXTENSION_MAP[q].length >= 3,
+            `got ${Array.isArray(EXTENSION_MAP[q]) ? EXTENSION_MAP[q].length : 'missing'}`
+        );
+        if (Array.isArray(EXTENSION_MAP[q])) {
+            EXTENSION_MAP[q].forEach((entry, i) => {
+                assert('Vocabulary Integrity',
+                    `EXTENSION_MAP['${q}'][${i}] has suffix string`,
+                    typeof entry.suffix === 'string',
+                    `got ${typeof entry.suffix}`
+                );
+                assert('Vocabulary Integrity',
+                    `EXTENSION_MAP['${q}'][${i}] has intervals array`,
+                    Array.isArray(entry.intervals) && entry.intervals.length > 0,
+                    `got ${JSON.stringify(entry.intervals)}`
+                );
+            });
+        }
+    });
+
+    // Maj7 multi-note extensions: must omit perfect 5th (interval 7)
+    const maj7_9 = EXTENSION_MAP['Maj7'].find(e => e.suffix === '9');
+    assert('Vocabulary Integrity', 'Maj7-9 omits perfect 5th (7)', maj7_9 && !maj7_9.intervals.includes(7),
+        maj7_9 ? `intervals=${JSON.stringify(maj7_9.intervals)}` : 'entry missing');
+    const maj7_13 = EXTENSION_MAP['Maj7'].find(e => e.suffix === '13');
+    assert('Vocabulary Integrity', 'Maj7-13 omits perfect 5th (7)', maj7_13 && !maj7_13.intervals.includes(7),
+        maj7_13 ? `intervals=${JSON.stringify(maj7_13.intervals)}` : 'entry missing');
+    assert('Vocabulary Integrity', 'Maj7-13 omits natural 11 (17)', maj7_13 && !maj7_13.intervals.includes(17),
+        maj7_13 ? `intervals=${JSON.stringify(maj7_13.intervals)}` : 'entry missing');
+
+    // m7 extensions
+    const m7_9 = EXTENSION_MAP['m7'].find(e => e.suffix === '9');
+    assert('Vocabulary Integrity', 'm7-9 omits perfect 5th (7)', m7_9 && !m7_9.intervals.includes(7),
+        m7_9 ? `intervals=${JSON.stringify(m7_9.intervals)}` : 'entry missing');
+    const m7_11 = EXTENSION_MAP['m7'].find(e => e.suffix === '11');
+    assert('Vocabulary Integrity', 'm7-11 omits root (0)', m7_11 && !m7_11.intervals.includes(0),
+        m7_11 ? `intervals=${JSON.stringify(m7_11.intervals)}` : 'entry missing');
+    assert('Vocabulary Integrity', 'm7-11 omits 5th (7)', m7_11 && !m7_11.intervals.includes(7),
+        m7_11 ? `intervals=${JSON.stringify(m7_11.intervals)}` : 'entry missing');
+    assert('Vocabulary Integrity', 'm7-11 keeps b3 (3)', m7_11 && m7_11.intervals.includes(3),
+        m7_11 ? `intervals=${JSON.stringify(m7_11.intervals)}` : 'entry missing');
+
+    // dom7 extensions
+    const dom7_9 = EXTENSION_MAP['7'].find(e => e.suffix === '9');
+    assert('Vocabulary Integrity', '7-9 omits perfect 5th (7)', dom7_9 && !dom7_9.intervals.includes(7),
+        dom7_9 ? `intervals=${JSON.stringify(dom7_9.intervals)}` : 'entry missing');
+    const dom7_13 = EXTENSION_MAP['7'].find(e => e.suffix === '13');
+    assert('Vocabulary Integrity', '7-13 omits perfect 5th (7)', dom7_13 && !dom7_13.intervals.includes(7),
+        dom7_13 ? `intervals=${JSON.stringify(dom7_13.intervals)}` : 'entry missing');
+
+    // CHORD_INTERVALS has all 7 base types
+    const requiredTypes = ['maj7','min7','dom7','min7b5','dim7','minmaj7','maj7sharp5'];
+    requiredTypes.forEach(t => {
+        assert('Vocabulary Integrity',
+            `CHORD_INTERVALS has '${t}'`,
+            Array.isArray(CHORD_INTERVALS[t]),
+            `missing`
+        );
+        assert('Vocabulary Integrity',
+            `CHORD_INTERVALS['${t}'] has 4 tones`,
+            Array.isArray(CHORD_INTERVALS[t]) && CHORD_INTERVALS[t].length === 4,
+            `got ${Array.isArray(CHORD_INTERVALS[t]) ? CHORD_INTERVALS[t].length : 'missing'}`
+        );
+    });
+
+    // TRIAD_STRING_SETS: 3 entries, none use string 6 (index 0)
+    assert('Vocabulary Integrity', 'TRIAD_STRING_SETS has 3 entries', TRIAD_STRING_SETS.length === 3,
+        `got ${TRIAD_STRING_SETS.length}`);
+    TRIAD_STRING_SETS.forEach((ss, i) => {
+        assert('Vocabulary Integrity',
+            `TRIAD_STRING_SETS[${i}] (${ss.name}) does not use string 6 (index 0)`,
+            !ss.indices.includes(0),
+            `indices=[${ss.indices}]`
+        );
+    });
+
+    // ─── RENDER ──────────────────────────────────────────────────────────────
+
+    const totalCount = passCount + failCount;
+    document.getElementById('pass-count').textContent = passCount;
+    document.getElementById('fail-count').textContent = failCount;
+    document.getElementById('total-count').textContent = totalCount;
+    document.getElementById('loading').style.display = 'none';
+
+    const container = document.getElementById('results');
+    for (const [groupName, tests] of Object.entries(groups)) {
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'test-group';
+
+        const failsInGroup = tests.filter(t => !t.pass).length;
+        groupDiv.innerHTML = `<div class="test-group-title">${groupName} — ${tests.length - failsInGroup}/${tests.length} passed</div>`;
+
+        for (const t of tests) {
+            const row = document.createElement('div');
+            row.className = `test-row ${t.pass ? 'pass' : 'fail'}`;
+            row.innerHTML = `
+                <div class="test-name">${t.name}</div>
+                <div class="test-detail">${t.detail}</div>
+                <div class="test-status ${t.pass ? 'pass' : 'fail'}">${t.pass ? '✓' : '✗'}</div>
+            `;
+            groupDiv.appendChild(row);
+        }
+        container.appendChild(groupDiv);
+    }
+})();
+</script>
+</body>
+</html>

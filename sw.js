@@ -4,13 +4,18 @@
  * Offline support: All HTML, CSS, JS, and icons cached on install
  */
 
-const CACHE_NAME = 'scales-sin-v3';
+const CACHE_NAME = 'scales-sin-v5';
 const FILES_TO_CACHE = [
     './index.html',
-    './scale_viz_v5.html',
+    './scales.sin.html',
     './chord_voice_leading.html',
     './chord_progressions.html',
     './manifest.json',
+    './music_theory.js',
+    './voicing_vocabulary.js',
+    './voicing_vocabulary.json',
+    './fretboard_renderer.js',
+    './piano_renderer.js',
     './Assets/Icons/icon-192.png',
     './Assets/Icons/icon-512.png'
 ];

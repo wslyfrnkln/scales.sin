@@ -511,6 +511,111 @@
                 --black-key-h: 150px;
             }
         }
+
+        /* --- Style Templates --- */
+        .style-bar {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .style-bar-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.6rem;
+            flex-wrap: wrap;
+        }
+        .style-bar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .style-btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .style-btn {
+            padding: 0.3rem 0.75rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .style-btn:hover { background: rgba(255,255,255,0.08); color: var(--text-primary); }
+        .style-btn.active {
+            background: rgba(200, 162, 39, 0.15);
+            border-color: rgba(200, 162, 39, 0.4);
+            color: #c9a227;
+        }
+        .style-suggestions {
+            display: none;
+            padding: 0.75rem 1.5rem 1rem;
+            background: rgba(200, 162, 39, 0.04);
+            border-bottom: 1px solid rgba(200, 162, 39, 0.12);
+        }
+        .style-info {
+            display: flex;
+            align-items: baseline;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .style-info-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #c9a227;
+        }
+        .style-info-desc {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+        .style-progressions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .style-prog-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s;
+            color: var(--text-primary);
+            text-align: left;
+        }
+        .style-prog-btn:hover { background: rgba(255,255,255,0.08); }
+        .prog-label {
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+        }
+        .prog-degrees {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+        }
+        .style-rules {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .style-rule {
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -531,6 +636,21 @@
             <option value="minor">Minor</option>
         </select>
     </div>
+
+    <!-- Style template bar — injected by JS after vocab loads -->
+    <div id="style-bar" class="style-bar" style="display:none">
+        <div class="style-bar-header">
+            <span class="style-bar-label">Style</span>
+            <div class="style-btn-group" id="style-btn-group">
+                <button class="style-btn active" data-style="">None</button>
+                <button class="style-btn" data-style="pass">Joe Pass</button>
+                <button class="style-btn" data-style="wonder">Wonder</button>
+                <button class="style-btn" data-style="dangelo">D'Angelo</button>
+                <button class="style-btn" data-style="thomas">Thomas</button>
+            </div>
+        </div>
+    </div>
+    <div id="style-suggestions" class="style-suggestions"></div>
 
     <div class="legend">
         <div class="legend-item">
@@ -581,6 +701,82 @@
             'min9':    { intervals: [0,3,7,10,14], suffix: 'min9',  name: 'min9' },
             '6':       { intervals: [0,4,7,9],     suffix: '6',     name: '6' },
             'min6':    { intervals: [0,3,7,9],     suffix: 'm6',    name: 'min6' },
+        };
+
+        // Extended chord types from voicing vocabulary (research-based)
+        const EXTENDED_CHORD_TYPES = {
+            'min11':     { intervals: [0,3,10,14,17], suffix: 'm11',    name: 'min11' },
+            'dom13sus4': { intervals: [0,5,7,10,21],  suffix: '13sus4', name: 'dom13sus4' },
+            '7sharp9':   { intervals: [0,4,7,10,15],  suffix: '7#9',    name: '7sharp9' },
+            '7flat9':    { intervals: [0,4,7,10,13],  suffix: '7b9',    name: '7flat9' },
+            'add9':      { intervals: [0,4,7,14],     suffix: 'add9',   name: 'add9' },
+            'maj6_9':    { intervals: [0,4,9,14],     suffix: '6/9',    name: 'maj6_9' },
+        };
+        Object.assign(CHORD_TYPES, EXTENDED_CHORD_TYPES);
+
+        // Style templates — D'Angelo, Wonder, Joe Pass, Leon Thomas
+        // Source: Javelin harmonic research (RESEARCH_Music_2026-03-08-harmonic-language.md)
+        const STYLE_TEMPLATES = {
+            pass: {
+                name: 'Joe Pass',
+                description: 'Bebop voice-leading. Always ii before V. Full cadential resolution. Drop 2/3 rootless voicings.',
+                progressions: [
+                    { label: 'ii–V–I (major)',    degrees: ['ii9', 'V13b9', 'Imaj9'] },
+                    { label: 'ii–V–i (minor)',    degrees: ['iim7b5', 'V7alt', 'imMaj7'] },
+                    { label: 'Chromatic descent', degrees: ['bVI13sus4', 'VI13sus4', 'V13sus4', 'IV13sus4'] },
+                ],
+                rules: [
+                    'Always include ii chord before V',
+                    'Use tritone sub (bII7) for V7 on repeat',
+                    'Dominant voicings add b9 or #11',
+                    'Always fully cadential — no unresolved suspended dominants',
+                ],
+            },
+            wonder: {
+                name: 'Stevie Wonder',
+                description: 'Modal (Dorian/Mixolydian). Chromatic passing 9th chords. IV→IVm borrowed chord. V9sus4 replaces bare V7.',
+                progressions: [
+                    { label: 'Dorian vamp',       degrees: ['im9', 'IVmaj7', 'im9', 'bVIImaj9'] },
+                    { label: "Isn't She Lovely",  degrees: ['vim7', 'II9', 'V9sus4', 'Imaj7'] },
+                    { label: 'Chromatic 9ths',    degrees: ['IV9', 'bIII9', 'bII9', 'II9'] },
+                ],
+                rules: [
+                    'Root in Dorian or Mixolydian',
+                    'Replace V7 with V9sus4 — never bare dominant 7th in cadence',
+                    'Insert bVII major as passing chord from IV to I',
+                    'On chorus/bridge, substitute VIm with VI major (parallel major borrow)',
+                ],
+            },
+            dangelo: {
+                name: "D'Angelo",
+                description: 'Neo-soul. 2–3 chord cyclic loops, no functional resolution. m9 as default minor. 13sus4 or 7#9 as dominant.',
+                progressions: [
+                    { label: 'Neo-soul loop',  degrees: ['im9', 'bVIImaj9', 'IV13sus4'] },
+                    { label: 'Brown Sugar',    degrees: ['im7', 'IV7', 'vim7', 'bII7#9'] },
+                    { label: 'Untitled',       degrees: ['Iadd9', 'V7sus4', 'IV6', 'bVII9'] },
+                ],
+                rules: [
+                    '2–3 chords max — cyclic, no resolution',
+                    'Default minor chord: m9 with #9 color available',
+                    "Default dominant: 13sus4 or 7#9 (not plain 7th)",
+                    "If progression repeats more than 4 bars, it's correct",
+                ],
+            },
+            thomas: {
+                name: 'Leon Thomas',
+                description: 'Contemporary R&B. Four-chord functional loop. m9 minor, maj7/maj9 major, 13sus4 dominant resolves conventionally.',
+                progressions: [
+                    { label: 'Thomas loop',       degrees: ['im9', 'IVm9', 'bVImaj9', 'V13sus4'] },
+                    { label: 'MUTT',              degrees: ['im7', 'IVm7', 'bVImaj', 'VImaj'] },
+                    { label: "Vibes Don't Lie",   degrees: ['im7', 'IVm7', 'bVImaj7', 'V7'] },
+                ],
+                rules: [
+                    'im7 → IVm7 → bVImaj7 → V7 or V13sus4 (four-chord functional loop)',
+                    'Default minor chord: m9',
+                    'Default major chord: maj7',
+                    'Dominant 13sus4 preferred over plain V7',
+                ],
+            },
         };
 
         // Scale intervals
@@ -1307,6 +1503,86 @@
         }
 
         init();
+
+        // --- Style template UI ---
+        let activeStyle = '';
+
+        function showStyleSuggestions(template) {
+            const el = document.getElementById('style-suggestions');
+            if (!el) return;
+            el.innerHTML = `
+                <div class="style-info">
+                    <span class="style-info-name">${template.name}</span>
+                    <span class="style-info-desc">${template.description}</span>
+                </div>
+                <div class="style-progressions">
+                    ${(template.progressions || []).map(p => `
+                        <button class="style-prog-btn" title="${p.degrees.join(' → ')}">
+                            <span class="prog-label">${p.label}</span>
+                            <span class="prog-degrees">${p.degrees.join(' → ')}</span>
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="style-rules">
+                    ${(template.rules || []).map(r => `<span class="style-rule">• ${r}</span>`).join('')}
+                </div>
+            `;
+            el.style.display = 'block';
+        }
+
+        function hideStyleSuggestions() {
+            const el = document.getElementById('style-suggestions');
+            if (el) { el.innerHTML = ''; el.style.display = 'none'; }
+        }
+
+        // Wire style button group
+        const styleBar = document.getElementById('style-bar');
+        if (styleBar) {
+            styleBar.style.display = 'block';
+            document.getElementById('style-btn-group').addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-style]');
+                if (!btn) return;
+                activeStyle = btn.dataset.style;
+                document.querySelectorAll('#style-btn-group .style-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                if (activeStyle && STYLE_TEMPLATES[activeStyle]) {
+                    showStyleSuggestions(STYLE_TEMPLATES[activeStyle]);
+                } else {
+                    hideStyleSuggestions();
+                }
+            });
+        }
+
+        // Merge voicing_vocabulary.json at runtime (Javelin's write target)
+        (async function wireVocabularyMerge() {
+            try {
+                const res = await fetch('./voicing_vocabulary.json');
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data.chord_types) Object.assign(CHORD_TYPES, data.chord_types);
+                if (data.style_templates) {
+                    for (const [key, tmpl] of Object.entries(data.style_templates)) {
+                        if (!STYLE_TEMPLATES[key]) {
+                            STYLE_TEMPLATES[key] = tmpl;
+                            // Add button for new style
+                            const group = document.getElementById('style-btn-group');
+                            if (group) {
+                                const btn = document.createElement('button');
+                                btn.className = 'style-btn';
+                                btn.dataset.style = key;
+                                btn.textContent = tmpl.name || key;
+                                group.appendChild(btn);
+                            }
+                        } else {
+                            // Append new progressions
+                            const existingLabels = new Set((STYLE_TEMPLATES[key].progressions || []).map(p => p.label));
+                            const newProgs = (tmpl.progressions || []).filter(p => !existingLabels.has(p.label));
+                            if (newProgs.length) STYLE_TEMPLATES[key].progressions.push(...newProgs);
+                        }
+                    }
+                }
+            } catch (e) { /* vocab JSON not available — built-in templates are fine */ }
+        })();
 
         let resizeTimer;
         window.addEventListener('resize', () => {

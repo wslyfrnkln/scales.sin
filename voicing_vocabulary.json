@@ -1,0 +1,73 @@
+{
+  "_version": 1,
+  "_updated": "2026-03-09",
+  "_source": "Javelin research pipeline",
+  "chord_types": {},
+  "extension_map": {},
+  "style_templates": {
+    "pass": {
+      "name": "Joe Pass",
+      "description": "Bebop voice-leading. Always ii before V. Full cadential resolution. Drop 2/3 rootless voicings.",
+      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13b9" },
+      "progressions": [
+        { "label": "ii–V–I (major)",    "degrees": ["ii9", "V13b9", "Imaj9"] },
+        { "label": "ii–V–i (minor)",    "degrees": ["iim7b5", "V7alt", "imMaj7"] },
+        { "label": "Chromatic descent", "degrees": ["bVI13sus4", "VI13sus4", "V13sus4", "IV13sus4"] }
+      ],
+      "rules": [
+        "Always include ii chord before V",
+        "Use tritone sub (bII7) for V7 on repeat",
+        "Dominant voicings add b9 or #11",
+        "Always fully cadential — no unresolved suspended dominants"
+      ]
+    },
+    "wonder": {
+      "name": "Stevie Wonder",
+      "description": "Modal (Dorian/Mixolydian). Chromatic passing 9th chords. IV→IVm borrowed chord. V9sus4 replaces bare V7.",
+      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom9sus4" },
+      "progressions": [
+        { "label": "Dorian vamp",      "degrees": ["im9", "IVmaj7", "im9", "bVIImaj9"] },
+        { "label": "Isn't She Lovely", "degrees": ["vim7", "II9", "V9sus4", "Imaj7"] },
+        { "label": "Chromatic 9ths",   "degrees": ["IV9", "bIII9", "bII9", "II9"] }
+      ],
+      "rules": [
+        "Root in Dorian or Mixolydian",
+        "Replace V7 with V9sus4 — never bare dominant 7th in cadence",
+        "Insert bVII major as passing chord from IV to I",
+        "On chorus/bridge, substitute VIm with VI major (parallel major borrow)"
+      ]
+    },
+    "dangelo": {
+      "name": "D'Angelo",
+      "description": "Neo-soul. 2–3 chord cyclic loops, no functional resolution. m9 as default minor. 13sus4 or 7#9 as dominant.",
+      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13sus4" },
+      "progressions": [
+        { "label": "Neo-soul loop", "degrees": ["im9", "bVIImaj9", "IV13sus4"] },
+        { "label": "Brown Sugar",   "degrees": ["im7", "IV7", "vim7", "bII7#9"] },
+        { "label": "Untitled",      "degrees": ["Iadd9", "V7sus4", "IV6", "bVII9"] }
+      ],
+      "rules": [
+        "2–3 chords max — cyclic, no resolution",
+        "Default minor chord: m9 with #9 color available",
+        "Default dominant: 13sus4 or 7#9 (not plain 7th)",
+        "If progression repeats more than 4 bars, it's correct"
+      ]
+    },
+    "thomas": {
+      "name": "Leon Thomas",
+      "description": "Contemporary R&B. Four-chord functional loop. m9 minor, maj7/maj9 major, 13sus4 dominant resolves conventionally.",
+      "chord_colors": { "min": "min9", "maj": "maj9", "dom": "dom13sus4" },
+      "progressions": [
+        { "label": "Thomas loop",     "degrees": ["im9", "IVm9", "bVImaj9", "V13sus4"] },
+        { "label": "MUTT",            "degrees": ["im7", "IVm7", "bVImaj", "VImaj"] },
+        { "label": "Vibes Don't Lie", "degrees": ["im7", "IVm7", "bVImaj7", "V7"] }
+      ],
+      "rules": [
+        "im7 → IVm7 → bVImaj7 → V7 or V13sus4 (four-chord functional loop)",
+        "Default minor chord: m9",
+        "Default major chord: maj7",
+        "Dominant 13sus4 preferred over plain V7"
+      ]
+    }
+  }
+}
