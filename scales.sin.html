@@ -943,6 +943,30 @@
             margin-top: 0.25rem;
         }
 
+        /* --- Artist attribution on extended voicing cards --- */
+        .ext-label {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            text-align: center;
+            line-height: 1.35;
+            margin-top: 0.15rem;
+            max-width: 140px;
+        }
+        .ext-source {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: #8a6aa4;
+            background: rgba(138, 106, 164, 0.12);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            text-align: center;
+            max-width: 140px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         footer {
             text-align: center;
             padding: 2rem;
@@ -2642,11 +2666,15 @@
                         const displayName = noteName + (quality === 'Maj7' ? 'Maj' : quality === 'm7' ? 'm' : quality === '7' ? '' : quality) + ext.suffix;
                         const pcs = ext.intervals.map(i => (noteClass + i) % 12);
                         const piano = buildMiniPianoHTML(pcs, noteClass, flats);
+                        const labelHtml = ext.label ? `<div class="ext-label">${ext.label}</div>` : '';
+                        const sourceHtml = ext.source ? `<div class="ext-source">${ext.source}</div>` : '';
                         return `
                             <div class="mini-piano-card">
                                 <div class="chord-name">${displayName}</div>
                                 ${piano}
                                 <div class="inversion-label">${ext.intervals.length} notes</div>
+                                ${labelHtml}
+                                ${sourceHtml}
                             </div>
                         `;
                     }).join('');
@@ -2706,11 +2734,15 @@
                     const voicing = buildExtensionVoicing(rootMidi, ext.intervals);
                     if (!voicing) return '';
                     const svg = createChordDiagramSVG(voicing, 'extended');
+                    const labelHtml = ext.label ? `<div class="ext-label">${ext.label}</div>` : '';
+                    const sourceHtml = ext.source ? `<div class="ext-source">${ext.source}</div>` : '';
                     return `
                         <div class="chord-diagram-card">
                             <div class="chord-name">${displayName}</div>
                             <div class="fretboard-container">${svg}</div>
                             <div class="inversion-label">${ext.intervals.length} notes</div>
+                            ${labelHtml}
+                            ${sourceHtml}
                         </div>
                     `;
                 }).join('');
