@@ -377,7 +377,7 @@ function pcPresent(result, rootMidi, semitone) {
 // After fix, drop2 and drop3 buttons should be absent.
 // Update this snapshot when the HTML changes.
 
-(function() {
+(async function() {
     const toggleHTML = `
         <div class="voicing-toggle" id="voicing-toggle">
             <button class="voicing-btn active" data-voicing="triad">Triads</button>
@@ -842,6 +842,95 @@ function pcPresent(result, rootMidi, semitone) {
             `indices=[${ss.indices}]`
         );
     });
+
+    // ─── VOCABULARY JSON MERGE (Glasper + Mac Miller) ────────────────────────
+    // Simulates loadVocabulary() merge to verify JSON entries land correctly
+    {
+        let jsonData = null;
+        try {
+            const res = await fetch('./voicing_vocabulary.json');
+            jsonData = await res.json();
+        } catch(e) {
+            assert('Vocab JSON Merge', 'voicing_vocabulary.json is fetchable', false, `fetch failed: ${e.message}`);
+        }
+        if (jsonData) {
+
+        assert('Vocab JSON Merge', 'JSON has _meta block', !!jsonData._meta, 'missing _meta');
+        assert('Vocab JSON Merge', '_meta lists Glasper source', jsonData._meta.sources.some(s => s.includes('glasper')), 'missing glasper source');
+        assert('Vocab JSON Merge', '_meta lists Mac Miller source', jsonData._meta.sources.some(s => s.includes('mac-miller')), 'missing mac-miller source');
+
+        // chord_types
+        assert('Vocab JSON Merge', 'JSON chord_types has min9', !!jsonData.chord_types?.min9, 'missing');
+        assert('Vocab JSON Merge', 'JSON chord_types has sus2', !!jsonData.chord_types?.sus2, 'missing');
+        assert('Vocab JSON Merge', 'JSON chord_types has maj6', !!jsonData.chord_types?.maj6, 'missing');
+        assert('Vocab JSON Merge', 'JSON chord_types has minmaj7', !!jsonData.chord_types?.minmaj7, 'missing');
+        assert('Vocab JSON Merge', 'min9 intervals correct [0,3,7,10,14]',
+            JSON.stringify(jsonData.chord_types.min9?.intervals) === JSON.stringify([0,3,7,10,14]),
+            `got ${JSON.stringify(jsonData.chord_types.min9?.intervals)}`);
+        assert('Vocab JSON Merge', 'sus2 intervals correct [0,2,7]',
+            JSON.stringify(jsonData.chord_types.sus2?.intervals) === JSON.stringify([0,2,7]),
+            `got ${JSON.stringify(jsonData.chord_types.sus2?.intervals)}`);
+
+        // extension_map — mMaj7 entry on m7
+        const m7Exts = jsonData.extension_map?.m7 || [];
+        assert('Vocab JSON Merge', 'JSON m7 extensions has mMaj7 entry', m7Exts.some(e => e.suffix === 'mMaj7'), 'missing mMaj7');
+        const mMaj7 = m7Exts.find(e => e.suffix === 'mMaj7');
+        assert('Vocab JSON Merge', 'mMaj7 has source attribution', typeof mMaj7?.source === 'string' && mMaj7.source.length > 0, 'missing source');
+
+        // extension_map — Maj7 entries include maj9
+        const maj7Exts = jsonData.extension_map?.Maj7 || [];
+        assert('Vocab JSON Merge', 'JSON Maj7 extensions has maj9 entry', maj7Exts.some(e => e.suffix === 'maj9'), 'missing maj9');
+        assert('Vocab JSON Merge', 'JSON Maj7 extensions has maj7#11 entry', maj7Exts.some(e => e.suffix === 'maj7#11'), 'missing maj7#11');
+
+        // style_templates — glasper
+        const glasper = jsonData.style_templates?.glasper;
+        assert('Vocab JSON Merge', 'JSON has glasper style template', !!glasper, 'missing');
+        assert('Vocab JSON Merge', 'glasper has name', glasper?.name === 'Robert Glasper', `got "${glasper?.name}"`);
+        assert('Vocab JSON Merge', 'glasper has 4 progressions', glasper?.progressions?.length === 4, `got ${glasper?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'glasper has 6 rules', glasper?.rules?.length === 6, `got ${glasper?.rules?.length}`);
+        assert('Vocab JSON Merge', 'glasper has cyclic thirds progression',
+            glasper?.progressions?.some(p => p.label.includes('Cyclic')), 'missing cyclic thirds');
+        assert('Vocab JSON Merge', 'glasper has Afro Blue progression',
+            glasper?.progressions?.some(p => p.label.includes('Afro Blue')), 'missing Afro Blue');
+        assert('Vocab JSON Merge', 'glasper rules warn against ii-V-I framing',
+            glasper?.rules?.some(r => r.includes('ii-V-I')), 'missing ii-V-I warning rule');
+
+        // style_templates — mac_miller
+        const mac = jsonData.style_templates?.mac_miller;
+        assert('Vocab JSON Merge', 'JSON has mac_miller style template', !!mac, 'missing');
+        assert('Vocab JSON Merge', 'mac_miller has name', mac?.name === 'Mac Miller', `got "${mac?.name}"`);
+        assert('Vocab JSON Merge', 'mac_miller has 4 progressions', mac?.progressions?.length === 4, `got ${mac?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'mac_miller has 6 rules', mac?.rules?.length === 6, `got ${mac?.rules?.length}`);
+        assert('Vocab JSON Merge', 'mac_miller has Small Worlds progression',
+            mac?.progressions?.some(p => p.label.includes('Small Worlds')), 'missing Small Worlds');
+        assert('Vocab JSON Merge', 'mac_miller has Ladders progression',
+            mac?.progressions?.some(p => p.label.includes('Ladders')), 'missing Ladders');
+        assert('Vocab JSON Merge', 'mac_miller has Circles progression',
+            mac?.progressions?.some(p => p.label.includes('Circles')), 'missing Circles');
+        assert('Vocab JSON Merge', 'mac_miller rules warn against forcing root voicing',
+            mac?.rules?.some(r => r.includes('rootless') || r.includes('root')), 'missing rootless voicing rule');
+
+        // Merge simulation — verify additive-only behavior
+        const existingSuffixes = new Set((EXTENSION_MAP['m7'] || []).map(e => e.suffix));
+        const newM7 = m7Exts.filter(e => !existingSuffixes.has(e.suffix));
+        assert('Vocab JSON Merge', 'm7 merge: mMaj7 is in new entries (no duplicate)',
+            newM7.some(e => e.suffix === 'mMaj7'),
+            `new entries: ${newM7.map(e=>e.suffix).join(',')}`);
+        assert('Vocab JSON Merge', 'm7 merge: no suffix duplicates across built-in + JSON',
+            (() => {
+                const merged = [...(EXTENSION_MAP['m7'] || []), ...newM7];
+                const seen = new Set(); let dup = false;
+                for (const e of merged) { if (seen.has(e.suffix)) { dup = true; break; } seen.add(e.suffix); }
+                return !dup;
+            })(), 'duplicate suffix found');
+
+        // frank_ocean still intact
+        assert('Vocab JSON Merge', 'frank_ocean template still present in JSON', !!jsonData.style_templates?.frank_ocean, 'missing');
+        assert('Vocab JSON Merge', 'frank_ocean has 7 progressions',
+            jsonData.style_templates.frank_ocean?.progressions?.length === 7,
+            `got ${jsonData.style_templates.frank_ocean?.progressions?.length}`);
+        } // end if(jsonData)
+    }
 
     // ─── RENDER ──────────────────────────────────────────────────────────────
 

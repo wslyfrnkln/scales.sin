@@ -1,10 +1,12 @@
 {
   "_meta": {
     "generated_by": "Javelin",
-    "last_updated": "2026-03-09",
+    "last_updated": "2026-03-10",
     "sources": [
       "RESEARCH_ScalesSin_2026-03-09-dangelo-voodoo-chord-progressions.md",
-      "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md"
+      "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md",
+      "RESEARCH_ScalesSin_2026-03-10-glasper-chord-voicings.md",
+      "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -39,6 +41,26 @@
       "intervals": [0, 5, 10, 21],
       "suffix": "13sus4",
       "name": "13 suspended 4"
+    },
+    "min9": {
+      "intervals": [0, 3, 7, 10, 14],
+      "suffix": "m9",
+      "name": "Minor 9"
+    },
+    "sus2": {
+      "intervals": [0, 2, 7],
+      "suffix": "sus2",
+      "name": "Suspended 2"
+    },
+    "maj6": {
+      "intervals": [0, 4, 7, 9],
+      "suffix": "6",
+      "name": "Major 6 (add6)"
+    },
+    "minmaj7": {
+      "intervals": [0, 3, 7, 11],
+      "suffix": "mMaj7",
+      "name": "Minor major 7 (Thundercat / Mac Miller orbit)"
     }
   },
 
@@ -113,11 +135,115 @@
         "intervals": [3, 10, 14, 17],
         "label": "Minor 11 — omit root + 5, keep b3 (modal float)",
         "source": "D'Angelo — Dorian/Aeolian ambiguity technique"
+      },
+      {
+        "suffix": "mMaj7",
+        "intervals": [0, 3, 7, 11],
+        "label": "Minor major 7 — unusual melancholy color (omit nothing, 4 notes)",
+        "source": "Thundercat / Mac Miller orbit — chromatic tension voicing"
+      }
+    ],
+    "Maj7": [
+      {
+        "suffix": "maj7#11",
+        "intervals": [0, 4, 11, 18],
+        "label": "Maj7 #11 — Lydian sound (omit 5, tritone on top)",
+        "source": "Frank Ocean — White Ferrari / Ivy (Lydian mode center)"
+      },
+      {
+        "suffix": "maj7/9",
+        "intervals": [0, 4, 11, 14],
+        "label": "Maj7 add9 — clean open voicing (omit 5)",
+        "source": "D'Angelo — Dadd9 in Untitled"
+      },
+      {
+        "suffix": "maj9",
+        "intervals": [0, 4, 11, 14],
+        "label": "Maj9 — richly extended major (omit 5) — Glasper core palette",
+        "source": "Robert Glasper — Black Radio, jazz-hip-hop crossover"
       }
     ]
   },
 
   "style_templates": {
+    "glasper": {
+      "name": "Robert Glasper",
+      "description": "Jazz-hip-hop crossover. Rootless cluster voicings (9–b3–11 close position). Cyclic third-motion progressions — not ii-V-I. Sus chord dominant substitution. Dorian mode default. Avoids functional resolution.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj9",
+        "dom": "13sus4"
+      },
+      "progressions": [
+        {
+          "label": "Cyclic minor thirds",
+          "degrees": ["im9", "bIIImaj7", "bVImaj7", "bVImaj7"],
+          "notes": "Gm9–Bbmaj7–Ebmaj7–Dbmaj7. Root motion by alternating m3 + M3 — the ic3/4 dual interval cycle. No dominant function. Feels suspended, searching."
+        },
+        {
+          "label": "Neo-soul loop (Glasper core)",
+          "degrees": ["bII-11", "im9", "bVImaj13", "bII-11"],
+          "notes": "Bb-11→G-9→Gbmaj13→Eb-11. Cyclic, no resolution, indefinitely loopable. Default Glasper Experiment vamp."
+        },
+        {
+          "label": "Gospel-inflected minor",
+          "degrees": ["im9", "IVm9", "VII11", "bVIImaj7"],
+          "notes": "G-9|D-9|A-11|Bbmaj7. Slash voicing on last chord (Fadd2/A). Church harmony + jazz extensions."
+        },
+        {
+          "label": "Afro Blue (Glasper version)",
+          "degrees": ["im", "bVImaj7", "bIIImaj7", "bIImaj7"],
+          "notes": "Cm–Abmaj7–Ebmaj7–Dbmaj7. Chromatic mediant motion — NOT standard Afro Blue. Each chord a half-step or third away."
+        }
+      ],
+      "rules": [
+        "Cyclic third motion is the default harmonic engine — not ii-V-I",
+        "Replace V7 with 13sus4 — never use a leading-tone dominant in neo-soul context",
+        "Rootless cluster voicings: RH plays 9–b3–11 close position, LH holds pedal bass",
+        "Default minor mode is Dorian (natural 6th, no leading tone)",
+        "Mode mixture as color — slide between parallel major/minor without cadence",
+        "Do NOT frame in functional jazz syntax — that is explicitly what Glasper avoids"
+      ]
+    },
+    "mac_miller": {
+      "name": "Mac Miller",
+      "description": "Neo-soul jazz applied to hip-hop. Extended harmony (dom7b9, m9, m11, maj7) over hip-hop rhythmic feel. Modal interchange from parallel minor as primary color tool. Jon Brion film-score influence: unresolved tension, cinematic ambiguity. Swimming + Circles harmonic palette.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "7flat9"
+      },
+      "progressions": [
+        {
+          "label": "Small Worlds — neo-soul ii-V minor",
+          "degrees": ["bVImaj7", "bVIIm7", "V7b9"],
+          "notes": "Fmaj7–Gm7–C7b9 in Bb minor. bVI–bVII–V7b9(i). Jazz ii-V adapted for minor key. C7b9 is the genre's primary tension chord — resolves to Bbm tonic. Key: Bb minor."
+        },
+        {
+          "label": "Ladders — minor bVI borrow",
+          "degrees": ["im7", "IVm7", "bVImaj7", "im"],
+          "notes": "Gm7–Cm7–Ebmaj7–Gm in G minor. Textbook neo-soul minor. Ebmaj7 is borrowed bVI from parallel major — Mac's harmonic signature."
+        },
+        {
+          "label": "Circles — suspension + release",
+          "degrees": ["I", "Isus4", "bVII6", "IV", "IV7"],
+          "notes": "E–Esus4–D6–A–D7. E major. Sus4 delays resolution; D6 (not Dmaj7 — the 6th is softer) is the Mac Miller color chord. D7 left unresolved — Jon Brion cinematic ambiguity."
+        },
+        {
+          "label": "Larry Lovestein — jazz ii-V",
+          "degrees": ["vim7", "V7", "IV7", "I"],
+          "notes": "Am7–G7–C7–F. Classic jazz ii-V-I in F. Mac's early jazz alter-ego — confirms the jazz DNA predates Swimming by 6 years."
+        }
+      ],
+      "rules": [
+        "Modal interchange from parallel minor is the primary color move — bVI, bVII, bIII",
+        "dom7b9 is the primary tension chord — not plain dom7",
+        "Tab sites strip extensions — Gm7 in a tab is likely Gm9 in the actual recording",
+        "Rootless voicings common — don't force root in upper register, let bass define it",
+        "D6 and Dmaj7 are different colors — major 6th is softer, less jazzy (Circles texture)",
+        "Unresolved dominants are intentional — Jon Brion film-score aesthetic, not mistakes"
+      ]
+    },
     "frank_ocean": {
       "name": "Frank Ocean",
       "description": "Mixolydian bVII borrow as signature move. Modal mixture as atmosphere, not modulation. Avoids dominant resolution — sus chords or modal color replace V7. Sparse harmonic rhythm on Blonde; denser jazz vocab on Channel Orange.",
