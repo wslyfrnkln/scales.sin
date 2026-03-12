@@ -982,6 +982,77 @@ function pcPresent(result, rootMidi, semitone) {
         assert('Vocab JSON Merge', 'dom13 ext has .Paak source',
             dom13ext?.source?.includes('Paak') || dom13ext?.source?.includes('Silk Sonic'), 'missing source');
 
+        // ─── Gospel ───────────────────────────────────────────────────────
+        const gospel = jsonData.style_templates?.gospel;
+        assert('Vocab JSON Merge', 'gospel template exists', !!gospel, 'missing');
+        assert('Vocab JSON Merge', 'gospel name includes Kirk Franklin',
+            gospel?.name?.includes('Kirk Franklin'), gospel?.name);
+        assert('Vocab JSON Merge', 'gospel has 4+ progressions',
+            (gospel?.progressions?.length || 0) >= 4, `got ${gospel?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'gospel has I Smile progression',
+            gospel?.progressions?.some(p => p.label?.toLowerCase().includes('i smile')), 'missing');
+        assert('Vocab JSON Merge', 'gospel has No Weapon progression',
+            gospel?.progressions?.some(p => p.label?.toLowerCase().includes('no weapon')), 'missing');
+        assert('Vocab JSON Merge', 'gospel rule: plagal cadence',
+            gospel?.rules?.some(r => r.toLowerCase().includes('plagal')), 'missing');
+        assert('Vocab JSON Merge', 'gospel rule: sus as resting state',
+            gospel?.rules?.some(r => r.toLowerCase().includes('sus') && r.toLowerCase().includes('rest')), 'missing');
+
+        // ─── Kendrick TPAB ────────────────────────────────────────────────
+        const kendrick = jsonData.style_templates?.kendrick;
+        assert('Vocab JSON Merge', 'kendrick template exists', !!kendrick, 'missing');
+        assert('Vocab JSON Merge', 'kendrick name includes Kendrick',
+            kendrick?.name?.toLowerCase().includes('kendrick'), kendrick?.name);
+        assert('Vocab JSON Merge', 'kendrick has 4+ progressions',
+            (kendrick?.progressions?.length || 0) >= 4, `got ${kendrick?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'kendrick has Wesley Theory progression',
+            kendrick?.progressions?.some(p => p.label?.toLowerCase().includes('wesley')), 'missing');
+        assert('Vocab JSON Merge', 'kendrick has How Much a Dollar Cost progression',
+            kendrick?.progressions?.some(p => p.label?.toLowerCase().includes('dollar')), 'missing');
+        assert('Vocab JSON Merge', 'kendrick rule: bVI maj7 signature',
+            kendrick?.rules?.some(r => r.toLowerCase().includes('bvi')), 'missing');
+        assert('Vocab JSON Merge', 'kendrick rule: suspended dominants',
+            kendrick?.rules?.some(r => r.toLowerCase().includes('suspend')), 'missing');
+
+        // ─── Joe Pass ─────────────────────────────────────────────────────
+        const joePass = jsonData.style_templates?.joe_pass;
+        assert('Vocab JSON Merge', 'joe_pass template exists', !!joePass, 'missing');
+        assert('Vocab JSON Merge', 'joe_pass name includes Joe Pass',
+            joePass?.name?.includes('Joe Pass'), joePass?.name);
+        assert('Vocab JSON Merge', 'joe_pass has 4+ progressions',
+            (joePass?.progressions?.length || 0) >= 4, `got ${joePass?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'joe_pass has ii-V-I progression',
+            joePass?.progressions?.some(p => /ii.?v.?i/i.test(p.label) || p.label?.toLowerCase().includes('tritone')), 'missing');
+        assert('Vocab JSON Merge', 'joe_pass has tritone sub progression',
+            joePass?.progressions?.some(p => p.label?.toLowerCase().includes('tritone')), 'missing');
+        assert('Vocab JSON Merge', 'joe_pass rule: shell voicing',
+            joePass?.rules?.some(r => r.toLowerCase().includes('shell')), 'missing');
+        assert('Vocab JSON Merge', 'joe_pass rule: guide tones',
+            joePass?.rules?.some(r => r.toLowerCase().includes('guide tone')), 'missing');
+
+        // ─── Ama Lou ──────────────────────────────────────────────────────
+        const amaLou = jsonData.style_templates?.ama_lou;
+        assert('Vocab JSON Merge', 'ama_lou template exists', !!amaLou, 'missing');
+        assert('Vocab JSON Merge', 'ama_lou name includes Ama Lou',
+            amaLou?.name?.includes('Ama Lou'), amaLou?.name);
+        assert('Vocab JSON Merge', 'ama_lou has 4+ progressions',
+            (amaLou?.progressions?.length || 0) >= 4, `got ${amaLou?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'ama_lou has Tried Up progression',
+            amaLou?.progressions?.some(p => p.label?.toLowerCase().includes('tried up')), 'missing');
+        assert('Vocab JSON Merge', 'ama_lou has Northside progression',
+            amaLou?.progressions?.some(p => p.label?.toLowerCase().includes('northside')), 'missing');
+        assert('Vocab JSON Merge', 'ama_lou rule: bVI plateau',
+            amaLou?.rules?.some(r => r.toLowerCase().includes('bvi')), 'missing');
+        assert('Vocab JSON Merge', 'ama_lou rule: static loops',
+            amaLou?.rules?.some(r => r.toLowerCase().includes('static') || r.toLowerCase().includes('loop')), 'missing');
+
+        // ─── Totals ───────────────────────────────────────────────────────
+        assert('Vocab JSON Merge', 'JSON has 14 sources',
+            (jsonData._meta?.sources?.length || 0) === 14, `got ${jsonData._meta?.sources?.length}`);
+        assert('Vocab JSON Merge', 'JSON has 13 style templates',
+            Object.keys(jsonData.style_templates || {}).length === 13,
+            `got ${Object.keys(jsonData.style_templates || {}).length}`);
+
         } // end if(jsonData)
     }
 

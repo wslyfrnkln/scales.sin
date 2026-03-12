@@ -1,7 +1,7 @@
 {
   "_meta": {
     "generated_by": "Javelin",
-    "last_updated": "2026-03-11",
+    "last_updated": "2026-03-12",
     "sources": [
       "RESEARCH_ScalesSin_2026-03-09-dangelo-voodoo-chord-progressions.md",
       "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md",
@@ -12,7 +12,11 @@
       "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md",
       "herbie_hancock_chord_vocab_2026-03-10.md",
       "thundercat_chord_vocab_2026-03-10.md",
-      "dilla_chord_vocab_2026-03-10.md"
+      "dilla_chord_vocab_2026-03-10.md",
+      "gospel_chord_vocab_2026-03-10.md",
+      "kendrick_tpab_chord_vocab_2026-03-10.md",
+      "joe_pass_chord_vocab_2026-03-10.md",
+      "ama_lou_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -596,6 +600,162 @@
         "Extended chords (maj7, min9, maj9) as default voicing — triads only for contrast",
         "Dorian as default minor (raised 6th, no leading tone) — shared with D'Angelo and Leon Thomas",
         "Lydian IImaj7 or bVIImaj7 for unresolved, floating tonic feel"
+      ]
+    },
+    "gospel": {
+      "name": "Gospel (Kirk Franklin / Fred Hammond)",
+      "description": "Plagal-first harmony: IV-I over V-I. Sus chords as resting states, not passing tension. bVII borrowed from Mixolydian. Harmonic minor V7(b9) for the 'gospel sting'. Extended chords with rootless voicings — omit root, voice 3-5-7-9 in right hand.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj9",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "I Smile — suspended tonic gospel loop",
+          "degrees": ["I", "Isus4", "IV", "bVII", "Vsus4"],
+          "notes": "C–Csus4–F–Bb–Gsus4 in C. Immediate re-suspension of tonic. bVII (Bb) borrowed from Mixolydian. Gsus4 hangs without resolution — sus as final resting state."
+        },
+        {
+          "label": "No Weapon — chromatic bass descending chorus",
+          "degrees": ["Iadd9", "I/V", "vim7", "IV", "bVImaj7", "I/III", "iim7"],
+          "notes": "Abadd9–Eb/G–Fm7–Eb–DbMaj7–Ab/C–Bbm7 in Ab. Bass descends Ab-G-F. DbMaj7 (bVI) is the 'sacred' color chord. Ends on ii without authentic V-I."
+        },
+        {
+          "label": "Gospel double plagal turnaround",
+          "degrees": ["bVII", "IV", "I"],
+          "notes": "Bb–F–C in C major. Double plagal: IV is itself approached from its IV. Classic gospel ending. Al Green, Fred Hammond, contemporary worship signature."
+        },
+        {
+          "label": "Secondary dominant to relative minor",
+          "degrees": ["I", "IV", "V/vi", "vi"],
+          "notes": "C–F–E7–Am. E7 = direct V/vi (secondary dominant to Am). Gospel introduces minor vi via its own dominant rather than diatonic iii-vi voice leading."
+        }
+      ],
+      "rules": [
+        "Plagal cadence (IV-I) is primary resolution — not V-I",
+        "Sus4 chords (Vsus4, Isus4) are resting states, not passing tension requiring resolution",
+        "bVII (Mixolydian borrow) as a structural color chord — not just a passing chord",
+        "V7(b9) for dramatic tension — the 'gospel sting' — resolves to I or deceptively to vi",
+        "add9 crunch: voice the 9th between root and 3rd (C-D-E-G) for brightness, not as an upper extension",
+        "Rootless voicing standard on tonic: omit root, play 3-5-7-9 in upper register"
+      ]
+    },
+    "kendrick": {
+      "name": "Kendrick Lamar (TPAB)",
+      "description": "Minor/Dorian modal funk with jazz extensions. Heavy use of bVI maj7 as a color landing point rather than passing chord. Suspended dominants (ii7/V without resolution). Half-step modulation as structural device. P-Funk one-chord vamp aesthetic from live ensemble vocabulary.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "Wesley's Theory — P-Funk Dorian vamp",
+          "degrees": ["im7"],
+          "notes": "Bm7 modal center. Single-chord Dorian vamp, P-Funk tradition. Groove is the movement — harmony is static. Thundercat bass implies 9th/11th as passing tones."
+        },
+        {
+          "label": "These Walls — parallel major/minor toggle",
+          "degrees": ["bVImaj9", "iim7", "iim7/V", "Imaj7"],
+          "notes": "Abmaj9–Gm7–Gm7/C–Fmaj7 in F major. Gm7/C is suspended dominant (no resolution). Abmaj9 (bIIImaj9 in F minor) as imported color. F major and F minor sections alternate across the song."
+        },
+        {
+          "label": "How Much a Dollar Cost — bVI maj7 minor vamp",
+          "degrees": ["bVImaj7", "vim", "bVImaj7", "bVII"],
+          "notes": "Gbmaj7–Fm–Gbmaj7–Ab in Bb minor. bVI maj7 (Gbmaj7) is the most distinctively TPAB color — borrowed major a half-step above the dominant. Polyrhythmic 3/4 against 4/4."
+        },
+        {
+          "label": "You Ain't Gotta Lie — jazz minor ii-V-I",
+          "degrees": ["bIImaj7", "im7", "ivm7", "V7"],
+          "notes": "Cmaj7–Bm7–Em7–F#7 in B minor. Cmaj7 (bIImaj7) is a Neapolitan-adjacent move, chromatic half-step descent to tonic. F#7 as V7 is one of few TPAB tracks with functional dominant resolution."
+        }
+      ],
+      "rules": [
+        "bVI maj7 is the signature TPAB color chord — use as a landing point, not a passing chord",
+        "Suspended dominants (ii7/V, Vsus4) — imply resolution without delivering it",
+        "Half-step modulation as structural device — shift key by a semitone instead of developing harmonically",
+        "Minor/Dorian modal vamps — one or two chords, groove-primary, harmony is texture not motion",
+        "Parallel major/minor borrowing at the section level — entire sections shift from major to minor",
+        "Extended voicings throughout: maj9, m7, min9, min11 as default — triads are intentionally sparse"
+      ]
+    },
+    "joe_pass": {
+      "name": "Joe Pass (Virtuoso)",
+      "description": "Shell voicings (R-3-7) as harmonic anchors. Drop-2 and drop-3 as the primary voicing systems — drop-3 for solo context (bass + 3-note cluster), drop-2 for ensemble. ii-V-I as the central harmonic unit. Tritone substitution on V7, passing diminished between diatonic chords. Voice the melody on top, let inner voices move chromatically.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "Drop-3 solo ii-V-I in C",
+          "degrees": ["iim7", "V7", "Imaj7"],
+          "notes": "Dm7–G7–Cmaj7. Drop-3 voicings: Dm7 (D/A-C-F), G7 (G/D-F-B), Cmaj7 (C/G-B-E). Bass note + 3-note upper cluster. Tritone B-F in G7 is the irreducible guide-tone identity."
+        },
+        {
+          "label": "Tritone substitution ii-V-I",
+          "degrees": ["iim7", "bIIdom7", "Imaj7"],
+          "notes": "Dm7–Db7–Cmaj7. Db7 replaces G7 (tritone away). Bass descends by half-step to C — stronger voice leading than authentic V-I. Guide tones swap enharmonically (B/F become F/Cb)."
+        },
+        {
+          "label": "Chromatic passing diminished",
+          "degrees": ["Imaj7", "sharp-Idim7", "iim7"],
+          "notes": "Cmaj7–C#dim7–Dm7. Passing diminished fills the chromatic step. Dim7 is symmetric — one grip covers four enharmonic functions. Bass and inner voice move in half-steps."
+        },
+        {
+          "label": "Chromatic descending dominant chain",
+          "degrees": ["bII13sus4", "bII13", "I13sus4", "I13"],
+          "notes": "Ab13sus4–Ab13–G13sus4–G13. Half-step descent with sus4 → resolved dominant per bar. Pass's signature chromatic approach: any chord can be approached from a half-step above or below."
+        }
+      ],
+      "rules": [
+        "Shell voicing (R-3-7) is the foundation — build from it, not from full chord shapes",
+        "Guide tones (3rd and 7th) never move — they define the chord identity; everything else is mobile",
+        "Drop-3 for solo/bass context: bass note + 3-note upper cluster (keyboard: LH bass, RH three notes)",
+        "Tritone substitution targets V7 only — replace G7 with Db7 in ii-V-I",
+        "Passing diminished: between any two diatonic chords, insert a dim7 a half-step below the target",
+        "Chromatic approach: approach any target chord from a half-step above or below in parallel motion"
+      ]
+    },
+    "ama_lou": {
+      "name": "Ama Lou (UK Alt-Soul)",
+      "description": "Functional minor with selective extension — closer to Sade's restraint than D'Angelo's modal density. bVI as the signature plateau chord. Harmonic minor V7 for tension points. Dorian/Aeolian toggle without committing to either. Static 2-4 chord loops; melody and vocal development over harmonic stasis.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "Tried Up — harmonic minor V with bVI plateau",
+          "degrees": ["im7", "V7", "bVImaj7", "bVII7"],
+          "notes": "Am7–E7–Fmaj7–G7 in A minor. E7 (raised 7th, harmonic minor V) adds tension without jazz complexity. bVI (Fmaj7) as the warm landing. bVII (G7) as passing color before return."
+        },
+        {
+          "label": "Northside — minor with softened dominant",
+          "degrees": ["im", "V", "bVI", "V"],
+          "notes": "Bm–F#–G–F# in B minor. Advanced version: F#m7 replaces F# major — voices the V as minor 7 to soften dominant pull (UK soul move, avoids hard resolution). Gmaj7 adds warmth."
+        },
+        {
+          "label": "Trust Nobody — Aeolian minor loop",
+          "degrees": ["im", "bVII", "IV", "bIII"],
+          "notes": "C#m–B–F#–E in C# minor. i–bVII–IV–bIII: the bVII and bIII are borrowed from Aeolian/parallel major. Most pentatonic-sounding progression in her catalog."
+        },
+        {
+          "label": "This Town — Aeolian with harmonic V7",
+          "degrees": ["bVI", "vm", "im", "V7"],
+          "notes": "Db–Cm–Fm–C7 in F minor. Cm (minor v) avoids the leading tone — modal Aeolian feel. C7 appears for controlled tension (harmonic minor raise). bVI (Db) as warm opening color."
+        }
+      ],
+      "rules": [
+        "bVI major (flat-sixth) is the primary color landing — warm, settled, not resolving toward tonic",
+        "Harmonic minor V7 for tension — use sparingly as a single controlled point, not throughout",
+        "Dorian/Aeolian toggle: minor iv (Fm) vs major IV (F) within the same song for ambiguity",
+        "Minor v (Cm instead of C) avoids the leading tone — use for modal Aeolian feel over functional motion",
+        "Static loops — 2-4 chords repeated throughout; let the melody and vocals do the developing",
+        "Extensions are selective decoration: maj7, min7, and occasional dom7 — no quartal stacks or 11ths/13ths"
       ]
     }
   }
