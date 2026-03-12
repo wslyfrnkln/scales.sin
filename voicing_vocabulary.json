@@ -8,7 +8,8 @@
       "RESEARCH_ScalesSin_2026-03-10-glasper-chord-voicings.md",
       "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md",
       "badu_chord_vocab_2026-03-10.md",
-      "paak_silksonic_chord_vocab_2026-03-10.md"
+      "paak_silksonic_chord_vocab_2026-03-10.md",
+      "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -78,6 +79,11 @@
       "intervals": [0, 4, 7, 14],
       "suffix": "add9",
       "name": "Add9 (no 7th — open texture, Silk Sonic)"
+    },
+    "min6": {
+      "intervals": [0, 3, 7, 9],
+      "suffix": "m6",
+      "name": "Minor 6 (gospel sub for m7 — less static)"
     }
   },
 
@@ -195,6 +201,45 @@
   },
 
   "style_templates": {
+    "wonder": {
+      "name": "Stevie Wonder",
+      "description": "Classic period 1972–1976. Dominant 9(sus4) as soft dominant substitute. Dorian two-chord vamps. Abrupt chromatic/half-step modulations — no pivot chord. Gospel IV→I plagal and I7→IV moves. Multiple keyboard layers in studio.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "Golden Lady — chromatic modulation",
+          "degrees": ["Imaj9", "ii9", "iiim7", "sharp-iv7", "V7/III"],
+          "notes": "EbMaj9–Fm9–Gm7–A7–D7 in Eb. #iv7 replaces expected IV — Lydian color. Chorus modulates up a half-step twice in a row (abrupt, no pivot). bIIMaj7 (AbMaj7) in chorus gives the signature 'mysterious lift' before resolving to relative minor."
+        },
+        {
+          "label": "As — gospel I7 move",
+          "degrees": ["Imaj7", "I7", "IVmaj7", "bVIImaj7"],
+          "notes": "Bmaj7–B7–Emaj7–Amaj7 in B. I7 treats tonic as its own dominant to reach IV (gospel move). bVIIMaj7 (Amaj7) is Mixolydian borrow. Bridge uses bIIIMaj9 (Dmaj9) — chromatic mediant — as gospel lift before return."
+        },
+        {
+          "label": "Superstition — Dorian two-chord",
+          "degrees": ["im7", "IV7/i"],
+          "notes": "Ebm7–Ab7/Eb in Eb Dorian. Ab7/Eb is the IVdominant with tonic in bass — creates forward motion without leaving the Eb center. Entire track is variations on this two-bar Clavinet riff. Groove IS the composition."
+        },
+        {
+          "label": "Higher Ground — harmonic minor dominant",
+          "degrees": ["im", "bVI", "bVII", "V7sharp5"],
+          "notes": "Ebm–Gb–Ab–Bb7#5 in Eb minor. Bb7#5 raised 5th (altered dominant) maximizes tension before resolution to tonic. Harmonic minor: the V chord is dominant (not minor v), giving strong leading-tone pull."
+        }
+      ],
+      "rules": [
+        "9sus4 replaces bare V7 at cadence — the soft dominant is the Stevie signature",
+        "Dorian IVmaj7 (major IV over minor tonic) is the two-chord vamp engine",
+        "Modulate by half-step or chromatic third — no pivot chord needed",
+        "I7 → IV is a gospel forward-motion device, not a dominant resolution",
+        "bIIMaj7 as color chord resolves by half-step or to i — not as Neapolitan dominant",
+        "Keep extensions in upper-mid register — 9ths and 13ths above the bass to avoid mud"
+      ]
+    },
     "paak": {
       "name": "Anderson .Paak / Silk Sonic",
       "description": "70s Philly/Motown soul filtered through a drummer's harmonic instinct. Non-functional extended 7ths as default resting tones. Dominant 13th and quartal sus chords for float. Chromatic mediant key shifts (by 3rd) for structural moves. Short vamps, heavy repetition — the groove carries the harmony.",
