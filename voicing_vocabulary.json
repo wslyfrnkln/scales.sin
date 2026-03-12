@@ -9,7 +9,8 @@
       "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md",
       "badu_chord_vocab_2026-03-10.md",
       "paak_silksonic_chord_vocab_2026-03-10.md",
-      "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md"
+      "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md",
+      "herbie_hancock_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -84,6 +85,11 @@
       "intervals": [0, 3, 7, 9],
       "suffix": "m6",
       "name": "Minor 6 (gospel sub for m7 — less static)"
+    },
+    "dom7sus4": {
+      "intervals": [0, 5, 7, 10],
+      "suffix": "7sus4",
+      "name": "Dominant 7 sus4 (quartal open voicing — Maiden Voyage template)"
     }
   },
 
@@ -136,6 +142,12 @@
         "intervals": [0, 4, 10, 14, 21],
         "label": "Dominant 13 — full extension, omit 5 (Motown/Philly soul color)",
         "source": "Anderson .Paak / Silk Sonic — G13 in Leave the Door Open"
+      },
+      {
+        "suffix": "7sus4",
+        "intervals": [0, 5, 7, 10],
+        "label": "Dom7sus4 — quartal open dominant, no tritone tension (Hancock/modal jazz)",
+        "source": "Herbie Hancock — Maiden Voyage (Dsus7, Fsus7, Ebsus7), Chameleon"
       }
     ],
     "Maj7": [
@@ -201,6 +213,45 @@
   },
 
   "style_templates": {
+    "herbie": {
+      "name": "Herbie Hancock",
+      "description": "Head Hunters / Sextant era quartal harmony. Two-hand poly-chord: LH spread 5th, RH b3–11–b7–9 cluster. Bb Dorian i-IV vamps where the IV is modal color, not dominant function. Rhodes stays in midrange — synth/clavinet covers bass. Dominant sus chords open rather than resolve.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj7",
+        "dom": "dom7sus4"
+      },
+      "progressions": [
+        {
+          "label": "Maiden Voyage — quartal sus sequence",
+          "degrees": ["I7sus4", "bIII7sus4", "bII7sus4", "vim11"],
+          "notes": "Dsus7–Fsus7–Ebsus7–C#m11. Each chord is a minor 7th with bass a P4 above the root (quartal stack reading upward). Three of four chords are Dom7sus4 variants. No resolution — all chords are modal color. Template for all Hancock funk-era comping."
+        },
+        {
+          "label": "Chameleon — Dorian i-IV vamp",
+          "degrees": ["im7", "IV7"],
+          "notes": "Bbm7–Eb7 in Bb Dorian. Eb7 is NOT a resolving dominant — it is Mixolydian color chord, IV in Dorian. Never resolves. Rhodes stays midrange; ARP Odyssey owns bass. Clavinet strums quartal 4th-interval patterns as rhythmic comping."
+        },
+        {
+          "label": "Actual Proof — Dorian with Lydian passing",
+          "degrees": ["im7", "IV7", "bVImaj7sharp11"],
+          "notes": "Bbm7–Eb7–Ebmaj7#11/D. The #11 (Lydian Dominant color) on bar 12 is a voice-leading byproduct of the quartal transposition — not a deliberate modal choice. D bass under Ebmaj7#11 creates polytonal tension before returning to Bbm7."
+        },
+        {
+          "label": "Am11 poly-chord — quartal voicing",
+          "degrees": ["im11"],
+          "notes": "Am11 as poly-chord: LH = A–E (spread 5th), RH = C–D–G–B (b3–11–b7–9 tight cluster). Full stack: A–E / C–D–G–B. Reads as Am triad LH + Gmaj/2nd inversion RH. Diatonically transposed up a 3rd = Cmaj7#11; further = D7#11 (Lydian Dominant emerges naturally)."
+        }
+      ],
+      "rules": [
+        "Quartal poly-chord: LH spread 5th (root+5), RH tight cluster (b3–11–b7–9)",
+        "Dominant chords are modal color — they do not resolve in funk/modal context",
+        "Dom7sus4 removes tritone tension — use as groove-locked static color, not cadence",
+        "Rhodes stays in midrange (E3–D5) — let synth or bass define the root",
+        "Lydian Dominant (#11) appears as voice-leading byproduct, not deliberate modal choice",
+        "Dorian IVmaj7 / IV7 is the two-chord engine — same as Wonder/Badu but more open/quartal"
+      ]
+    },
     "wonder": {
       "name": "Stevie Wonder",
       "description": "Classic period 1972–1976. Dominant 9(sus4) as soft dominant substitute. Dorian two-chord vamps. Abrupt chromatic/half-step modulations — no pivot chord. Gospel IV→I plagal and I7→IV moves. Multiple keyboard layers in studio.",
