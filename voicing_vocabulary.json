@@ -1,12 +1,13 @@
 {
   "_meta": {
     "generated_by": "Javelin",
-    "last_updated": "2026-03-10",
+    "last_updated": "2026-03-11",
     "sources": [
       "RESEARCH_ScalesSin_2026-03-09-dangelo-voodoo-chord-progressions.md",
       "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md",
       "RESEARCH_ScalesSin_2026-03-10-glasper-chord-voicings.md",
-      "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md"
+      "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md",
+      "badu_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -61,6 +62,11 @@
       "intervals": [0, 3, 7, 11],
       "suffix": "mMaj7",
       "name": "Minor major 7 (Thundercat / Mac Miller orbit)"
+    },
+    "dom9b13": {
+      "intervals": [0, 4, 10, 14, 20],
+      "suffix": "9b13",
+      "name": "Dominant 9 flat 13 (augmented color, Soulquarians)"
     }
   },
 
@@ -101,6 +107,12 @@
         "intervals": [0, 5, 10, 21],
         "label": "13sus4 — open dominant color, gospel + neo-soul",
         "source": "Stevie Wonder / gospel tradition"
+      },
+      {
+        "suffix": "9b13",
+        "intervals": [0, 4, 10, 14, 20],
+        "label": "9b13 — dominant with augmented 5th color, Soulquarians texture",
+        "source": "Erykah Badu — Green Eyes (G9b13), Mama's Gun"
       }
     ],
     "Maj7": [
@@ -166,6 +178,45 @@
   },
 
   "style_templates": {
+    "badu": {
+      "name": "Erykah Badu",
+      "description": "Soulquarians harmonic language. Cyclic minor extensions (m9, m11), non-diatonic major7 substitutions (bVI, bII chromatic mediants), slash chords as modal ambiguity. Bb Dorian default. Deliberately avoids V→I resolution — loops, never cadences. Gospel major-IV-in-minor lift as color move.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj7",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "Other Side of the Game — chromatic mediant",
+          "degrees": ["IVmaj9", "Imaj9", "bVImaj7", "V9b13"],
+          "notes": "Dbmaj9–Abmaj9–Emaj7–Eb9b13/A in Ab major. The bVI (Emaj7) is non-diatonic chromatic mediant — Badu's most repeated harmonic signature. V arrives as slash chord with augmented color, never resolves cleanly."
+        },
+        {
+          "label": "Tyrone — Phrygian modal loop",
+          "degrees": ["im9", "bIIImaj7", "bIVm7", "bVIm7"],
+          "notes": "Bbm9–Dbmaj7–Ebm7–Gbm7. bIVm7 and bVIm7 are Phrygian/parallel-minor borrows. Stays locked on Bbm extended for long stretches — modal static looping."
+        },
+        {
+          "label": "Window Seat — Dorian vamp",
+          "degrees": ["im11", "IVmaj7", "bVIImaj9", "im11"],
+          "notes": "Bbm11–Ebmaj7–Abmaj9–Bbm11 in Bb Dorian. IVmaj7 (Ebmaj7) is the Dorian sweet spot — major IV in minor context without leaving the mode. Loop gravity is centripetal, not directional."
+        },
+        {
+          "label": "Green Eyes — jazz-voiced suite",
+          "degrees": ["I9b13", "IVm", "VII7", "bVIImaj7"],
+          "notes": "G9b13–Am/C–B7–Bbmaj7 in G. Fully jazz-voiced: 9b13 dominant, diminished passing, non-diatonic Emaj7 chromatic mediant. Roy Hargrove trumpet clusters stacked 2-3 voices over Poyser's sparse voicings."
+        }
+      ],
+      "rules": [
+        "Cyclic looping is the default — avoid V→I cadence entirely",
+        "Bb Dorian is the primary modal center — minor with raised 6th (Dorian IVmaj7 is the neo-soul sweet spot)",
+        "bVI non-diatonic major7 is the signature color move — chromatic mediant, not functional",
+        "Slash chords (Abm7/Gb, Bbm9/Eb) create modal ambiguity — read as modal, not as inversions",
+        "Cluster voicings: 9th–b3–11th tight in RH, root held by bass (Pino/Poyser split)",
+        "Gospel lift: major IV in minor context (Ebmaj7 over Bbm tonic) — color move, not modulation"
+      ]
+    },
     "glasper": {
       "name": "Robert Glasper",
       "description": "Jazz-hip-hop crossover. Rootless cluster voicings (9–b3–11 close position). Cyclic third-motion progressions — not ii-V-I. Sus chord dominant substitution. Dorian mode default. Avoids functional resolution.",

@@ -53,6 +53,7 @@ _Expand chord/scale coverage, add new tools_
 - [ ] Pentatonic scales in scale viz
 - [ ] Bass guitar view (4-string)
 - [ ] Loop Breaker mode (suggest substitutions for stuck 2-bar loops)
+- [ ] **Style-aware progression generation** — click style prog button → keep bar 1 as tonic anchor → resolve degrees against keyRoot → fill bars 2–4 → renderCards(). Needs: degree resolver (bVImaj9 → semitone + CHORD_TYPES key), suffix→CHORD_TYPES mapping, click handler on .style-prog-btn
 
 ### Phase 3 — Native iOS App
 _SwiftUI rebuild for App Store_

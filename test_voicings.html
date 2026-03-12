@@ -929,6 +929,34 @@ function pcPresent(result, rootMidi, semitone) {
         assert('Vocab JSON Merge', 'frank_ocean has 7 progressions',
             jsonData.style_templates.frank_ocean?.progressions?.length === 7,
             `got ${jsonData.style_templates.frank_ocean?.progressions?.length}`);
+
+        // badu
+        const badu = jsonData.style_templates?.badu;
+        assert('Vocab JSON Merge', 'JSON has badu style template', !!badu, 'missing');
+        assert('Vocab JSON Merge', 'badu has name', badu?.name === 'Erykah Badu', `got "${badu?.name}"`);
+        assert('Vocab JSON Merge', 'badu has 4 progressions', badu?.progressions?.length === 4, `got ${badu?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'badu has 6 rules', badu?.rules?.length === 6, `got ${badu?.rules?.length}`);
+        assert('Vocab JSON Merge', 'badu has Other Side of the Game progression',
+            badu?.progressions?.some(p => p.label.includes('Other Side')), 'missing');
+        assert('Vocab JSON Merge', 'badu has Window Seat progression',
+            badu?.progressions?.some(p => p.label.includes('Window Seat')), 'missing');
+        assert('Vocab JSON Merge', 'badu rule: avoid V→I cadence',
+            badu?.rules?.some(r => r.includes('V→I')), 'missing V→I rule');
+        assert('Vocab JSON Merge', 'badu rule: Bb Dorian',
+            badu?.rules?.some(r => r.includes('Dorian')), 'missing Dorian rule');
+
+        // dom9b13 chord type
+        assert('Vocab JSON Merge', 'JSON chord_types has dom9b13', !!jsonData.chord_types?.dom9b13, 'missing');
+        assert('Vocab JSON Merge', 'dom9b13 intervals correct [0,4,10,14,20]',
+            JSON.stringify(jsonData.chord_types.dom9b13?.intervals) === JSON.stringify([0,4,10,14,20]),
+            `got ${JSON.stringify(jsonData.chord_types.dom9b13?.intervals)}`);
+
+        // 9b13 extension on dom7
+        const dom9b13ext = (jsonData.extension_map?.['7'] || []).find(e => e.suffix === '9b13');
+        assert('Vocab JSON Merge', 'JSON 7 extensions has 9b13', !!dom9b13ext, 'missing');
+        assert('Vocab JSON Merge', '9b13 has Badu source attribution',
+            dom9b13ext?.source?.includes('Badu') || dom9b13ext?.source?.includes('Soulquarians'), 'missing source');
+
         } // end if(jsonData)
     }
 
