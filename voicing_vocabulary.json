@@ -10,7 +10,8 @@
       "badu_chord_vocab_2026-03-10.md",
       "paak_silksonic_chord_vocab_2026-03-10.md",
       "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md",
-      "herbie_hancock_chord_vocab_2026-03-10.md"
+      "herbie_hancock_chord_vocab_2026-03-10.md",
+      "thundercat_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -90,6 +91,16 @@
       "intervals": [0, 5, 7, 10],
       "suffix": "7sus4",
       "name": "Dominant 7 sus4 (quartal open voicing — Maiden Voyage template)"
+    },
+    "dom7sharp5": {
+      "intervals": [0, 4, 8, 10],
+      "suffix": "7#5",
+      "name": "Dominant 7 sharp 5 (augmented dominant — jazz cadence color)"
+    },
+    "sus2sharp11": {
+      "intervals": [0, 2, 7, 18],
+      "suffix": "sus2#11",
+      "name": "Sus2 #11 (Lydian color chord — Thundercat / Rabbot Ho)"
     }
   },
 
@@ -208,11 +219,56 @@
         "intervals": [0, 4, 11, 14],
         "label": "Maj9 — richly extended major (omit 5) — Glasper core palette",
         "source": "Robert Glasper — Black Radio, jazz-hip-hop crossover"
+      },
+      {
+        "suffix": "maj13#11",
+        "intervals": [0, 4, 11, 18, 21],
+        "label": "Maj13 #11 — Lydian upper structure (omit 5, #11 + 13 on top)",
+        "source": "Thundercat — I Love Louis Cole (DMaj13#11 upper-structure sub for F#m11)"
       }
     ]
   },
 
   "style_templates": {
+    "thundercat": {
+      "name": "Thundercat",
+      "description": "Jazz-funk bass-as-composer. Diatonic extended chords (min9, maj9, min11) with one non-diatonic wild card — tritone sub or minor-3rd drop. Shell voicings (root+3rd+7th) as foundation. Chromatic approach bass connects roots. Extensions as melody carriers — octave placement is non-negotiable. Dorian default for minor, Lydian color on major.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "7sharp5"
+      },
+      "progressions": [
+        {
+          "label": "Unrequited Love — tritone wild card",
+          "degrees": ["im9", "IVm9", "im9", "bIImaj7"],
+          "notes": "Gm9–Cm9–Gm9–Gbmaj7. Three bars diatonic G Dorian then Gbmaj7 — the tritone-down wild card. Gb and G share no common tones; the harmonic jump is the point. Gbmaj7 is the 'knockout card' that defines the Thundercat signature."
+        },
+        {
+          "label": "Them Changes — chromatic approach chain",
+          "degrees": ["bVImaj7", "IIIm7", "IVm7", "IIm7", "im11"],
+          "notes": "Cbmaj7–Gm7–Abm7–Fm7–Ebm11 in Eb minor. Gm7 is chromatic approach to Abm7 (not diatonic — half-step below). Roman numerals: VI–IIIm–IVm–IIm–Im. Bass walks chromatically between roots. Ebm11 final chord = Dorian tonic with full extension."
+        },
+        {
+          "label": "Dragonball Durag — ascending diatonic bass",
+          "degrees": ["Imaj7", "IIm7", "IIImaj7", "IVsus4", "Vm7sus4"],
+          "notes": "Gmaj7–Am7–Bmaj7–Csus4–Dm7sus4 over ascending D major scale bass. Bass IS the harmonic motion. Melody uses D major pentatonic; F# and B over A imply A6/9; E and A over Dmaj7 imply Dmaj9. Turnaround: C#m7b5–F#7 (ii-V-I back to Dmaj7)."
+        },
+        {
+          "label": "Rabbot Ho — parallel mMaj7 + Lydian",
+          "degrees": ["imMaj7", "bVIImMaj7", "bVIsus2sharp11"],
+          "notes": "Fm/M7–Ebm/M7–Cbsus2#11. Minor/major 7 parallel movement (rare — minor triad + major 7, extreme tension). Cbsus2#11 is the Lydian color exit: #11 an octave above the 5th. Extensions must sit above the 5th or they clash."
+        }
+      ],
+      "rules": [
+        "Wild card rule: one non-diatonic chord per progression — tritone sub or minor-3rd drop",
+        "Shell voicings (root + 3rd + 7th) are the foundation — add one extension note for color",
+        "Extensions are melody carriers — octave placement changes everything (13th high = lush, low = harsh)",
+        "Chromatic approach bass: connect roots via half-step from above or below",
+        "Dorian is the default minor mode — Lydian (#11) used as single-chord color only",
+        "Melody-first reharmonization: melody notes must be contained in the chord, key doesn't have to be"
+      ]
+    },
     "herbie": {
       "name": "Herbie Hancock",
       "description": "Head Hunters / Sextant era quartal harmony. Two-hand poly-chord: LH spread 5th, RH b3–11–b7–9 cluster. Bb Dorian i-IV vamps where the IV is modal color, not dominant function. Rhodes stays in midrange — synth/clavinet covers bass. Dominant sus chords open rather than resolve.",
