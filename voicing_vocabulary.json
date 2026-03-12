@@ -7,7 +7,8 @@
       "RESEARCH_ScalesSin_2026-03-09-leon-thomas-alt-rb-harmony.md",
       "RESEARCH_ScalesSin_2026-03-10-glasper-chord-voicings.md",
       "RESEARCH_ScalesSin_2026-03-10-mac-miller-chord-voicings.md",
-      "badu_chord_vocab_2026-03-10.md"
+      "badu_chord_vocab_2026-03-10.md",
+      "paak_silksonic_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -67,6 +68,16 @@
       "intervals": [0, 4, 10, 14, 20],
       "suffix": "9b13",
       "name": "Dominant 9 flat 13 (augmented color, Soulquarians)"
+    },
+    "dom13": {
+      "intervals": [0, 4, 10, 14, 21],
+      "suffix": "13",
+      "name": "Dominant 13 (omit 5 — Motown/Philly soul full extension)"
+    },
+    "add9noSeven": {
+      "intervals": [0, 4, 7, 14],
+      "suffix": "add9",
+      "name": "Add9 (no 7th — open texture, Silk Sonic)"
     }
   },
 
@@ -113,6 +124,12 @@
         "intervals": [0, 4, 10, 14, 20],
         "label": "9b13 — dominant with augmented 5th color, Soulquarians texture",
         "source": "Erykah Badu — Green Eyes (G9b13), Mama's Gun"
+      },
+      {
+        "suffix": "13",
+        "intervals": [0, 4, 10, 14, 21],
+        "label": "Dominant 13 — full extension, omit 5 (Motown/Philly soul color)",
+        "source": "Anderson .Paak / Silk Sonic — G13 in Leave the Door Open"
       }
     ],
     "Maj7": [
@@ -178,6 +195,45 @@
   },
 
   "style_templates": {
+    "paak": {
+      "name": "Anderson .Paak / Silk Sonic",
+      "description": "70s Philly/Motown soul filtered through a drummer's harmonic instinct. Non-functional extended 7ths as default resting tones. Dominant 13th and quartal sus chords for float. Chromatic mediant key shifts (by 3rd) for structural moves. Short vamps, heavy repetition — the groove carries the harmony.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "dom13sus4"
+      },
+      "progressions": [
+        {
+          "label": "Leave the Door Open — pseudo-Lydian verse",
+          "degrees": ["IVmaj7", "V7/IV", "iiim7", "vim7"],
+          "notes": "Fmaj7–G7/F–Em7–Am7 in C (but tonic C never appears — starts on IV, stays floating). G7/F slash chord gives rootless dominant feel. Pre-chorus modulates up a minor 3rd to Ebmaj7. Final chorus bumps a semitone up — three key centers total."
+        },
+        {
+          "label": "Blast Off — quartal sus float",
+          "degrees": ["V13sus", "VII13sus", "Imaj7"],
+          "notes": "B13sus–G#13sus–Emaj7 in E. Minor-3rd transposition of the sus chord (chromatic mediant). Only one resolution in the song (V13sus→Imaj7) — everything else suspends. VII7sus replaces expected half-diminished; may be unique in pop."
+        },
+        {
+          "label": "Come Down — P-Funk vamp",
+          "degrees": ["im", "im", "bVImaj", "IVm"],
+          "notes": "Bbm–Bbm–Gbmaj–Fm in Bb minor. Two bars tonic minor, bVI chromatic-third pivot, minor iv plagal close. Chord change from Bbm to Gbmaj lands on beat 3 with anticipated bass on the 'and' of 2 — syncopated harmonic rhythm is the point."
+        },
+        {
+          "label": "Skate — chromatic major slides",
+          "degrees": ["im7", "IV7", "IIm7", "V7sus9"],
+          "notes": "Gm7–C7–Am7–Dsus9 in G Dorian. Half-step parallel major slides (B6→C6, Emaj→Fmaj) are P-Funk/Sly Stone vocabulary — no diatonic justification, voice leading smooths it. Descending chromatic major-6th chords in bridge."
+        }
+      ],
+      "rules": [
+        "Extended 7ths (maj7, min7, dom13) are resting tones — they don't need to resolve",
+        "Dominant 13sus replaces plain V7 — avoid leading-tone pull",
+        "Chromatic mediant modulation (key shift by 3rd) is the primary structural move",
+        "Quartal sus chords (stack 4ths) float rather than pull — use over dominant for irresolution",
+        "Short vamps, high repetition — groove creates tension, chords don't need to move",
+        "Chord changes anticipate the beat — place on 'and' of 2 or 4, not the downbeat"
+      ]
+    },
     "badu": {
       "name": "Erykah Badu",
       "description": "Soulquarians harmonic language. Cyclic minor extensions (m9, m11), non-diatonic major7 substitutions (bVI, bII chromatic mediants), slash chords as modal ambiguity. Bb Dorian default. Deliberately avoids V→I resolution — loops, never cadences. Gospel major-IV-in-minor lift as color move.",

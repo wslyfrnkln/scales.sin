@@ -957,6 +957,31 @@ function pcPresent(result, rootMidi, semitone) {
         assert('Vocab JSON Merge', '9b13 has Badu source attribution',
             dom9b13ext?.source?.includes('Badu') || dom9b13ext?.source?.includes('Soulquarians'), 'missing source');
 
+        // paak
+        const paak = jsonData.style_templates?.paak;
+        assert('Vocab JSON Merge', 'JSON has paak style template', !!paak, 'missing');
+        assert('Vocab JSON Merge', 'paak has name', paak?.name === 'Anderson .Paak / Silk Sonic', `got "${paak?.name}"`);
+        assert('Vocab JSON Merge', 'paak has 4 progressions', paak?.progressions?.length === 4, `got ${paak?.progressions?.length}`);
+        assert('Vocab JSON Merge', 'paak has 6 rules', paak?.rules?.length === 6, `got ${paak?.rules?.length}`);
+        assert('Vocab JSON Merge', 'paak has Leave the Door Open',
+            paak?.progressions?.some(p => p.label.includes('Leave the Door')), 'missing');
+        assert('Vocab JSON Merge', 'paak has Blast Off',
+            paak?.progressions?.some(p => p.label.includes('Blast Off')), 'missing');
+        assert('Vocab JSON Merge', 'paak rule: chromatic mediant',
+            paak?.rules?.some(r => r.toLowerCase().includes('chromatic mediant')), 'missing');
+
+        // dom13 chord type
+        assert('Vocab JSON Merge', 'JSON chord_types has dom13', !!jsonData.chord_types?.dom13, 'missing');
+        assert('Vocab JSON Merge', 'dom13 intervals [0,4,10,14,21]',
+            JSON.stringify(jsonData.chord_types.dom13?.intervals) === JSON.stringify([0,4,10,14,21]),
+            `got ${JSON.stringify(jsonData.chord_types.dom13?.intervals)}`);
+
+        // dom13 extension on 7
+        const dom13ext = (jsonData.extension_map?.['7'] || []).find(e => e.suffix === '13');
+        assert('Vocab JSON Merge', 'JSON 7 extensions has dom13', !!dom13ext, 'missing');
+        assert('Vocab JSON Merge', 'dom13 ext has .Paak source',
+            dom13ext?.source?.includes('Paak') || dom13ext?.source?.includes('Silk Sonic'), 'missing source');
+
         } // end if(jsonData)
     }
 
