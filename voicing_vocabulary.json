@@ -11,7 +11,8 @@
       "paak_silksonic_chord_vocab_2026-03-10.md",
       "RESEARCH_stevie_wonder_chord_vocab_2026-03-10.md",
       "herbie_hancock_chord_vocab_2026-03-10.md",
-      "thundercat_chord_vocab_2026-03-10.md"
+      "thundercat_chord_vocab_2026-03-10.md",
+      "dilla_chord_vocab_2026-03-10.md"
     ],
     "notes": "Merges into app via loadVocabulary() in voicing_vocabulary.js. Safe to re-run — additive only."
   },
@@ -230,6 +231,45 @@
   },
 
   "style_templates": {
+    "dilla": {
+      "name": "J Dilla",
+      "description": "Sample-based harmonic composition. Harmony lives in the loop point, not the arrangement. Chords built as fugues of independent melodic lines — bass, inner voice, upper voice each from separate chops, implied chord heard retrospectively. Dorian/Aeolian ambiguity left unresolved. Rhythmic displacement of chord hits creates harmonic ambiguity by timing, not by note choice.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "Workinonit — Aeolian VI-VII-i",
+          "degrees": ["bVImaj", "bVIImaj", "im"],
+          "notes": "Cmaj–Dmaj–Em in E minor (Aeolian). VI-VII-i — descending rock cadence chopped until original context dissolves. Independent Aeolian bassline countermelody against the surface harmony. Tonal ambiguity by omission: surface samples float over with no key obligation."
+        },
+        {
+          "label": "Two Can Win — relative major/minor float",
+          "degrees": ["vim7", "Imaj7", "Imaj", "iiim7"],
+          "notes": "Gm–Bbmaj7–Bbmaj–Dm7 in Bb major / G natural minor. Relative major/minor ambiguity never resolved — both readings left open simultaneously. Harmonic rhythm compressed vs. source, feels more jazz-adjacent."
+        },
+        {
+          "label": "Didn't Cha Know — Bb minor jazz-funk",
+          "degrees": ["IVm7", "I7", "bIIImaj", "IIIm7"],
+          "notes": "Ebm7–Bb7–Dbmaj–Fm7 in Bb minor. Source (Tarika Blue 'Dreamflower') was in Ab minor — pitch-shifted up a whole step to fit vocal range. Bb7 is a dominant that doesn't fully resolve. Extended jazz-funk voicings from the source record preserved."
+        },
+        {
+          "label": "Fugue voicing — counterpoint as chord",
+          "degrees": ["im9", "IVmaj7"],
+          "notes": "Chord not played as vertical stack — bass line, inner voice, upper voice each composed independently from separate sample chops. Implied chord heard retrospectively. Ambiguous voicings (suspended 2nds, open 4ths, incomplete 7ths) emerge from sub-phrase chop points, not from explicit voicing choices."
+        }
+      ],
+      "rules": [
+        "Harmonic content lives in loop point selection — which 4 bars, not how many samples",
+        "Leave Dorian/Aeolian ambiguity unresolved — both minor-mode readings open simultaneously",
+        "Rhythmic displacement of chord hits extends harmonic duration without changing notes",
+        "Chords as fugues: compose bass, inner, and upper voices independently — implied chord emerges",
+        "Sub-phrase chop points yield suspended 2nds, open 4ths, incomplete 7ths — use these textures",
+        "One structural source per track — additional samples are surface/decorative, not harmonic"
+      ]
+    },
     "thundercat": {
       "name": "Thundercat",
       "description": "Jazz-funk bass-as-composer. Diatonic extended chords (min9, maj9, min11) with one non-diatonic wild card — tritone sub or minor-3rd drop. Shell voicings (root+3rd+7th) as foundation. Chromatic approach bass connects roots. Extensions as melody carriers — octave placement is non-negotiable. Dorian default for minor, Lydian color on major.",
