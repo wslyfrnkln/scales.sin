@@ -382,9 +382,26 @@ export function suggestChords(rootA, qualityA, rootB, qualityB, artistKey, vocab
     }
 
     // ── Step 3: extract intermediate degrees ─────────────────────────────────
+    // score >= 3: both chords found in-order — extract chords between them
+    // score >= 0.5: one chord found — extract neighbors around the anchor
     if (bestMatch && bestMatch.score >= 3 && bestKey) {
         const result = extractBridgeChords(
             bestMatch, bestKey, rootA, rootB, artistKey, vocab, 'direct'
+        );
+        if (result.length > 0) {
+            if (tritone) result.forEach(c => { c.flag = 'adventurous'; });
+            return result;
+        }
+    } else if (bestMatch && bestMatch.score >= 0.5 && bestKey) {
+        // Partial match — anchor on whichever endpoint was found, pull neighbors
+        const anchor = bestMatch.indexA >= 0 ? bestMatch.indexA : bestMatch.indexB;
+        const syntheticMatch = {
+            ...bestMatch,
+            indexA: anchor,
+            indexB: anchor,  // same position triggers neighbor extraction in extractBridgeChords
+        };
+        const result = extractBridgeChords(
+            syntheticMatch, bestKey, rootA, rootB, artistKey, vocab, 'direct'
         );
         if (result.length > 0) {
             if (tritone) result.forEach(c => { c.flag = 'adventurous'; });
