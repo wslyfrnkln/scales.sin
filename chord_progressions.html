@@ -616,6 +616,180 @@
             font-size: 0.72rem;
             color: var(--text-secondary);
         }
+
+        /* ── Chord Suggestion Panel ─────────────────────────────────────────── */
+        .suggestion-panel {
+            padding: 1rem 1.5rem;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .suggestion-panel-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.85rem;
+            flex-wrap: wrap;
+        }
+        .suggestion-panel-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .suggestion-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            align-items: flex-end;
+            margin-bottom: 0.85rem;
+        }
+        .suggestion-chord-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .suggestion-chord-group label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .suggestion-chord-group .chord-selectors {
+            display: flex;
+            gap: 0.3rem;
+        }
+        .suggestion-chord-group select {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.4rem;
+            min-width: 52px;
+        }
+        .suggestion-sep {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            align-self: flex-end;
+            padding-bottom: 0.25rem;
+            line-height: 1;
+        }
+        .suggestion-artist-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .suggestion-artist-group label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .suggestion-btn-group {
+            display: flex;
+            gap: 0.5rem;
+            align-self: flex-end;
+        }
+        .sug-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            padding: 0.4rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: 1px solid var(--border);
+        }
+        .sug-btn-suggest {
+            background: rgba(200, 162, 39, 0.12);
+            border-color: rgba(200, 162, 39, 0.35);
+            color: #c9a227;
+        }
+        .sug-btn-suggest:hover {
+            background: rgba(200, 162, 39, 0.22);
+            border-color: #c9a227;
+        }
+        .sug-btn-play {
+            background: rgba(74, 144, 164, 0.12);
+            border-color: rgba(74, 144, 164, 0.35);
+            color: #4a90a4;
+        }
+        .sug-btn-play:hover {
+            background: rgba(74, 144, 164, 0.22);
+            border-color: #4a90a4;
+        }
+        .sug-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        .suggestion-results {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 2.5rem;
+            align-items: center;
+        }
+        .sug-chip {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+            padding: 0.45rem 0.7rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            position: relative;
+        }
+        .sug-chip-symbol {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+        .sug-chip-voicing {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--text-secondary);
+            max-width: 160px;
+        }
+        .sug-chip-source {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            color: var(--deg-3);
+            max-width: 160px;
+        }
+        .sug-chip-badge {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.55rem;
+            padding: 0.1rem 0.35rem;
+            border-radius: 3px;
+            margin-top: 0.15rem;
+            width: fit-content;
+        }
+        .sug-chip-badge.direct {
+            background: rgba(125, 184, 125, 0.15);
+            color: var(--deg-4);
+        }
+        .sug-chip-badge.bridged {
+            background: rgba(200, 162, 39, 0.15);
+            color: #c9a227;
+        }
+        .sug-chip-badge.adventurous {
+            background: rgba(164, 88, 106, 0.15);
+            color: var(--deg-7);
+        }
+        .sug-empty {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .sug-arrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            align-self: center;
+        }
     </style>
 </head>
 <body>
@@ -651,6 +825,41 @@
         </div>
     </div>
     <div id="style-suggestions" class="style-suggestions"></div>
+
+    <!-- ── Chord Suggestion Panel ──────────────────────────────────────── -->
+    <div class="suggestion-panel" id="suggestion-panel">
+        <div class="suggestion-panel-header">
+            <span class="suggestion-panel-label">Chord Suggestion</span>
+        </div>
+        <div class="suggestion-controls">
+            <div class="suggestion-chord-group">
+                <label>Chord A</label>
+                <div class="chord-selectors">
+                    <select id="sug-rootA"></select>
+                    <select id="sug-qualA"></select>
+                </div>
+            </div>
+            <span class="suggestion-sep">→</span>
+            <div class="suggestion-chord-group">
+                <label>Chord B</label>
+                <div class="chord-selectors">
+                    <select id="sug-rootB"></select>
+                    <select id="sug-qualB"></select>
+                </div>
+            </div>
+            <div class="suggestion-artist-group">
+                <label>Artist Style</label>
+                <select id="sug-artist"></select>
+            </div>
+            <div class="suggestion-btn-group">
+                <button class="sug-btn sug-btn-suggest" id="sug-suggest-btn">Suggest</button>
+                <button class="sug-btn sug-btn-play" id="sug-play-btn" disabled>Play</button>
+            </div>
+        </div>
+        <div class="suggestion-results" id="sug-results">
+            <span class="sug-empty">Select two chords and an artist style, then hit Suggest.</span>
+        </div>
+    </div>
 
     <div class="legend">
         <div class="legend-item">
@@ -1592,6 +1801,210 @@
                 highlightBar(selectedCard);
             }, 150);
         });
+    })();
+    </script>
+
+    <!-- Chord Suggestion Engine + Audio — ES module -->
+    <script type="module">
+    import { suggestChords } from './chord_suggestion_engine.js';
+    import { playChordSequence } from './chord_audio.js';
+    import { loadVocabulary, CHORD_TYPES as VOCAB_CHORD_TYPES } from './voicing_vocabulary.js';
+
+    (async function initSuggestionPanel() {
+        const vocab = await loadVocabulary();
+
+        const NOTE_DISPLAY = ['C','Db','D','Eb','E','F','F#','G','Ab','A','Bb','B'];
+
+        function buildRootSelect(sel) {
+            NOTE_DISPLAY.forEach((name, i) => {
+                const opt = document.createElement('option');
+                opt.value = i;
+                opt.textContent = name;
+                sel.appendChild(opt);
+            });
+        }
+
+        function buildQualitySelect(sel) {
+            const allTypes = Object.assign({}, VOCAB_CHORD_TYPES, vocab.chordTypes || {});
+            Object.keys(allTypes).forEach(key => {
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = key;
+                sel.appendChild(opt);
+            });
+        }
+
+        function buildArtistSelect(sel) {
+            const none = document.createElement('option');
+            none.value = '';
+            none.textContent = '— Generic —';
+            sel.appendChild(none);
+            const templates = vocab.styleTemplates || {};
+            Object.entries(templates).forEach(function(entry) {
+                const key = entry[0];
+                const tmpl = entry[1];
+                const opt = document.createElement('option');
+                opt.value = key;
+                opt.textContent = tmpl.name || key;
+                sel.appendChild(opt);
+            });
+        }
+
+        const rootAEl  = document.getElementById('sug-rootA');
+        const qualAEl  = document.getElementById('sug-qualA');
+        const rootBEl  = document.getElementById('sug-rootB');
+        const qualBEl  = document.getElementById('sug-qualB');
+        const artistEl = document.getElementById('sug-artist');
+        const sugBtn   = document.getElementById('sug-suggest-btn');
+        const playBtn  = document.getElementById('sug-play-btn');
+        const resultsEl = document.getElementById('sug-results');
+
+        buildRootSelect(rootAEl);
+        buildQualitySelect(qualAEl);
+        buildRootSelect(rootBEl);
+        buildQualitySelect(qualBEl);
+        buildArtistSelect(artistEl);
+
+        // Defaults: Cm7 -> Fmaj7 / glasper
+        rootAEl.value = '0';
+        qualAEl.value = 'min7';
+        rootBEl.value = '5';
+        qualBEl.value = 'maj7';
+        const templates = Object.keys(vocab.styleTemplates || {});
+        if ((vocab.styleTemplates || {}).glasper) {
+            artistEl.value = 'glasper';
+        } else if (templates.length > 0) {
+            artistEl.value = templates[0];
+        }
+
+        let lastSuggestions = [];
+        let lastRootA = 0, lastIntervalsA = [0,3,7,10];
+        let lastRootB = 5, lastIntervalsB = [0,4,7,11];
+
+        function getIntervals(root, qualityKey) {
+            const allTypes = Object.assign({}, VOCAB_CHORD_TYPES, vocab.chordTypes || {});
+            const ct = allTypes[qualityKey];
+            return ct ? ct.intervals : [0,4,7,11];
+        }
+
+        function clearResults() {
+            while (resultsEl.firstChild) { resultsEl.removeChild(resultsEl.firstChild); }
+        }
+
+        function addEmptyMsg(text) {
+            const span = document.createElement('span');
+            span.className = 'sug-empty';
+            span.textContent = text;
+            resultsEl.appendChild(span);
+        }
+
+        function buildChip(chord) {
+            const chip = document.createElement('div');
+            chip.className = 'sug-chip';
+
+            const sym = document.createElement('div');
+            sym.className = 'sug-chip-symbol';
+            sym.textContent = chord.symbol || '';
+            chip.appendChild(sym);
+
+            if (chord.voicing_label) {
+                const vl = document.createElement('div');
+                vl.className = 'sug-chip-voicing';
+                vl.textContent = chord.voicing_label;
+                chip.appendChild(vl);
+            }
+
+            if (chord.source) {
+                const src = document.createElement('div');
+                src.className = 'sug-chip-source';
+                src.textContent = chord.source;
+                chip.appendChild(src);
+            }
+
+            const badgeType = chord.flag || chord.match_type || 'bridged';
+            const badge = document.createElement('span');
+            badge.className = 'sug-chip-badge ' + badgeType;
+            if (badgeType === 'direct') { badge.textContent = 'direct match'; }
+            else if (badgeType === 'adventurous') { badge.textContent = 'adventurous'; }
+            else { badge.textContent = 'bridged'; }
+            chip.appendChild(badge);
+
+            return chip;
+        }
+
+        function renderChips(suggestions) {
+            clearResults();
+            if (!suggestions || suggestions.length === 0) {
+                addEmptyMsg('No suggestions found — try a different artist style.');
+                playBtn.disabled = true;
+                return;
+            }
+            suggestions.forEach(function(chord, i) {
+                if (i > 0) {
+                    const arrow = document.createElement('span');
+                    arrow.className = 'sug-arrow';
+                    arrow.textContent = '\u2192';
+                    resultsEl.appendChild(arrow);
+                }
+                resultsEl.appendChild(buildChip(chord));
+            });
+            playBtn.disabled = false;
+        }
+
+        sugBtn.addEventListener('click', function() {
+            const rootA    = parseInt(rootAEl.value);
+            const qualityA = qualAEl.value;
+            const rootB    = parseInt(rootBEl.value);
+            const qualityB = qualBEl.value;
+            const artistKey = artistEl.value || templates[0] || 'glasper';
+
+            try {
+                const suggestions = suggestChords(
+                    rootA, qualityA, rootB, qualityB, artistKey, vocab
+                );
+                lastSuggestions = suggestions;
+                lastRootA = rootA;
+                lastIntervalsA = getIntervals(rootA, qualityA);
+                lastRootB = rootB;
+                lastIntervalsB = getIntervals(rootB, qualityB);
+                renderChips(suggestions);
+            } catch (err) {
+                console.error('[SuggestionPanel] suggestChords error:', err);
+                clearResults();
+                addEmptyMsg('Error generating suggestions — check console.');
+                playBtn.disabled = true;
+            }
+        });
+
+        playBtn.addEventListener('click', function() {
+            if (!lastSuggestions.length) return;
+            playBtn.disabled = true;
+            try {
+                playChordSequence(
+                    lastSuggestions,
+                    lastRootA, lastIntervalsA,
+                    lastRootB, lastIntervalsB,
+                    { bpm: 80, noteDuration: 1.4, gap: 0.15 }
+                );
+            } catch (err) {
+                console.error('[SuggestionPanel] playChordSequence error:', err);
+            }
+            // Re-enable after estimated playback
+            const totalChords = lastSuggestions.length + 2;
+            setTimeout(function() { playBtn.disabled = false; }, totalChords * 1700);
+        });
+
+        // Expose test helper to browser console
+        window._sinAudioTest = function() {
+            const result = suggestChords(0, 'min7', 5, 'maj7', 'glasper', vocab);
+            console.group('[Scales.sin] Test: Cm7 -> Fmaj7 (glasper)');
+            result.forEach(function(c) {
+                console.log(c.symbol, '[' + c.match_type + ']', c.voicing_label, '|', c.source);
+            });
+            console.groupEnd();
+            return result;
+        };
+
     })();
     </script>
 </body>
