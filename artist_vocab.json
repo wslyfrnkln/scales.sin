@@ -139,6 +139,61 @@
         ],
         "label": "13sus4 \u2014 open dominant color, gospel + neo-soul",
         "source": "Stevie Wonder / gospel tradition"
+      },
+      {
+        "suffix": "7sus4",
+        "intervals": [
+          0,
+          5,
+          7,
+          10
+        ],
+        "label": "Dominant 7sus4 \u2014 suspended, avoids tritone",
+        "source": "D'Angelo / Kendrick / Herbie Hancock \u2014 neo-soul sus dominant"
+      },
+      {
+        "suffix": "13",
+        "intervals": [
+          0,
+          4,
+          10,
+          21
+        ],
+        "label": "Dominant 13 rootless \u2014 3rd, b7, 13 (funk shell)",
+        "source": "Anderson .Paak / Silk Sonic \u2014 funk soul dominant"
+      },
+      {
+        "suffix": "7#5",
+        "intervals": [
+          0,
+          4,
+          8,
+          10
+        ],
+        "label": "Dominant 7 sharp 5 \u2014 augmented, chromatic tension",
+        "source": "Thundercat \u2014 jazz-funk augmented dominant"
+      },
+      {
+        "suffix": "9",
+        "intervals": [
+          0,
+          4,
+          10,
+          14
+        ],
+        "label": "Dominant 9 rootless \u2014 3rd, b7, 9 (loop-based color)",
+        "source": "J Dilla \u2014 sample-based dominant color"
+      },
+      {
+        "suffix": "7",
+        "intervals": [
+          0,
+          4,
+          7,
+          10
+        ],
+        "label": "Dominant 7 \u2014 full functional voicing",
+        "source": "Joe Pass / Ama Lou \u2014 functional bebop dominant"
       }
     ],
     "Maj7": [
@@ -163,6 +218,39 @@
         ],
         "label": "Maj7 add9 \u2014 clean open voicing (omit 5)",
         "source": "D'Angelo \u2014 Dadd9 in Untitled"
+      },
+      {
+        "suffix": "maj7",
+        "intervals": [
+          0,
+          4,
+          7,
+          11
+        ],
+        "label": "Major 7 \u2014 full voicing",
+        "source": "General neo-soul / jazz standard"
+      },
+      {
+        "suffix": "maj9",
+        "intervals": [
+          0,
+          4,
+          11,
+          14
+        ],
+        "label": "Major 9 rootless \u2014 3rd, maj7, 9 (omit root + 5)",
+        "source": "D'Angelo / Glasper / Thundercat \u2014 neo-soul maj9"
+      },
+      {
+        "suffix": "add9",
+        "intervals": [
+          0,
+          4,
+          7,
+          14
+        ],
+        "label": "Major add9 \u2014 no 7 (gospel brightness, avoids maj7 tension)",
+        "source": "Gospel tradition \u2014 Kirk Franklin / Fred Hammond"
       }
     ],
     "m7": [
@@ -198,6 +286,39 @@
         ],
         "label": "Minor 11 \u2014 omit root + 5, keep b3 (modal float)",
         "source": "D'Angelo \u2014 Dorian/Aeolian ambiguity technique"
+      },
+      {
+        "suffix": "min9",
+        "intervals": [
+          0,
+          3,
+          10,
+          14
+        ],
+        "label": "Minor 9 rootless \u2014 b3, b7, 9 (omit root + 5)",
+        "source": "D'Angelo / Frank Ocean / neo-soul standard"
+      },
+      {
+        "suffix": "min11",
+        "intervals": [
+          3,
+          10,
+          14,
+          17
+        ],
+        "label": "Minor 11 \u2014 omit root + 5, keep b3 (modal float)",
+        "source": "Glasper / Badu / Herbie Hancock \u2014 jazz-hip-hop modal"
+      },
+      {
+        "suffix": "min7",
+        "intervals": [
+          0,
+          3,
+          7,
+          10
+        ],
+        "label": "Minor 7 \u2014 full voicing, functional",
+        "source": "J Dilla / Joe Pass / Kendrick \u2014 functional minor"
       }
     ]
   },
