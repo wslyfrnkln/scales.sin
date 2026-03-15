@@ -1,0 +1,1392 @@
+{
+  "_meta": {
+    "generated_by": "Javelin",
+    "last_updated": "2026-03-15",
+    "description": "Artist style templates for Scales.sin chord suggestion engine. Fetched at runtime by the PWA."
+  },
+  "chord_types": {
+    "7b9": {
+      "intervals": [
+        0,
+        4,
+        7,
+        10,
+        13
+      ],
+      "suffix": "7b9",
+      "name": "Dominant 7 flat 9"
+    },
+    "7sharp9": {
+      "intervals": [
+        0,
+        4,
+        7,
+        10,
+        15
+      ],
+      "suffix": "7#9",
+      "name": "Dominant 7 sharp 9 (Hendrix)"
+    },
+    "maj7sharp11": {
+      "intervals": [
+        0,
+        4,
+        11,
+        18
+      ],
+      "suffix": "maj7#11",
+      "name": "Major 7 sharp 11 (Lydian)"
+    },
+    "min13": {
+      "intervals": [
+        3,
+        10,
+        14,
+        17,
+        21
+      ],
+      "suffix": "m13",
+      "name": "Minor 13 (no root, no 5)"
+    },
+    "9sus4": {
+      "intervals": [
+        0,
+        5,
+        10,
+        14
+      ],
+      "suffix": "9sus4",
+      "name": "9 suspended 4"
+    },
+    "13sus4": {
+      "intervals": [
+        0,
+        5,
+        10,
+        21
+      ],
+      "suffix": "13sus4",
+      "name": "13 suspended 4"
+    }
+  },
+  "extension_map": {
+    "7": [
+      {
+        "suffix": "7#9b13",
+        "intervals": [
+          0,
+          4,
+          10,
+          15,
+          20
+        ],
+        "label": "Alt dominant \u2014 #9 b13 (bebop altered scale)",
+        "source": "Joe Pass / bebop tradition"
+      },
+      {
+        "suffix": "7b9#11",
+        "intervals": [
+          0,
+          4,
+          10,
+          13,
+          18
+        ],
+        "label": "Alt dominant \u2014 b9 #11 (Lydian dominant altered)",
+        "source": "Herbie Hancock / bebop"
+      },
+      {
+        "suffix": "7#5#9",
+        "intervals": [
+          0,
+          4,
+          8,
+          10,
+          15
+        ],
+        "label": "Alt dominant \u2014 #5 #9 (whole-tone upper structure)",
+        "source": "Robert Glasper / jazz-hip-hop"
+      },
+      {
+        "suffix": "7b9",
+        "intervals": [
+          0,
+          4,
+          10,
+          13
+        ],
+        "label": "Dominant b9 \u2014 tritone tension (omit 5)",
+        "source": "D'Angelo \u2014 Brown Sugar (F7 tritone sub for B7)"
+      },
+      {
+        "suffix": "9sus4",
+        "intervals": [
+          0,
+          5,
+          10,
+          14
+        ],
+        "label": "9sus4 \u2014 dominant replacement, avoids tritone (D'Angelo signature)",
+        "source": "D'Angelo \u2014 Untitled (A7sus4), general neo-soul"
+      },
+      {
+        "suffix": "13sus4",
+        "intervals": [
+          0,
+          5,
+          10,
+          21
+        ],
+        "label": "13sus4 \u2014 open dominant color, gospel + neo-soul",
+        "source": "Stevie Wonder / gospel tradition"
+      }
+    ],
+    "Maj7": [
+      {
+        "suffix": "maj7#11",
+        "intervals": [
+          0,
+          4,
+          11,
+          18
+        ],
+        "label": "Maj7 #11 \u2014 Lydian sound (omit 5, tritone on top)",
+        "source": "Frank Ocean \u2014 White Ferrari / Ivy (Lydian mode center)"
+      },
+      {
+        "suffix": "maj7/9",
+        "intervals": [
+          0,
+          4,
+          11,
+          14
+        ],
+        "label": "Maj7 add9 \u2014 clean open voicing (omit 5)",
+        "source": "D'Angelo \u2014 Dadd9 in Untitled"
+      }
+    ],
+    "m7": [
+      {
+        "suffix": "m13",
+        "intervals": [
+          3,
+          10,
+          14,
+          17,
+          21
+        ],
+        "label": "Minor 13 \u2014 omit root + 5, keep b3 (distinguishes from sus4)",
+        "source": "Leon Thomas / Herbie Hancock jazz-funk tradition"
+      },
+      {
+        "suffix": "m9",
+        "intervals": [
+          3,
+          10,
+          14
+        ],
+        "label": "Minor 9 \u2014 shell voicing (b3, b7, 9) \u2014 Leon Thomas signature",
+        "source": "Leon Thomas \u2014 MUTT (Fm7 center), modal neo-soul"
+      },
+      {
+        "suffix": "m11",
+        "intervals": [
+          3,
+          10,
+          14,
+          17
+        ],
+        "label": "Minor 11 \u2014 omit root + 5, keep b3 (modal float)",
+        "source": "D'Angelo \u2014 Dorian/Aeolian ambiguity technique"
+      }
+    ]
+  },
+  "style_templates": {
+    "frank_ocean": {
+      "name": "Frank Ocean",
+      "description": "Mixolydian bVII borrow as signature move. Modal mixture as atmosphere, not modulation. Avoids dominant resolution \u2014 sus chords or modal color replace V7. Sparse harmonic rhythm on Blonde; denser jazz vocab on Channel Orange.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "Nikes \u2014 Mixolydian bVII borrow",
+          "degrees": [
+            "bVIImaj7",
+            "im",
+            "bII",
+            "vim"
+          ],
+          "notes": "Dbmaj7\u2013Cm\u2013Eb\u2013Gm in Eb. Flat-VII (Dbmaj7) is Frank's most repeated harmonic move \u2014 Mixolydian borrow in a minor context."
+        },
+        {
+          "label": "Thinkin Bout You \u2014 major diatonic verse",
+          "degrees": [
+            "Imaj7",
+            "vim7",
+            "viim7",
+            "iiim"
+          ],
+          "notes": "Fmaj7\u2013Dm7\u2013Em7\u2013Am in C major. Textbook diatonic but voiced with maj7 extensions throughout."
+        },
+        {
+          "label": "Super Rich Kids \u2014 jazz altered dominant",
+          "degrees": [
+            "Imaj9",
+            "IV13sus4",
+            "bVIImaj9",
+            "V9sus4",
+            "V7#5b9"
+          ],
+          "notes": "Ebmaj9\u2013Ab13sus4\u2013Dbmaj9\u2013Bb9sus4\u2013Bb7#5b9. Most harmonically advanced track \u2014 jazz altered dominant at the turnaround. Hooktheory novelty: 98/100."
+        },
+        {
+          "label": "Pyramids \u2014 minor vamp, modal ambiguity",
+          "degrees": [
+            "im",
+            "vm",
+            "bVI",
+            "iim"
+          ],
+          "notes": "Fm\u2013Cm\u2013Ab\u2013Gm in F minor. Aeolian/Dorian ambiguity, never raises 7th. Leon Thomas / D'Angelo shared vocabulary."
+        },
+        {
+          "label": "Pink + White \u2014 four-mode simultaneous mixture",
+          "degrees": [
+            "Imaj7",
+            "viim7",
+            "VImaj7"
+          ],
+          "notes": "Cmaj7\u2013Bm7\u2013Amaj7 in A Dorian. Simultaneous modal mixture across 4 modes \u2014 most academically documented Frank Ocean progression."
+        },
+        {
+          "label": "Siegfried \u2014 Lydian II major borrow",
+          "degrees": [
+            "Imaj7",
+            "vim9",
+            "iiim",
+            "IImaj7"
+          ],
+          "notes": "Cmaj7\u2013Am9\u2013Em\u2013Dmaj7 in C. Dmaj7 is Lydian-inflected borrow (IImaj7) \u2014 unresolved, floating."
+        },
+        {
+          "label": "Solo \u2014 gospel plagal cadence",
+          "degrees": [
+            "I",
+            "IV",
+            "I",
+            "iim"
+          ],
+          "notes": "Eb\u2013Ab\u2013Eb\u2013Fm. IV-I plagal cadence, direct gospel reference. Same move as Kirk Franklin / Fred Hammond."
+        }
+      ],
+      "rules": [
+        "bVII major chord (Mixolydian borrow) is the primary color move \u2014 use in both major and minor contexts",
+        "Avoid raised 7th in dominant context \u2014 use 9sus4 or 13sus4 instead of V7",
+        "Modal mixture as atmosphere: borrow from parallel modes without announcing it",
+        "Sparse harmonic rhythm \u2014 hold chords 2x longer than feels right",
+        "Extended chords (maj7, min9, maj9) as default voicing \u2014 triads only for contrast",
+        "Dorian as default minor (raised 6th, no leading tone) \u2014 shared with D'Angelo and Leon Thomas",
+        "Lydian IImaj7 or bVIImaj7 for unresolved, floating tonic feel"
+      ]
+    },
+    "dangelo": {
+      "name": "D'Angelo",
+      "description": "Modal-funk loops rooted in Mixolydian and Dorian vamps where extensions live in the bass and vocal stacks rather than the keyboard voicing, and tritone substitutions and rhythmic displacement do the harmonic heavy lifting.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "7sus4"
+      },
+      "progressions": [
+        {
+          "label": "Untitled (How Does It Feel) \u2014 D Mixolydian main vamp",
+          "degrees": [
+            "Iadd9",
+            "V7sus4",
+            "IV6",
+            "bVII9"
+          ],
+          "notes": "Dadd9 \u2013 A7sus4 \u2013 G6 \u2013 C9. C9 (bVII9) is the modal indicator signaling D Mixolydian. A7sus4 holds dominant tension without resolving. Freestyle \u2014 exact voicings vary per performance."
+        },
+        {
+          "label": "Untitled (How Does It Feel) \u2014 pre-chorus shift",
+          "degrees": [
+            "vim7",
+            "III7",
+            "iim9",
+            "Vsus"
+          ],
+          "notes": "F#m7 \u2013 B7 \u2013 Em9 \u2013 Asus. Momentary functional motion inside a mostly modal framework."
+        },
+        {
+          "label": "Brown Sugar \u2014 G Mixolydian tritone sub",
+          "degrees": [
+            "vim7",
+            "I7",
+            "IVm7",
+            "bII7"
+          ],
+          "notes": "Em7 \u2013 A7 \u2013 Bm7 \u2013 F7. F7 is a tritone substitution for B7 (both share tritone D#/A). Vocal recast from C major into G Mixolydian. Classic D'Angelo harmonic sophistication move."
+        },
+        {
+          "label": "Left & Right \u2014 C minor neo-soul minor",
+          "degrees": [
+            "im7",
+            "ivm7",
+            "bVI",
+            "V7"
+          ],
+          "notes": "Cm7 \u2013 Fm7 \u2013 Ab \u2013 G7. Ab (bVI) borrowed from parallel major \u2014 classic neo-soul color move. Arranged in F Major but functions in C minor."
+        },
+        {
+          "label": "Send It On \u2014 F major iii-ii-Vsus-I loop",
+          "degrees": [
+            "iiim7",
+            "iim7",
+            "V7sus",
+            "Imaj7"
+          ],
+          "notes": "Am7 \u2013 Gm7 \u2013 C7sus \u2013 Fmaj7. C7sus replaces tritone dominant, leaving harmonic space open. 6/8 swing feel at 127 BPM. Horn arrangement fills harmonic density above sparse keyboard."
+        },
+        {
+          "label": "Chicken Grease \u2014 A major one-chord dominant vamp",
+          "degrees": [
+            "I9"
+          ],
+          "notes": "A9 dominant 9th chord comped in 16th-note stabs. Harmony is the rhythm \u2014 James Brown philosophy. Groove subdivides the bar; chord stays static."
+        }
+      ],
+      "rules": [
+        "Default to Mixolydian (bVII as modal color) and Dorian (minor with raised 6th on IV) \u2014 avoid committing to a single mode.",
+        "Do NOT resolve to V7\u2192I. The bVII chord is a color and rest point, not a backdoor dominant.",
+        "Extensions (9ths, 11ths) are implied by bass and vocal stacks \u2014 keyboard uses shell voicings (root + 3rd + 7th, omit 5th).",
+        "Sus chords (A7sus4, C7sus) are resting points, not tension before resolution.",
+        "Tritone substitutions are reserved for specific moments (V of ii area) \u2014 not a general tool.",
+        "Loop 3-4 chords without strong tonic return. Harmonic interest = rhythmic placement + blue notes.",
+        "Rhythmic displacement (Dilla feel) affects perceived harmonic resolution \u2014 same chord sounds unresolved when hit late.",
+        "Vocal clusters are the extended chord voicings \u2014 the top note of the harmony lives in the melody, not the keyboard."
+      ]
+    },
+    "leon_thomas": {
+      "name": "Leon Thomas",
+      "description": "F-minor-family modal vamps built on stacked m7/m9/m11 extensions with deliberate V7 avoidance, bVII as the harmonic breath point, and sparse inner voicing that leaves register space open for falsetto and stacked self-harmonies.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "13sus4"
+      },
+      "progressions": [
+        {
+          "label": "MUTT \u2014 F minor modal vamp",
+          "degrees": [
+            "im7",
+            "ivm7",
+            "bVII",
+            "V"
+          ],
+          "notes": "Fm7 \u2013 Bbm7 \u2013 Eb \u2013 C (or Cm). Eb (bVII) acts as the harmonic breath before returning \u2014 Mixolydian/Dorian marker. C used without raised leading tone, preserving modal ambiguity. No V7 resolution."
+        },
+        {
+          "label": "YES IT IS \u2014 jazz ii-V-i with bVI landing",
+          "degrees": [
+            "iim7",
+            "V7",
+            "im7",
+            "bVImaj7"
+          ],
+          "notes": "Gm7 \u2013 C7 \u2013 Fm7 \u2013 Dbmaj7 in F minor. Textbook ii\u2013V\u2013i but lands on Dbmaj7 (bVI maj7) instead of resolving back \u2014 creates floating, unresolved quality. The bVI landing is the signature alt-R&B move."
+        },
+        {
+          "label": "VIBES DON'T LIE \u2014 dominant tension stack",
+          "degrees": [
+            "im7",
+            "ivm7",
+            "bVI7",
+            "V7"
+          ],
+          "notes": "Bbm7 \u2013 Ebm7 \u2013 Gb7 \u2013 F7 in Bb minor. Gb7 (bVI7) is a borrowed dominant adding tritone tension without jazz secondary dominant voice leading. COLORS Show version uses Fm7 for F7, returning to a non-dominant landing."
+        },
+        {
+          "label": "LOVE JONES \u2014 descending minor thirds with dominant 7 coloring",
+          "degrees": [
+            "iiim7",
+            "bVII7",
+            "bIII7",
+            "vim7"
+          ],
+          "notes": "Cm7 \u2013 Ab7 \u2013 Db7 \u2013 Fm7 in Ab/F minor. Db7 is a tritone sub of G7 (V of Cm). Cycle of descending minor thirds with dominant 7th coloring on non-diatonic roots \u2014 straight jazz reharmonization in R&B production."
+        },
+        {
+          "label": "FAR FETCHED \u2014 minor to major parallel shift",
+          "degrees": [
+            "im",
+            "bVIIm",
+            "bVII",
+            "bVI7"
+          ],
+          "notes": "G#m \u2013 F#m \u2013 F# \u2013 E7. F#m to F# major is a parallel major/minor swap \u2014 major 3rd swapped within same root. Neo-soul color technique. bVI7 (E7) as color chord closing the phrase."
+        }
+      ],
+      "rules": [
+        "Default key center: flat-key minor (Bb minor, F minor, Ab minor). Avoid bright major keys except for rare color contrast.",
+        "Avoid V7 resolution. bVII major is the primary rest point \u2014 not a dominant.",
+        "Keep modal ambiguity between Dorian, Aeolian, and Mixolydian \u2014 never fully commit to one mode.",
+        "Omit the 5th in voicings \u2014 keep b3, b7, 9 in a mid-register inner cluster. Leave top voice open above the 12th for vocals.",
+        "bVI maj7 landing (Dbmaj7 in F minor) is the signature unresolved closure \u2014 use it instead of resolving to tonic.",
+        "ii\u2013V\u2013i jazz turnarounds are acceptable if they land on a bVI maj7 rather than fully resolving.",
+        "Sparse comping is structural \u2014 leave room for falsetto ad libs in the upper register."
+      ]
+    },
+    "glasper": {
+      "name": "Robert Glasper",
+      "description": "Rootless cluster voicings with minor 2nds as deliberate crunch, cyclic third-motion instead of ii-V-I, and a left hand that locks to 16th-note syncopation like an MPC pattern \u2014 jazz brain on a hip-hop nervous system.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj9",
+        "dom": "13sus4"
+      },
+      "progressions": [
+        {
+          "label": "No Worries \u2014 cyclic thirds ascending",
+          "degrees": [
+            "im11",
+            "bIIImaj9",
+            "vm11",
+            "bImaj13#11"
+          ],
+          "notes": "Fm11 \u2013 Abmaj9 \u2013 Cm11 \u2013 Dbmaj13(#11). Root motion ascending by thirds: Db\u2013F\u2013Ab\u2013C\u2013Eb\u2013G\u2013Bb\u2013D. Dbmaj13(#11) is Lydian-flavored (#11 = G natural over Db) \u2014 floating, non-resolving quality."
+        },
+        {
+          "label": "Rise and Shine \u2014 cSLIDE and extended motion",
+          "degrees": [
+            "Imaj9",
+            "VImaj9",
+            "bVImaj9",
+            "iim11",
+            "V7",
+            "bIImaj9",
+            "bIIm9",
+            "vim11",
+            "V7alt",
+            "I7sus4"
+          ],
+          "notes": "Fmaj9 \u2013 Dmaj9 \u2013 Dbmaj9 \u2013 Gm11 \u2013 C7 \u2013 Gbmaj9 \u2013 Bbm9 \u2013 Dm11 \u2013 C7alt \u2013 F7sus4. Gbmaj9 is maximally remote from F tonic (cSLIDE half-step move). C7alt = C dominant with b9/#9/b13."
+        },
+        {
+          "label": "Afro Blue (Black Radio) \u2014 pure major-third cycle",
+          "degrees": [
+            "im",
+            "bVImaj7",
+            "bIIImaj7",
+            "bIImaj7"
+          ],
+          "notes": "Cm \u2013 Abmaj7 \u2013 Ebmaj7 \u2013 Dbmaj7. Root motion by major 3rds: C\u2192Ab\u2192Eb\u2192Db. Pure cyclic third motion \u2014 no dominant, no resolution. This is the most teachable example of Glasper's harmonic architecture."
+        },
+        {
+          "label": "Ah Yeah \u2014 descending maj7 chain",
+          "degrees": [
+            "bVIIm7",
+            "bVImaj7",
+            "bVmaj7",
+            "IVmaj7"
+          ],
+          "notes": "Bbm7 \u2013 Abmaj7 \u2013 Gbmaj7 \u2013 Fmaj7. Descending maj7 chain through non-functional keys. Characteristic neo-soul shared vocabulary (also Badu, Bilal). Chord complexity 97/100."
+        },
+        {
+          "label": "Neo-soul loop \u2014 Dorian vamp with gospel slash",
+          "degrees": [
+            "bVII11",
+            "Vm9",
+            "bVmaj13",
+            "bIII11"
+          ],
+          "notes": "Bb-11 \u2192 G-9 \u2192 Gbmaj13 \u2192 Eb-11. Cyclic loop with stepwise bass motion. Also: G-9 | D-9 | A-11 | Bbmaj7 Fadd2/A \u2014 the Fadd2/A slash voicing is a direct gospel inheritance."
+        },
+        {
+          "label": "Descending chromatic minor 9 vamp",
+          "degrees": [
+            "im9",
+            "bVIIm9",
+            "bVIm9"
+          ],
+          "notes": "Gm9 \u2192 F#m9 \u2192 Fm9 \u2014 minor 9 voicings descending by half steps. Produces the characteristic 'sliding darkness' of Black Radio-era tracks. Left hand ostinato pattern."
+        }
+      ],
+      "rules": [
+        "Move by thirds (ic3/4 cycle), not by fourths/fifths. Replace ii-V-I with third-related root motion.",
+        "Rootless cluster voicings: omit root, stack 3rd + 7th + 9th + 11th in close position (within a 5th span). Minor 2nds are deliberate crunch, not errors.",
+        "Replace V7 with 13sus4 or sus2 \u2014 no leading tone, no resolution urge. This is the single biggest difference from bebop.",
+        "Left hand locks to 16th-note syncopation like an MPC pattern \u2014 NOT jazz-style beat 2 and 4 comping.",
+        "cSLIDE: parallel half-step shift of entire chord for modal mixture \u2014 preserves 7 common tones.",
+        "Default minor mode is Dorian (natural 6th). Chromatic passing tones approach chord tones on beat 1.",
+        "Rootless voicings need a bass layer to define the root \u2014 without it, voicings are harmonically ambiguous.",
+        "Lydian dominant (#11 on V) and upper structure triads (bVI triad over V7 shell) for dominants when you need them."
+      ]
+    },
+    "badu": {
+      "name": "Erykah Badu",
+      "description": "Cyclic minor extensions and non-diatonic major 7th substitutions filtered through the Soulquarians' jazz-meets-gospel voicing ethic \u2014 jazz harmony in color, stripped of its resolution compulsion, with Bb Dorian as the primary modal center.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj7",
+        "dom": "13sus4"
+      },
+      "progressions": [
+        {
+          "label": "Other Side of the Game \u2014 chromatic mediant chorus",
+          "degrees": [
+            "IVmaj9",
+            "Imaj9",
+            "bVImaj7",
+            "V+#9/I"
+          ],
+          "notes": "Dbmaj9 \u2192 Abmaj9 \u2192 Emaj7 \u2192 Eb+#9/A in Ab major. bVI (Emaj7) is a non-diatonic chromatic mediant substitution \u2014 a Badu signature. V chord appears as an augmented slash, never resolves classically. Slash chords as modal-jazz nod."
+        },
+        {
+          "label": "On and On \u2014 Aeolian i-iv-v loop",
+          "degrees": [
+            "im7",
+            "ivm7",
+            "vm"
+          ],
+          "notes": "Em7 \u2013 Am7 \u2013 Bm (i\u2013iv\u2013v in E minor). Minor v, not major V \u2014 no leading tone, no dominant resolution. Pure Aeolian natural minor. Melody floats over without resolving tension."
+        },
+        {
+          "label": "Tyrone \u2014 Bb minor chromatic mediant loop",
+          "degrees": [
+            "im9",
+            "bIIIm9",
+            "bIII/bIV"
+          ],
+          "notes": "Bbm9 \u2192 D#m9 \u2192 E/F#. Also charted as Amaj7 \u2192 Bbm7 \u2192 Ebm7 \u2192 Gbm7. Modal static looping \u2014 groove stays on Bbm extended for long stretches. 100/100 chord complexity on Hooktheory."
+        },
+        {
+          "label": "Green Eyes \u2014 fully jazz-voiced suite",
+          "degrees": [
+            "I9b13",
+            "II/IV",
+            "III7",
+            "bVIImaj7",
+            "VI7",
+            "im/VI",
+            "bdim/VI",
+            "bIImaj7"
+          ],
+          "notes": "G9b13 \u2013 Am/C \u2013 B7 \u2013 Bbmaj7 \u2013 A7 \u2013 Dm/A \u2013 Ebdim/A \u2013 Emaj7. G9b13 is dominant with b13 alteration. Ebdim/A is a diminished passing chord. Emaj7 is a non-diatonic chromatic mediant (bII in D minor). Roy Hargrove's trumpet stacked 2-3x for cluster texture."
+        },
+        {
+          "label": "Window Seat \u2014 Bb Dorian with full extension palette",
+          "degrees": [
+            "im7",
+            "IVmaj7",
+            "bVIImaj7",
+            "V7sus"
+          ],
+          "notes": "Bb Dorian \u2014 natural minor with raised 6th (G natural). Bb Dorian permits EbMaj7 on the IV chord without leaving the minor world. Confirmed use of seventh, secondary, altered, inverted, extended, sus2/sus4, add, borrowed chords. 99/100 chord complexity."
+        },
+        {
+          "label": "Cyclic loop \u2014 Soulquarians shared vocabulary",
+          "degrees": [
+            "bVII11",
+            "Vm9",
+            "bVmaj13",
+            "bIII11"
+          ],
+          "notes": "Bb-11 \u2192 G-9 \u2192 Gbmaj13 \u2192 Eb-11. Harmonic gravity is centripetal, not directional \u2014 loops, doesn't cadence. Stepwise bass motion. Direct shared vocabulary with Glasper."
+        }
+      ],
+      "rules": [
+        "Avoid V\u2192I resolution. Loop minor extensions (m9, m11) and use slash chords and maj7 non-diatonic substitutions instead.",
+        "Bb Dorian is the default modal center on later records \u2014 minor with a natural 6th, which permits IVmaj7 without leaving minor territory.",
+        "Non-diatonic bVI maj7 chord (e.g., Emaj7 in Ab, Dbmaj7 in Bb minor) is a signature chromatic mediant substitution \u2014 not a passing chord.",
+        "Slash chords (Abm7/Gb, Bbm9/Eb) function modally, not as inversions \u2014 they create ambiguity between two key centers.",
+        "Phrygian bII borrowed chord appears as a one-chord color moment \u2014 not a structural move.",
+        "Gospel 'lift': major IV in minor context (Gmaj7 in D minor) for an emotional breath without leaving the minor world.",
+        "Vocal harmonies imply the extensions the keyboard doesn't state \u2014 soprano doubles 9th or 11th of the chord.",
+        "Harmonic stasis (4-8 bars on one chord with rhythmic/vocal variation) is the structural device, not chord movement."
+      ]
+    },
+    "paak": {
+      "name": "Anderson .Paak / Silk Sonic",
+      "description": "70s Philadelphia/Motown soul harmony \u2014 non-functional extended 7ths, dominant sus voicings, chromatic mediant modulations, and quartal structures \u2014 filtered through a drummer's instinct for off-beat harmonic placement and short, vamping progressions.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "13"
+      },
+      "progressions": [
+        {
+          "label": "Leave the Door Open \u2014 verse (F Lydian feel)",
+          "degrees": [
+            "IVmaj7",
+            "V7/IV",
+            "iiim7",
+            "vim7"
+          ],
+          "notes": "Fmaj7 \u2013 G7/F \u2013 Em7 \u2013 Am7 in A minor. G7/F = dominant with F in bass \u2014 floating, rootless quality, the progression never lands on C tonic. Feels like F Lydian starting on IV."
+        },
+        {
+          "label": "Leave the Door Open \u2014 pre-chorus (Eb modulation)",
+          "degrees": [
+            "Imaj7",
+            "IIIm7",
+            "IIm7",
+            "IVmaj7"
+          ],
+          "notes": "Ebmaj7 \u2013 Gm7 \u2013 Fm7 \u2013 Abmaj7 in Eb major. Sudden modulation to Eb at ~0:40. Functions as I\u2013III\u2013II\u2013IV."
+        },
+        {
+          "label": "Leave the Door Open \u2014 bridge (chromatic mediant descent)",
+          "degrees": [
+            "bIVmaj9",
+            "IIIx7sus4",
+            "bIIImaj9",
+            "II7sus4"
+          ],
+          "notes": "Abmaj9 \u2013 G7sus4 \u2013 Gbmaj9 \u2013 F7sus4. Chromatic mediant descent \u2014 whole tone drop. G11 chords at 2:27-2:33. Outro modulates up a semitone to B minor: Amaj7 \u2013 G#11 \u2013 C#maj7 \u2013 Bb7b9."
+        },
+        {
+          "label": "Blast Off \u2014 quartal sus vocabulary",
+          "degrees": [
+            "V13sus",
+            "II13sus",
+            "Imaj7",
+            "bVII13sus",
+            "I7sus"
+          ],
+          "notes": "B13sus \u2013 G#13sus (minor-3rd transposition). Primary resolution: B13sus \u2192 Emaj7. Coda: Amaj7 \u2013 Emaj7 \u2013 G#min7 \u2013 D#7sus \u2013 F7sus. D#7sus substitutes expected D#\u00f87 \u2014 likely unique in pop. Quartal harmony: stacks 4ths, tritone becomes perfect 4th, everything floats."
+        },
+        {
+          "label": "Skate \u2014 G minor Dorian vamp with chromatic slides",
+          "degrees": [
+            "im7",
+            "IV7",
+            "iim7",
+            "V7"
+          ],
+          "notes": "Gm7 \u2013 C7 \u2013 Am7 \u2013 D7 (ii-V in C, starting on vi \u2014 ambiguity between G Dorian and C major). Also: B6 \u2013 C6 (chromatic half-step major 6th shift) and Emaj \u2013 Fmaj (half-step parallel major pair \u2014 P-Funk signature)."
+        },
+        {
+          "label": "Come Down \u2014 Bb minor bVI vamp",
+          "degrees": [
+            "im",
+            "im",
+            "bVI",
+            "ivm"
+          ],
+          "notes": "Bbm \u2013 Bbm \u2013 Gbmaj \u2013 Fm. Two bars of tonic minor, then bVI (Gbmaj) as chromatic-third pivot, iv (Fm) for minor plagal close. Chord change on 'and' of 2 \u2014 not a downbeat. Drummer's harmonic rhythm."
+        }
+      ],
+      "rules": [
+        "Dominant 7ths and extended chords (13th, 13sus4) are resting tones, not tension \u2014 they don't need to resolve.",
+        "The 7th is the primary color tone of funk harmony. Maj7 on major, min7 on minor \u2014 standard issue.",
+        "Quartal sus chords (B13sus) stack 4ths \u2014 different from sus4 which just replaces the 3rd. Both float; quartal has more open color.",
+        "Chromatic mediant modulations (key shifts by a 3rd) are the primary structural key changes \u2014 not pivot-chord modulation.",
+        "Half-step parallel chord slides (Emaj \u2192 Fmaj, B6 \u2192 C6) require no diatonic justification \u2014 smooth voice leading does the work.",
+        "Chord changes fall on upbeats ('and' of 2 or 4), not downbeats \u2014 drummer's instinct applied to harmonic rhythm.",
+        "Short 2-4 chord vamps repeated 8-16 times. Groove creates tension; the chord doesn't have to.",
+        "Tritone substitution (Bb7b9 for E7 in Leave the Door Open outro) is a jazz-inherited tool for maximum harmonic tension with melody preserved."
+      ]
+    },
+    "stevie_wonder": {
+      "name": "Stevie Wonder",
+      "description": "Dominant 9(sus4) as the signature soft dominant, Dorian two-chord funk vamps, jazz-extended harmony applied to gospel voice-leading logic, and abrupt chromatic/half-step modulations in place of classical pivot-chord transitions.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "Isn't She Lovely \u2014 vi-II-V9sus-I",
+          "degrees": [
+            "vim",
+            "II9",
+            "V9sus4",
+            "I"
+          ],
+          "notes": "C#m \u2013 F#9 \u2013 B9sus4 \u2013 E in E major. F#9 is V/V (secondary dominant). B9sus4 delays resolution \u2014 the gospel 'held breath' effect before landing on I. Most teachable example of his signature dominant substitution."
+        },
+        {
+          "label": "I Wish \u2014 Eb Dorian two-chord vamp",
+          "degrees": [
+            "im",
+            "IVmaj7"
+          ],
+          "notes": "Ebm \u2013 Abmaj7. The IVmaj7 over a Dorian tonic is the defining Dorian sound: natural 6th (C natural in Eb Dorian) appears in Abmaj7, distinguishing it from Aeolian. Minimal \u2014 groove IS the composition."
+        },
+        {
+          "label": "Golden Lady \u2014 verse ascending scale with #iv substitution",
+          "degrees": [
+            "Imaj9",
+            "ii9",
+            "iiim7",
+            "#iv7",
+            "V7/III"
+          ],
+          "notes": "EbMaj9 \u2013 Fm9 \u2013 Gm7 \u2013 A7 \u2013 D7 in Eb major. A7 (#iv7) replaces the expected IV chord \u2014 'rising wave' that subverts the ascending scale. V7/III (D7) resolves into pre-chorus. Chorus uses bIIMaj7 (AbMaj7) for 'mysterious lift.'"
+        },
+        {
+          "label": "As \u2014 intro and verse with gospel I7\u2192IV move",
+          "degrees": [
+            "Imaj7",
+            "I7",
+            "IVmaj7",
+            "bVIImaj7"
+          ],
+          "notes": "Bmaj7 \u2013 B7 \u2013 Emaj7 (intro). B7 treats tonic as its own dominant to push to IV \u2014 a gospel move. Verse: Bmaj7 \u2013 Amaj7 (bVIIMaj7, Mixolydian borrow) \u2013 G#m \u2013 A#m \u2013 D#7 \u2013 G#m7 \u2013 G#m6 \u2013 C#m7 \u2013 F#7."
+        },
+        {
+          "label": "As \u2014 bridge chromatic mediant",
+          "degrees": [
+            "IVmaj7",
+            "Imaj7",
+            "bIIImaj9"
+          ],
+          "notes": "Emaj7 \u2013 Bmaj7 \u2013 Dmaj9. Dmaj9 (bIIIMaj9) is a chromatic mediant \u2014 major third below B, borrowed from parallel Dorian or direct chromatic mediant. Gospel 'lift' before returning."
+        },
+        {
+          "label": "You Are the Sunshine of My Life \u2014 bossa nova ii-V9sus loop",
+          "degrees": [
+            "I",
+            "IV",
+            "iiim",
+            "VIm",
+            "iim",
+            "V9sus4",
+            "I"
+          ],
+          "notes": "B \u2013 E \u2013 D#m \u2013 G#m \u2013 C#m \u2013 F#9sus4 \u2013 B in B major. G#m as VI (secondary dominant area) before ii\u2013V9sus\u2013I resolution. G#m functions as V of ii (C#m). F#9sus4 is the signature soft dominant close."
+        },
+        {
+          "label": "Superstition \u2014 Eb Dorian/minor two-bar vamp",
+          "degrees": [
+            "im7",
+            "IV7/i"
+          ],
+          "notes": "Ebm7 | Ab7/Eb. Ab7/Eb = IV7 in Bb Dorian, not a functioning dominant. The entire track is variations on this two-bar Eb minor pentatonic vamp. 8-16 Clavinet tracks layered."
+        }
+      ],
+      "rules": [
+        "The 9sus4 chord (root\u2013P4\u2013P5\u2013b7\u2013M9) is the signature dominant substitute \u2014 softens cadential pull without tritone tension.",
+        "Dorian two-chord vamps (i \u2013 IVmaj7) are the funk groove foundation. The major IV over minor tonic is the Dorian sound marker.",
+        "Chromatic/half-step modulations are abrupt and unprepared \u2014 no pivot chord. Two half-step modulations in one song (Golden Lady) is standard.",
+        "I7 \u2192 IV (treating tonic as its own dominant) is a gospel move that creates forward momentum without leaving the key.",
+        "bIIMaj7 (Neapolitan maj7) functions as a color chord resolving by half-step down, not as a dominant.",
+        "bVIIMaj7 (Mixolydian borrow) adds modal color in otherwise major-key songs.",
+        "Secondary dominant chains (V7/III, V7/ii, V7/vi) are used to delay resolution, not complete it \u2014 suspend the listener.",
+        "Black key centers (Eb, Db, Ab, Gb) are the native register \u2014 voicings cluster here on the Clavinet and Rhodes."
+      ]
+    },
+    "herbie_hancock": {
+      "name": "Herbie Hancock",
+      "description": "Quartal/quintal poly-chord voicings with the Rhodes locked to the midrange while the ARP or clavinet covers bass/rhythm, Dorian modal vamps where dominants are color chords not resolutions, and a narrow per-track chord palette where harmonic interest comes from rhythmic placement and voice-leading.",
+      "chord_colors": {
+        "min": "min11",
+        "maj": "maj7",
+        "dom": "7sus4"
+      },
+      "progressions": [
+        {
+          "label": "Maiden Voyage \u2014 quartal sus vamp prototype",
+          "degrees": [
+            "Isus7",
+            "bIIIsus7",
+            "bIIsus7",
+            "vim7(11)"
+          ],
+          "notes": "Dsus7 (Am7/D) \u2013 Fsus7 (Cm7/F) \u2013 Ebsus7 (Bbm7/Eb) \u2013 C#m7(11). Each chord: minor 7th chord with bass sitting a perfect 4th above the chord root \u2014 readable as stacked 4ths all the way up. Template for all modal comping through the fusion era."
+        },
+        {
+          "label": "Chameleon \u2014 Bb Dorian i-IV modal vamp",
+          "degrees": [
+            "im7",
+            "IV7"
+          ],
+          "notes": "Bbm7 \u2013 Eb7. Eb7 is IV7 in Bb Dorian \u2014 NOT a functioning dominant, it is a Mixolydian color chord. The vamp never resolves. ARP Odyssey handles bass; Rhodes plays upper-register clusters in the midrange."
+        },
+        {
+          "label": "Actual Proof \u2014 same Bb Dorian structure with Lydian passing color",
+          "degrees": [
+            "im7",
+            "IV7",
+            "bVImaj7#11/bVII"
+          ],
+          "notes": "Bbm7 \u2013 Eb7 main vamp. Bar 12: Ebmaj7#11/D \u2014 #11 (A) in melody line over D bass. Lydian Dominant color appearing as passing harmony during voice-leading. Bar 5 may be Bbmin9 or Gbmaj7."
+        },
+        {
+          "label": "Am11 quartal poly-chord shape",
+          "degrees": [
+            "im11"
+          ],
+          "notes": "A\u2013E (LH spread 5th) / C\u2013D\u2013G\u2013B (RH: b3, 11, b7, 9). Six notes total. Alternatively: LH = Am triad spread, RH = Gmaj second inversion. Diatonic transposition up a 3rd \u2192 Cmaj7(#11). Further \u2192 D7(#11) \u2014 Lydian Dominant as byproduct of quartal transposition."
+        },
+        {
+          "label": "Descending minor 9th half-step vamp",
+          "degrees": [
+            "im9",
+            "bVIIm9",
+            "bVIm9"
+          ],
+          "notes": "Dm9 \u2192 Dbm9 \u2192 Cm9. Minor 9th voicings descending by half steps while right hand plays Dorian mode lines with chromatic passing tones. Bebop-to-neo-soul bridge technique."
+        }
+      ],
+      "rules": [
+        "Quartal voicing: LH = root + 5th (spread), RH = b3 + 11 + b7 + 9 as a tight cluster. Defines the midrange Rhodes sound.",
+        "ARP Odyssey or clavinet handles bass/low register \u2014 Rhodes stays in E3\u2013D5 range doing color work, not root-defining work.",
+        "Dominant chords (Eb7 in Bb Dorian) are modal color chords \u2014 they do NOT resolve. This is the essential distinction from bebop.",
+        "Sus chord removes tritone from dominant \u2014 chords sit as static groove-locked color without creating expectation of resolution.",
+        "Narrow chord palette per track (often just Dorian i-IV). Harmonic interest comes from rhythmic placement and voice-leading, not chord substitution.",
+        "Lydian Dominant (#11) appears as a byproduct of quartal transposition \u2014 do not force it as a deliberate modal choice.",
+        "Clavinet plays strummed quartal 4th-interval patterns as rhythmic comping (guitar substitute), not harmonic color.",
+        "ARP Odyssey is monophonic \u2014 it plays single-note bass and lead lines only, never chords."
+      ]
+    },
+    "thundercat": {
+      "name": "Thundercat",
+      "description": "Diatonic extended chords (min9, maj9, min11) built on shell voicings from a 6-string bass, punctuated by one non-diatonic 'wild card' chord (tritone sub or minor-3rd drop), connected by chromatic approach bass lines that function as voice-leading.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "7#5"
+      },
+      "progressions": [
+        {
+          "label": "Friend Zone \u2014 common-tone tritone insertion",
+          "degrees": [
+            "im9",
+            "bIImaj7"
+          ],
+          "notes": "Dm9 | Dbmaj7. D minor to Db major \u2014 the wild card tritone-adjacent drop. Both chords share F and C as common tones. The shared tones are the voice-leading glue that makes the distant root motion work."
+        },
+        {
+          "label": "Them Changes \u2014 chromatic approach then tonic",
+          "degrees": [
+            "bVImaj7",
+            "IIIm7",
+            "IVm7",
+            "IIm7",
+            "im11"
+          ],
+          "notes": "Cbmaj7 | Gm7 | Abm7 | Fm7 | Ebm11 in Eb minor (VI \u2013 IIIm \u2013 IVm \u2013 IIm \u2013 Im). Gm7 is a chromatic approach to Abm7, not diatonic. Tonic arrival on Ebm11 at the end."
+        },
+        {
+          "label": "Dragonball Durag \u2014 ascending diatonic bass line",
+          "degrees": [
+            "iiim7",
+            "IVm7",
+            "Vmaj7",
+            "Isus4",
+            "vim7sus4"
+          ],
+          "notes": "Em7 \u2013 F#m7 \u2013 Gmaj7 \u2013 Asus4 \u2013 Bm7sus4 in D major. Fully diatonic ascending bass line (D, E, F#, G, A). Turnaround: C#m7b5 \u2013 F#7 (IIm7b5 \u2013 V7, resolves to Dmaj7)."
+        },
+        {
+          "label": "Unrequited Love \u2014 diatonic then tritone wild card",
+          "degrees": [
+            "im9",
+            "IVm9",
+            "im9",
+            "bIImaj7"
+          ],
+          "notes": "Gm9 | Cm9 | Gm9 | Gbmaj7. Diatonic Gm9 to Cm9 and back, then the knockout card: Gbmaj7, a tritone down from the tonic. The characteristic 'wild card' non-diatonic insertion."
+        },
+        {
+          "label": "Show You the Way \u2014 diatonic descending IV-III-VII-VI in F",
+          "degrees": [
+            "IVmaj7",
+            "IIIm7",
+            "VIIm7",
+            "VIm7"
+          ],
+          "notes": "Bbmaj7 \u2013 Am7 \u2013 Em7 \u2013 Dm7 in F major. Straightforward diatonic descending motion. Voicings and bass line are what make it feel sophisticated, not harmonic complexity."
+        },
+        {
+          "label": "How Sway \u2014 chromatic minor 9 ascent",
+          "degrees": [
+            "im9",
+            "bIIm9",
+            "bIIIm9"
+          ],
+          "notes": "Cm9 \u2192 Dbm9 \u2192 Dm9 \u2192 Em9. Double-tracked bass climbing chromatically. Each chord is a minor 9 voicing. Chromatic root motion across a minor-third span."
+        }
+      ],
+      "rules": [
+        "Shell voicing on bass: root + 3rd + 7th, omit the 5th. Add one extension (9th, 11th, or 13th) to push to extended color.",
+        "The wild card: write a fully diatonic progression, then insert one non-diatonic chord (tritone sub or minor-3rd drop from tonic) as the signature move.",
+        "Chromatic approach bass: connect root-to-root via half-step passing tones, from above (half-step down) and below (half-step up).",
+        "Extension octave placement is non-negotiable \u2014 13th voiced close to root sounds harsh; an octave up it sounds lush.",
+        "Parallel major/minor pivot: shift from minor to parallel major within a single chord for one-chord reharmonization.",
+        "Bass functions as root definition, chromatic approach, AND rhythmic syncopation (16th-note anticipation) simultaneously.",
+        "Extensions as melody carriers: chord extensions (13th on Gm13 = melody note E) sit on top of the voicing, one octave above the 5th.",
+        "Do not worry about chords fitting within a key \u2014 ensure the melody notes are contained within the chords."
+      ]
+    },
+    "gospel": {
+      "name": "Gospel",
+      "description": "Same extended chord vocabulary as jazz but with plagal (IV\u2013I) cadences as the primary motion, suspended dominants as resting states not tension, and V7 frequently avoided or suspended \u2014 sacred harmony that resolves by descent, not by tritone pull.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "add9",
+        "dom": "7sus4"
+      },
+      "progressions": [
+        {
+          "label": "I Smile (Kirk Franklin) \u2014 verse with secondary dominant",
+          "degrees": [
+            "I",
+            "V7/I/bass",
+            "IV",
+            "IVsus2"
+          ],
+          "notes": "C \u2013 D7/C \u2013 F \u2013 Bbsus2 in C major. D7/C = secondary dominant (V/V) with C pedal point in bass. Bbsus2 as resting IV color chord \u2014 sus2 ambiguates major/minor on the IV."
+        },
+        {
+          "label": "I Smile (Kirk Franklin) \u2014 chorus with bVII and suspended tonic",
+          "degrees": [
+            "I",
+            "Isus4",
+            "IV",
+            "bVII",
+            "Vsus4"
+          ],
+          "notes": "C \u2013 Csus4 \u2013 F \u2013 Bb \u2013 Gsus4. Csus4 immediately re-suspends tonic. Bb = bVII (borrowed from C Mixolydian). Gsus4 hangs without resolution \u2014 intentionally unresolved ending."
+        },
+        {
+          "label": "No Weapon (Fred Hammond) \u2014 gospel chorus with descending bass",
+          "degrees": [
+            "Iadd9",
+            "I/V",
+            "vim7",
+            "bVII",
+            "bIVmaj7",
+            "I/III",
+            "iim7"
+          ],
+          "notes": "Abadd9 \u2013 Eb/G \u2013 Fm7 \u2013 Eb \u2013 DbMaj7 \u2013 Ab/C \u2013 Bbm7 in Ab major. Descending chromatic bass: Ab\u2013G\u2013F. DbMaj7 = bIVmaj7, borrowed subdominant with maj7 for 'sacred' floating quality. Bbm7 = ii chord sets up deceptive return rather than V-I authentic cadence."
+        },
+        {
+          "label": "Let the Praise Begin (Fred Hammond) \u2014 double plagal loop",
+          "degrees": [
+            "I",
+            "IV",
+            "bVII",
+            "IV",
+            "I"
+          ],
+          "notes": "Bb \u2013 Eb \u2013 Ab \u2013 Eb \u2013 Bb. The Ab (bVII) is the backdoor dominant functioning as color before plagal IV return. Named 'double plagal' \u2014 IV approached plagally from its own IV. Signature gospel ending/turnaround."
+        },
+        {
+          "label": "mMaj7 line-clich\u00e9 \u2014 chromatic inner voice descent",
+          "degrees": [
+            "im",
+            "immaj7",
+            "im7",
+            "im6"
+          ],
+          "notes": "C-Eb-G \u2192 C-Eb-G-B \u2192 C-Eb-G-Bb \u2192 C-Eb-G-A. Bass holds on C. Only the 7th changes: maj7 \u2192 min7 \u2192 maj6. Chromatic descending line in the 7th voice. Common in gospel intros and modulation passages."
+        },
+        {
+          "label": "Gospel sus polychord \u2014 standard worship band sound",
+          "degrees": [
+            "I11"
+          ],
+          "notes": "LH: root + 5th of V (G-D in key of C). RH: IV triad (F-A-C). Net result = G11 or Gsus4/9. Thick, suspended, unresolved \u2014 the standard 'worship band sus sound.' Used in Fred Hammond ballads and Kirk Franklin meditative passages."
+        }
+      ],
+      "rules": [
+        "Primary cadence is plagal (IV\u2192I), not authentic (V7\u2192I). The 'Amen' cadence is structural.",
+        "Sus chords (V7sus4, Vsus2) are resting states \u2014 they can be the final chord of a phrase, not just tension before V7.",
+        "bVII chord (backdoor dominant) resolves to I from a whole step below \u2014 softer pull than authentic V-I, used as a color/texture chord.",
+        "Double plagal (bVII\u2192IV\u2192I) is the signature gospel ending/turnaround.",
+        "IVadd9 preferred over IVmaj7 on the tonic level \u2014 retains openness without the jazz-flavored maj7 interval.",
+        "V7(b9) is the 'gospel sting' \u2014 places b9 in the right hand over 3+b7 shell in left. Strong pull to tonic.",
+        "mMaj7 is used only in line-clich\u00e9 passing motion (im \u2192 immaj7 \u2192 im7 \u2192 im6) \u2014 never as a static resting chord.",
+        "Choir stacking creates implied maj9 voicings: bass=root, tenor=7th, alto=9th, soprano=5th or 3rd."
+      ]
+    },
+    "dilla": {
+      "name": "J Dilla",
+      "description": "Harmony created at the sample selection stage \u2014 harmonically ambiguous loop points from jazz-soul sources, composed as fugues of independent melodic lines rather than vertical stacks, with rhythmic displacement blurring chord transitions across bar lines.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "9"
+      },
+      "progressions": [
+        {
+          "label": "Workinonit \u2014 E minor Aeolian rock cadence",
+          "degrees": [
+            "bVI",
+            "bVII",
+            "im"
+          ],
+          "notes": "Cmaj \u2013 Dmaj \u2013 Em (VI\u2013VII\u2013i in E minor). Chopped from 10cc's 'The Worst Band in the World.' Source's tonal context disrupted \u2014 never revealed for longer than a few seconds. Aeolian modal countermelody in the bass implies natural minor against the surface rock cadence."
+        },
+        {
+          "label": "Two Can Win \u2014 Bb major relative ambiguity",
+          "degrees": [
+            "vim",
+            "bVIImaj7",
+            "bVII",
+            "iim7"
+          ],
+          "notes": "Gm \u2013 Bbmaj7 \u2013 Bbmaj \u2013 Dm7 in Bb major / G minor. Relative major/minor ambiguity never resolved \u2014 Dilla leaves both readings open simultaneously. From The Sylvers 'Only One Can Win' (gospel-adjacent soul source)."
+        },
+        {
+          "label": "Didn't Cha Know (Badu) \u2014 Bb minor jazz-funk",
+          "degrees": [
+            "ivm7",
+            "I7",
+            "bIIImaj",
+            "vim7"
+          ],
+          "notes": "Ebm7 \u2013 Bb7 \u2013 Dbmaj \u2013 Fm7 in Bb minor. Source: Tarika Blue 'Dreamflower' (Ab minor, pitched up a whole step). The Bb7 is the one functioning dominant \u2014 unlike most Dilla tracks this one has some resolution pull."
+        }
+      ],
+      "rules": [
+        "Harmony lives in loop point selection \u2014 which 4 bars of the source record you loop IS the harmonic decision.",
+        "Single structural source per track. Additional samples are decorative surface, not harmonic conflict.",
+        "Prefer harmonically ambiguous loop points \u2014 transitional bars, incomplete chord voicings, suspended moments (open 4ths, unresolved 7ths).",
+        "Compose chords as fugues of independent melodic lines (bass, inner voice, upper voice from separate chops) \u2014 the chord is heard retrospectively, not played simultaneously.",
+        "Half-speed pitch shifting is a reharmonization tool \u2014 slowing a sample changes its key center, mode, and rhythmic feel in one edit.",
+        "Rhythmic displacement creates harmonic ambiguity \u2014 a chord fragment landing on the 'and' of beat 4 reads as anticipation or sustained depending on pocket.",
+        "Preferred harmonic modes: Dorian minor (Gm7/Cm7 with raised 6th implied), Aeolian natural minor, major with added 6th/9th.",
+        "The 'drunk timing' myth is false \u2014 drum placement is deliberate MPC swing/shift programming creating polyrhythmic grid."
+      ]
+    },
+    "kendrick": {
+      "name": "Kendrick Lamar",
+      "description": "Minor/Dorian modal centers with heavy bVI maj7 as a color landing point, suspended dominants without resolution, extended voicings throughout driven by a live jazz ensemble improvising over drum and bass foundations.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7sus4"
+      },
+      "progressions": [
+        {
+          "label": "These Walls \u2014 F major/minor parallel toggle",
+          "degrees": [
+            "bVImaj9",
+            "iim7",
+            "iim7/V",
+            "Imaj7"
+          ],
+          "notes": "Abmaj9 \u2013 Gm7 \u2013 Gm7/C \u2013 Fmaj7 in F major. F minor section: Dbmaj7 \u2013 Cm7 \u2013 Fm7 \u2013 C7. Dbmaj7 = bVI maj7 in F minor \u2014 characteristic TPAB sound. Gm7/C = ii7/V without resolving to I \u2014 suspended dominant function. 96/100 chord complexity and novelty."
+        },
+        {
+          "label": "How Much a Dollar Cost \u2014 Bb minor bVI modal vamp",
+          "degrees": [
+            "bVImaj7",
+            "ivm",
+            "bVImaj7",
+            "bVImaj7"
+          ],
+          "notes": "Gbmaj7 \u2013 Fmin \u2013 Gbmaj7 \u2013 Abmaj in Bb minor. Gbmaj7 (bVI maj7) is not passing \u2014 it is the harmonic landing point. Polyrhythmic combination of 3/4 and 4/4. Mournful shuffle feel."
+        },
+        {
+          "label": "King Kunta \u2014 E minor Dorian-adjacent funk",
+          "degrees": [
+            "im",
+            "ivm",
+            "vm"
+          ],
+          "notes": "Em \u2013 Am \u2013 Bm (i\u2013iv\u2013v, all minor, no major V) in E minor. Dorian-adjacent: absence of major V and flat-7 over the groove. Half-step key shift to F minor in verses 1 and 2 \u2014 downward chromatic modulation instead of dominant resolution."
+        },
+        {
+          "label": "Wesley's Theory \u2014 B minor P-Funk modal vamp",
+          "degrees": [
+            "bVI",
+            "im",
+            "IVm",
+            "ivm",
+            "IVm"
+          ],
+          "notes": "G \u2013 Bm \u2013 F#m \u2013 Em \u2013 F# in B minor. One-chord-vamp modal funk skeleton (Bm modal center). P-Funk philosophy: unresolved minor 7th groove that parks and refuses to go home. Thundercat's bass implies 9th/11th territory."
+        },
+        {
+          "label": "You Ain't Gotta Lie \u2014 jazz ii-V-i in B minor",
+          "degrees": [
+            "bIImaj7",
+            "im7",
+            "ivm7",
+            "V7"
+          ],
+          "notes": "Cmaj7 \u2013 Bmin7 \u2013 Emin7 \u2013 F#7 in B minor. Cmaj7-Bmin7 = bIIMaj7 \u2192 im7 half-step chromatic descent (Neapolitan function). F#7 as V7 = one of the few TPAB tracks with functional dominant resolution."
+        },
+        {
+          "label": "Complexion \u2014 i-VII-VI-VII Motown-derived",
+          "degrees": [
+            "im7",
+            "bVII",
+            "bVI",
+            "bVII"
+          ],
+          "notes": "Jackson 5-derived harmonic movement (I Want You Back pattern) in F# minor. The track 'restrains itself, melting into mellow jazz harmony.' Thundercat's extended chord vocabulary inflects the rhythm section."
+        }
+      ],
+      "rules": [
+        "bVI maj7 (Gbmaj7 in Bb minor, Dbmaj7 in F minor) is the most distinctively TPAB harmonic color \u2014 a borrowed major chord functioning as a landing, not a passing chord.",
+        "Suspended dominants (ii7/V without resolution) are structural \u2014 Gm7/C implies dominant function but suspends it indefinitely.",
+        "Half-step modulation (E\u2192F minor, E\u2192Eb) is the structural key change tool \u2014 replaces conventional tonal development.",
+        "P-Funk principle on groove tracks: park on minor 7th modal vamp, refuse to resolve. Groove IS the harmony.",
+        "Live ensemble improvisation over drum/bass foundations \u2014 voicings are emergent from jazz-literate musicians, not pre-specified.",
+        "Parallel major/minor toggle at the section level (F major \u2194 F minor) is borrowed chord technique applied structurally.",
+        "Functional dominant V7\u2192i reserved for specific emotional moments (You Ain't Gotta Lie) \u2014 not the default.",
+        "bIIMaj7 (Neapolitan maj7) as half-step chromatic descent into minor tonic \u2014 jazz reharmonization applied to hip-hop."
+      ]
+    },
+    "mac_miller": {
+      "name": "Mac Miller",
+      "description": "Jazz-rooted neo-soul harmony \u2014 secondary dominant chains, bVII major borrowing, and bIII maj7 in minor contexts \u2014 filtered through Jon Brion's film-scoring aesthetic of cinematic unresolved tension, with simple melodies floating over harmonically complex ground.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj7",
+        "dom": "7b9"
+      },
+      "progressions": [
+        {
+          "label": "Come Back to Earth \u2014 full secondary dominant chain in C major",
+          "degrees": [
+            "Imaj7",
+            "I7",
+            "IVmaj7",
+            "iiim7",
+            "VI7",
+            "bVIImaj7",
+            "iim7",
+            "III7",
+            "vim7",
+            "bVII",
+            "iim"
+          ],
+          "notes": "Cmaj7 \u2013 C7 \u2013 Fmaj7 \u2013 Em7 \u2013 A7 \u2013 Bbmaj7 \u2013 Dm7 \u2013 E7 \u2013 Am7 \u2013 Bb \u2013 Dm. C7 = I7 treating tonic as dominant of IV. A7 = V7/ii. Bbmaj7 = bVII maj7 (Mixolydian borrow). E7 = V7/vi. Full chain: C7\u2192Fmaj7\u2192Em7\u2192A7\u2192Bbmaj7\u2192Dm7\u2192E7\u2192Am7."
+        },
+        {
+          "label": "Small Worlds \u2014 Bb minor neo-soul ii-V with altered dominant",
+          "degrees": [
+            "bVImaj7",
+            "bVIIm7",
+            "V7b9"
+          ],
+          "notes": "Fmaj7 \u2013 Gm7 \u2013 C7b9 in Bb minor (bVI \u2013 bVII \u2013 V7b9). Jazz ii-V adapted for minor key with b9 extension as the jazz fingerprint. Also: Fmaj7 \u2013 Gm7 \u2013 A7 \u2013 C7 in some sections. 96/100 chord complexity, 98/100 novelty."
+        },
+        {
+          "label": "Ladders \u2014 G minor neo-soul minor bVI",
+          "degrees": [
+            "im7",
+            "bIIImaj7",
+            "vm7"
+          ],
+          "notes": "Cm7 \u2013 Ebmaj7 \u2013 Gm7 in G minor. Cm7 = im7, Ebmaj7 = bIIImaj7 (relative major with 7th \u2014 jazz minor borrowed chord), Gm7 = vm7. Textbook neo-soul minor vocabulary."
+        },
+        {
+          "label": "Circles (title) \u2014 E major with bVII color",
+          "degrees": [
+            "I",
+            "Isus4",
+            "bVII6",
+            "IV",
+            "bVIImaj7",
+            "IV7"
+          ],
+          "notes": "E \u2013 Esus4 \u2013 D6 \u2013 A \u2013 D \u2013 D7 in A major (or E major). D6 = bVII with added 6th (softer than Dmaj7 \u2014 D6 is D\u2013F#\u2013A\u2013B, not D\u2013F#\u2013A\u2013C#). D7 left without resolution \u2014 Jon Brion's unresolved tension aesthetic."
+        },
+        {
+          "label": "Jet Fuel \u2014 C minor with Phrygian-inflected II",
+          "degrees": [
+            "vm",
+            "im",
+            "II",
+            "im"
+          ],
+          "notes": "Gm \u2013 Cm \u2013 D \u2013 Cm in C minor. D major (bII or harmonic minor II) is non-diatonic \u2014 Phrygian inflection or harmonic minor V substitution. Likely C Dorian with D major as chromatic II chord."
+        },
+        {
+          "label": "A Moment 4 Jazz (Larry Lovestein) \u2014 ii-V-I in C",
+          "degrees": [
+            "vim7",
+            "V7",
+            "I7",
+            "IV"
+          ],
+          "notes": "Am7 \u2013 G7 \u2013 C7 \u2013 F in C major. Foundational jazz vocabulary predating Swimming by 6 years \u2014 confirms Larry Lovestein-era jazz fluency."
+        }
+      ],
+      "rules": [
+        "bVII major (Bb in C major, D in A major) is the most consistent harmonic color \u2014 Mixolydian borrowing that gives tracks a floating quality rather than V\u2192I finality.",
+        "bIII maj7 (Ebmaj7 in G or C minor) is the jazz minor standard \u2014 relative major chord with added 7th.",
+        "Secondary dominant chains (I7\u2192IV, VI7\u2192ii, III7\u2192vi) are structural, not ornamental \u2014 follow the chain through multiple moves.",
+        "D7b9 (V7b9) is the genre's most powerful tension chord into minor tonic \u2014 the b9 is the jazz fingerprint.",
+        "Unresolved dominant tension is an aesthetic choice \u2014 D7 in Circles is intentionally left hanging.",
+        "Simple melody over complex harmony \u2014 pentatonic/diatonic vocal line stays inside while the chords go outside.",
+        "Rootless voicings are common \u2014 bass covers the root, upper chord voices handle 3rd/7th/9th stack in mid-register.",
+        "D6 and Dmaj7 are different colors \u2014 D6 (D\u2013F#\u2013A\u2013B) is softer and more neo-soul; Dmaj7 (D\u2013F#\u2013A\u2013C#) is jazzier. Use D6 as default."
+      ]
+    },
+    "joe_pass": {
+      "name": "Joe Pass",
+      "description": "Shell voicing, drop-3, and drop-2 mixed fluidly within a single chord change \u2014 guide tones (3rd and 7th) are the fixed harmonic identity, chromatic approach chords and tritone substitutions target the V7 in ii-V-I, and inner voice movement creates motion inside otherwise static chords.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "ii-V-I in C \u2014 drop-3 with bass note",
+          "degrees": [
+            "iim7",
+            "V7",
+            "Imaj7"
+          ],
+          "notes": "Dm7 (D/A-C-F) \u2013 G7 (G/D-F-B) \u2013 Cmaj7 (C/G-B-E). Left hand = single bass note, right hand = 3-note upper cluster from drop-3. Tritone (B-F) present in G7 shell \u2014 the irreducible harmonic identity of V7."
+        },
+        {
+          "label": "ii-V-I in C \u2014 rootless drop-2 (with bass player)",
+          "degrees": [
+            "iim7",
+            "V7",
+            "Imaj7"
+          ],
+          "notes": "Dm7 (F-A-C-E = 3-5-7-9) \u2013 G7 (F-B-D-A = b7-3-5-9 or 13) \u2013 Cmaj7 (E-G-B-D = 3-5-7-9). No root in any voicing. Extensions added naturally: 9th on Dm7, 9th or 13th on G7, 9th on Cmaj7."
+        },
+        {
+          "label": "ii-V-I in C with tritone substitution",
+          "degrees": [
+            "iim7",
+            "bII7",
+            "Imaj7"
+          ],
+          "notes": "Dm7 \u2013 Db7 \u2013 Cmaj7. G7 replaced by Db7 (tritone sub). Db7 bass moves down by half-step to C \u2014 strong smooth voice leading. Guide tones of G7 (B and F) = guide tones of Db7 (F and Cb/B), roles swapped."
+        },
+        {
+          "label": "Chromatic approach descent with sus resolution",
+          "degrees": [
+            "I13sus4",
+            "I13",
+            "bVII13sus4",
+            "bVII13",
+            "bVI13sus4",
+            "bVI13"
+          ],
+          "notes": "Ab13sus4 \u2192 Ab13 \u2192 G13sus4 \u2192 G13 \u2192 Gb13sus4 \u2192 Gb13. Half-step-per-bar descent with sus4\u2192resolved dominant motion each step. Sus voicing = 9-5-1 in right hand over 1-b7 in left; resolves to standard dominant 3-7."
+        },
+        {
+          "label": "I to ii chromatic passing diminished",
+          "degrees": [
+            "Imaj7",
+            "bIIdim7",
+            "iim7"
+          ],
+          "notes": "Cmaj7 \u2192 C#dim7 \u2192 Dm7. Chromatic bass motion \u2014 dim7 fills the gap between I and ii. C#dim7 = Ebdim7 = Gbdim7 = Adim7 (symmetric, one grip, four functions). Also usable between IV and V: Fmaj7 \u2192 F#dim7 \u2192 G7."
+        }
+      ],
+      "rules": [
+        "Three base voicing types: shell (R-3-7), drop-3 (bass note + 3-note upper cluster), drop-2 (2-note LH + 2-note RH). Mix fluidly \u2014 don't stay in one system.",
+        "Guide tones (3rd and 7th) NEVER move between voicing systems \u2014 only surrounding notes change position.",
+        "V7 shell always contains the tritone (3rd + b7). These two notes are the irreducible harmonic identity of any dominant chord.",
+        "Tritone substitution targets V7 in ii-V-I \u2014 replace G7 with Db7. Bass descends by half-step for smooth voice leading.",
+        "Passing diminished 7ths are symmetric \u2014 one grip covers all four enharmonic functions. Use between any diatonic chord and its neighbor a whole step away.",
+        "Chromatic approach chords: approach any target chord from a half-step above or below using the same chord type \u2014 parallel motion.",
+        "Do not harmonize every note. Harmonize structurally important notes (downbeats, phrase starts/ends, long tones) and leave runs as single-note lines.",
+        "Inner voice movement creates motion inside a static chord \u2014 one voice moves chromatically while bass and melody hold."
+      ]
+    },
+    "ama_lou": {
+      "name": "Ama Lou",
+      "description": "Functional minor tonality with selective jazz extensions \u2014 closer to Sade's harmonic restraint than US neo-soul modal density \u2014 built on the bVI major plateau, harmonic minor V7 for tension, and an intuitive Dorian/Aeolian toggle without committing to either mode.",
+      "chord_colors": {
+        "min": "min7",
+        "maj": "maj7",
+        "dom": "7"
+      },
+      "progressions": [
+        {
+          "label": "Tried Up \u2014 harmonic minor V with bVI landing",
+          "degrees": [
+            "im7",
+            "V7",
+            "bVImaj7",
+            "bVII7"
+          ],
+          "notes": "Am7 \u2013 E7 \u2013 Fmaj7 \u2013 G7 in A minor. E7 (V7 with raised 3rd) is borrowed from harmonic minor \u2014 the signature neo-soul tension move. Fmaj7 (bVI) provides borrowed major color plateau. Also documented: E-7, F-maj7, F-maj6, A-min7, Em, B-hdim7 voicings."
+        },
+        {
+          "label": "Northside \u2014 i-V-VI-V in B minor",
+          "degrees": [
+            "im",
+            "V",
+            "bVI",
+            "V"
+          ],
+          "notes": "Bm \u2013 F# \u2013 G \u2013 F# in B minor. Clean folk-influenced minor. Gmaj7 extension adds neo-soul warmth without departing diatonic territory. F#-7 (F# minor 7) softens the dominant pull \u2014 a key UK-soul move avoiding hard resolution."
+        },
+        {
+          "label": "Trust Nobody \u2014 i-bVII-IV-bIII minor pentatonic",
+          "degrees": [
+            "im",
+            "bVII",
+            "IV",
+            "bIII"
+          ],
+          "notes": "C#m \u2013 B \u2013 F# \u2013 E in C# minor. bVII (B major) and bIII (E major) borrowed from Dorian/Aeolian overlap. Most purely minor-pentatonic-sounding progression in her catalog."
+        },
+        {
+          "label": "This Town \u2014 bVI-v-i-V7 in F minor",
+          "degrees": [
+            "bVI",
+            "vm",
+            "im",
+            "V7"
+          ],
+          "notes": "Db \u2013 Cm \u2013 Fm \u2013 C7 in F minor. Cm (minor v) avoids leading tone \u2014 keeps it modal-Aeolian. C7 as harmonic minor tension before returning to Db bVI. Db (bVI) is the borrowed major color plateau present throughout her catalog."
+        },
+        {
+          "label": "Wire \u2014 i-bVII-bVI-V in B minor",
+          "degrees": [
+            "im",
+            "bVII",
+            "bVI",
+            "V"
+          ],
+          "notes": "Bm \u2013 A \u2013 G \u2013 F# in B minor. Identical structural type to Northside \u2014 i, bVII, bVI cadences are her default minor formula. Functional resolution to F# (V) closes it."
+        },
+        {
+          "label": "TBC \u2014 Dorian/Aeolian toggle in C minor",
+          "degrees": [
+            "im",
+            "bVI",
+            "bIII",
+            "ivm",
+            "bVII"
+          ],
+          "notes": "Cm \u2013 Ab \u2013 F \u2013 Fm \u2013 Eb. The appearance of both Fm (minor iv, Aeolian) and F major (major IV, Dorian) within the same song is the key textural device \u2014 toggling between Aeolian and Dorian gives the track its ambiguity."
+        },
+        {
+          "label": "Patience \u2014 i-bVII-bVI-ii in F# minor",
+          "degrees": [
+            "im",
+            "bVII",
+            "bVI",
+            "iim"
+          ],
+          "notes": "F#m \u2013 E \u2013 D \u2013 G#m in F# minor. G#m (ii) is a diatonic minor second degree \u2014 relatively rare in her catalog, adds a jazz-adjacent move. Slow 80 BPM suits extended voice-leading space."
+        }
+      ],
+      "rules": [
+        "Default tonality is functional minor. Extensions are selective color additions, not structural foundations.",
+        "bVI major plateau (Ab in Cm, Db in Fm, G in Bm) is the signature harmonic resting point \u2014 appears in nearly every song.",
+        "Harmonic minor V7 (E7 in Am, C7 in Fm, F# in Bm) creates controlled tension \u2014 follow it with bVI rather than resolving to tonic for a deceptive-ish move.",
+        "Dorian/Aeolian toggle: shift between minor iv (Fm) and major IV (F) freely within the same song \u2014 felt, not theorized.",
+        "Static or slow-moving harmony. 2-4 chord loops repeated throughout the song \u2014 prioritize melodic and vocal development over harmonic motion.",
+        "7th extensions are add-on color (Gmaj7 over a Bm progression) \u2014 not structural jazz chord function.",
+        "Half-diminished (B-hdim7 in Tried Up) used as a passing chord or substitution in fills/transitions \u2014 not a static chord.",
+        "Vocal harmonies double chord tones (3rds, 5ths) rather than jazz extensions \u2014 keeps harmonies legible and warm."
+      ]
+    }
+  }
+}

@@ -7,7 +7,7 @@
 //   import { CHORD_INTERVALS, EXTENSION_MAP, STYLE_TEMPLATES, loadVocabulary }
 //     from './voicing_vocabulary.js'
 //
-// Javelin write target: voicing_vocabulary.json
+// Javelin write target: artist_vocab.json
 //   - Fetched at runtime and merged into the built-in vocab
 //   - Javelin appends new chord_types, extension_map entries, style_templates
 // =============================================================================
@@ -241,7 +241,7 @@ export const STYLE_TEMPLATES = {
 };
 
 // ── loadVocabulary() — runtime merge from Javelin's JSON ──────────────────────
-// Fetches voicing_vocabulary.json and deep-merges into the built-in vocab.
+// Fetches artist_vocab.json and deep-merges into the built-in vocab.
 // The JSON can add new chord_types, extend extension_map, add style_templates.
 // Returns merged { chordTypes, extensionMap, styleTemplates }.
 export async function loadVocabulary() {
@@ -261,7 +261,7 @@ export async function loadVocabulary() {
     }
 
     try {
-        const res = await fetch('./voicing_vocabulary.json');
+        const res = await fetch('./artist_vocab.json');
         if (!res.ok) return base;
         const data = await res.json();
 
@@ -302,7 +302,7 @@ export async function loadVocabulary() {
         }
     } catch (e) {
         // JSON unavailable — use built-in vocab only
-        console.info('[VocabLoader] voicing_vocabulary.json not available, using built-in vocab.');
+        console.info('[VocabLoader] artist_vocab.json not available, using built-in vocab.');
     }
 
     return base;

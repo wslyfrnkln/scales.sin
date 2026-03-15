@@ -848,10 +848,10 @@ function pcPresent(result, rootMidi, semitone) {
     {
         let jsonData = null;
         try {
-            const res = await fetch('./voicing_vocabulary.json');
+            const res = await fetch('./artist_vocab.json');
             jsonData = await res.json();
         } catch(e) {
-            assert('Vocab JSON Merge', 'voicing_vocabulary.json is fetchable', false, `fetch failed: ${e.message}`);
+            assert('Vocab JSON Merge', 'artist_vocab.json is fetchable', false, `fetch failed: ${e.message}`);
         }
         if (jsonData) {
 

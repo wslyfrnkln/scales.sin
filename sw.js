@@ -13,7 +13,7 @@ const FILES_TO_CACHE = [
     './manifest.json',
     './music_theory.js',
     './voicing_vocabulary.js',
-    './voicing_vocabulary.json',
+    './artist_vocab.json',
     './fretboard_renderer.js',
     './piano_renderer.js',
     './Assets/Icons/icon-192.png',

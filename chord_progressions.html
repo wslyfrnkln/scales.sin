@@ -1553,10 +1553,10 @@
             });
         }
 
-        // Merge voicing_vocabulary.json at runtime (Javelin's write target)
+        // Merge artist_vocab.json at runtime (Javelin's write target)
         (async function wireVocabularyMerge() {
             try {
-                const res = await fetch('./voicing_vocabulary.json');
+                const res = await fetch('./artist_vocab.json');
                 if (!res.ok) return;
                 const data = await res.json();
                 if (data.chord_types) Object.assign(CHORD_TYPES, data.chord_types);

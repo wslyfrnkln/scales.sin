@@ -3790,7 +3790,7 @@
         // Runs post-init — extends EXTENSION_MAP at runtime with new research entries
         (async function wireVocabularyMerge() {
             try {
-                const res = await fetch('./voicing_vocabulary.json');
+                const res = await fetch('./artist_vocab.json');
                 if (!res.ok) return;
                 const data = await res.json();
                 if (data.extension_map) {
