@@ -1,6 +1,6 @@
 // =============================================================================
 // SCALES.SIN — MUSIC THEORY ENGINE
-// Shared module for chord_voice_leading.html and scale_viz_v5.html
+// Shared module for chord_voice_leading.html and scales.sin.html
 // Import via: <script type="module"> … import { … } from './music_theory.js'
 // Must be served over HTTP (not file://) — ES module requirement.
 // =============================================================================

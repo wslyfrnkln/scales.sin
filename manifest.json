@@ -28,7 +28,7 @@
       "name": "Scale Visualizer",
       "short_name": "Scales",
       "description": "Visualize scales on guitar and piano",
-      "url": "./scale_viz_v5.html",
+      "url": "./scales.sin.html",
       "icons": [
         {
           "src": "../Assets/Icons/icon-192.png",

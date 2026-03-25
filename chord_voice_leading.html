@@ -465,6 +465,28 @@
                 <div class="chord-row" id="grid-piano-close"></div>
             </div>
         </div>
+
+        <div class="section-label">Piano — Rootless A (3-5-7-9)</div>
+        <div class="row-container">
+            <div class="row-header">
+                <div class="row-title">3rd · 5th · 7th · 9th · Voice Led</div>
+                <div class="scroll-hint">← scroll →</div>
+            </div>
+            <div class="chord-scroll-container" id="scroll-piano-rootlessA">
+                <div class="chord-row" id="grid-piano-rootlessA"></div>
+            </div>
+        </div>
+
+        <div class="section-label">Piano — Rootless B (7-9-3-5)</div>
+        <div class="row-container">
+            <div class="row-header">
+                <div class="row-title">7th · 9th · 3rd · 5th · Voice Led</div>
+                <div class="scroll-hint">← scroll →</div>
+            </div>
+            <div class="chord-scroll-container" id="scroll-piano-rootlessB">
+                <div class="chord-row" id="grid-piano-rootlessB"></div>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -600,6 +622,8 @@
             renderTriadRow('grid-triad1', 'root', '1st');
             renderPianoRow('grid-piano-shell', 'shell');
             renderPianoRow('grid-piano-close', 'close');
+            renderPianoRow('grid-piano-rootlessA', 'rootlessA');
+            renderPianoRow('grid-piano-rootlessB', 'rootlessB');
         }
 
         // ============ DRAG SCROLL & INFINITE LOOP ============
@@ -716,6 +740,8 @@
         enableDragScroll(document.getElementById('scroll-triad1'));
         enableDragScroll(document.getElementById('scroll-piano-shell'));
         enableDragScroll(document.getElementById('scroll-piano-close'));
+        enableDragScroll(document.getElementById('scroll-piano-rootlessA'));
+        enableDragScroll(document.getElementById('scroll-piano-rootlessB'));
         enableInfiniteScroll(document.getElementById('scroll-row1'));
         enableInfiniteScroll(document.getElementById('scroll-row2'));
         enableInfiniteScroll(document.getElementById('scroll-drop3-row1'));
@@ -723,6 +749,8 @@
         enableInfiniteScroll(document.getElementById('scroll-triad1'));
         enableInfiniteScroll(document.getElementById('scroll-piano-shell'));
         enableInfiniteScroll(document.getElementById('scroll-piano-close'));
+        enableInfiniteScroll(document.getElementById('scroll-piano-rootlessA'));
+        enableInfiniteScroll(document.getElementById('scroll-piano-rootlessB'));
         
         render();
         
