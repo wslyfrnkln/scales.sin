@@ -29,5 +29,11 @@ check('bridge returns at least 1 chord', br.length >= 1);
 check('bridge: every chord has MIDI-range notes', br.every(c => midiOk(c.notes)));
 check('bridge: every chord has a symbol', br.every(c => typeof c.symbol === 'string' && c.symbol.length > 0));
 
+// ── index coercion: menu indices must resolve identically to explicit names ───
+const genByIdx = doGenerate(0, 3, 1);            // frank_ocean=0, Eb=3, minor=1
+check('generate: index form === name form', JSON.stringify(genByIdx) === JSON.stringify(gen));
+const brByIdx = doBridge(0, 1, 5, 0, 1);         // maj7=1, min7=0, dangelo=1
+check('bridge: index form === name form', JSON.stringify(brByIdx) === JSON.stringify(br));
+
 console.log(failures === 0 ? 'ALL TESTS PASS' : `${failures} FAILURES`);
 process.exit(failures === 0 ? 0 : 1);

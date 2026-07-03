@@ -7,10 +7,16 @@
 // require(). (Deliberate exception to the ESM-only house rule — platform
 // constraint of Node for Max.)
 //
-// Outlet protocol (consumed by the Max patch, Tasks 2.2/3.3/4.1):
-//   ['progression'|'bridge_result', 'chord', <index>, <midiNote>...]  one per chord
-//   ['progression'|'bridge_result', 'symbols', <symbol>...]           one per response
-//   ['error', <message>]                                              named failure path
+// Message protocol (Max patch → Node):
+//   'set_artist <i>' 'set_key <i>' 'set_mode <i>' 'set_rootA <i>' 'set_qualA <i>'
+//   'set_rootB <i>' 'set_qualB <i>'   — live.menu index state updates
+//   'generate' / 'bridge'             — buttons, use stored state
+//   'generate <artist> <key> <mode>' / 'bridge <rA> <qA> <rB> <qB> <artist>'
+//                                     — explicit form (indices OR names) for testing
+// Outlet protocol (Node → Max patch):
+//   ['symbols', <symbol>...]          one per response, immediate (readout)
+//   ['play', <chordIdx>, <note>...]   timed — one per chord, CHORD_MS apart
+//   ['error', <message>]              named failure path
 // =============================================================================
 
 const path = require('path');
@@ -22,23 +28,36 @@ const { suggestChords } = require('../../chord_suggestion_engine.js');
 // Vocab loads once at process start (node.script boots one process per device).
 const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json'));
 
+// ── Index maps — order MUST match the live.menu items in ScalesChords.amxd ────
+const ARTISTS = ['frank_ocean', 'dangelo', 'leon_thomas', 'glasper', 'badu', 'paak',
+    'stevie_wonder', 'herbie_hancock', 'thundercat', 'gospel', 'dilla', 'kendrick',
+    'mac_miller', 'joe_pass', 'ama_lou'];
+const MODES = ['major', 'minor'];
+const QUALITIES = ['min7', 'maj7', '7'];
+
+// Coerce a live.menu index (number / numeric string) or an explicit name string.
+const isIdx = v => typeof v === 'number' || /^\d+$/.test(String(v));
+const artistOf = a => isIdx(a) ? (ARTISTS[Number(a)] ?? ARTISTS[0]) : String(a);
+const modeOf = m => isIdx(m) ? (MODES[Number(m)] ?? MODES[0]) : String(m);
+const qualityOf = q => isIdx(q) ? (QUALITIES[Number(q)] ?? QUALITIES[0]) : String(q);
+
 // ── Pure logic paths (Max-independent — exercised by test_bridge.js) ──────────
 
 /** Button 1: artist progression → [{symbol, degree, notes[]}] */
-function doGenerate(artistKey, tonic, modeStr) {
-    const chords = resolveProgression(String(artistKey), Number(tonic), String(modeStr), vocab);
+function doGenerate(artist, tonic, mode) {
+    const chords = resolveProgression(artistOf(artist), Number(tonic), modeOf(mode), vocab);
     return chords.map(c => ({ symbol: c.symbol, degree: c.degree, notes: voicedChordToMidiNotes(c) }));
 }
 
 /** Button 2: bridge chord A → chord B via the engine's suggestChords() export */
-function doBridge(rootA, qualityA, rootB, qualityB, artistKey) {
+function doBridge(rootA, qualA, rootB, qualB, artist) {
     const chords = suggestChords(
-        Number(rootA), String(qualityA), Number(rootB), String(qualityB),
-        String(artistKey), vocab) ?? [];
+        Number(rootA), qualityOf(qualA), Number(rootB), qualityOf(qualB),
+        artistOf(artist), vocab) ?? [];
     return chords.map(c => ({ symbol: c.symbol, degree: c.degree, notes: voicedChordToMidiNotes(c) }));
 }
 
-module.exports = { doGenerate, doBridge, vocab };
+module.exports = { doGenerate, doBridge, vocab, ARTISTS, MODES, QUALITIES };
 
 // ── Max wiring (only resolvable inside a running node.script process) ─────────
 
@@ -46,26 +65,43 @@ let Max = null;
 try { Max = require('max-api'); } catch (e) { /* standalone run — pure paths above still work */ }
 
 if (Max) {
-    const outletChords = (tag, result) => {
-        result.forEach((c, i) => Max.outlet(tag, 'chord', i, ...c.notes));
-        Max.outlet(tag, 'symbols', ...result.map(c => c.symbol));
+    // UI state — updated by the patch's live.menu set_* messages. Defaults match
+    // each menu's initial index (0), except rootB (5 = F) for a sensible first bridge.
+    const state = { artist: 0, key: 0, mode: 0, rootA: 0, qualA: 0, rootB: 5, qualB: 0 };
+    for (const k of Object.keys(state)) {
+        Max.addHandler(`set_${k}`, v => { state[k] = Number(v) || 0; });
+    }
+
+    // Chord sequencing lives here, not in the patch (simplest testable option per
+    // brainstorm Discretion): symbols outlet immediately, then one timed 'play'
+    // message per chord, CHORD_MS apart. Patch side is just iter → makenote → noteout.
+    const CHORD_MS = 600;
+    const outletResult = result => {
+        Max.outlet('symbols', ...result.map(c => c.symbol));
+        result.forEach((c, i) => setTimeout(() => Max.outlet('play', i, ...c.notes), i * CHORD_MS));
     };
 
-    Max.addHandler('generate', (artistKey, tonic, modeStr) => {
+    Max.addHandler('generate', (artist, key, mode) => {
         try {
-            outletChords('progression', doGenerate(artistKey, tonic, modeStr));
+            const noArgs = artist === undefined;
+            outletResult(noArgs
+                ? doGenerate(state.artist, state.key, state.mode)
+                : doGenerate(artist, key, mode));
         } catch (e) {
-            Max.outlet('error', e.message); // reader: Max patch error route → console/readout
+            Max.outlet('error', e.message); // reader: Max patch error route → readout + console
         }
     });
 
-    Max.addHandler('bridge', (rootA, qualityA, rootB, qualityB, artistKey) => {
+    Max.addHandler('bridge', (rootA, qualA, rootB, qualB, artist) => {
         try {
-            outletChords('bridge_result', doBridge(rootA, qualityA, rootB, qualityB, artistKey));
+            const noArgs = rootA === undefined;
+            outletResult(noArgs
+                ? doBridge(state.rootA, state.qualA, state.rootB, state.qualB, state.artist)
+                : doBridge(rootA, qualA, rootB, qualB, artist));
         } catch (e) {
             Max.outlet('error', e.message);
         }
     });
 
-    Max.post('[scales.sin] bridge ready — handlers: generate, bridge');
+    Max.post('[scales.sin] bridge ready — handlers: generate, bridge, set_*');
 }
