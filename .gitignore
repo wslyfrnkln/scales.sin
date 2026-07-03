@@ -38,3 +38,6 @@ Thumbs.db
 
 # Test output (keep test file, not results)
 test_results/
+
+# Internal planning docs — never publish (public repo)
+.planning/
