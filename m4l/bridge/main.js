@@ -19,6 +19,15 @@
 //   ['error', <message>]              named failure path
 // =============================================================================
 
+// ── Boot diagnostics — answers "did node.script ever spawn us?" when the Max
+// console isn't reachable. Appends one line per boot / fatal to a log next to
+// this file; reader: whoever is debugging a silent device (tail bridge/boot.log).
+const fs = require('fs');
+const BOOT_LOG = require('path').join(__dirname, 'boot.log');
+const bootLog = msg => { try { fs.appendFileSync(BOOT_LOG, `${new Date().toISOString()} ${msg}\n`); } catch (_) { /* diagnostics never crash the bridge */ } };
+bootLog(`boot pid=${process.pid} node=${process.version}`);
+process.on('uncaughtException', e => { bootLog(`FATAL ${e.stack || e.message}`); throw e; });
+
 const path = require('path');
 const { loadVocabularySync } = require('./vocab_loader.js');
 const { resolveProgression } = require('./degree_resolver.js');

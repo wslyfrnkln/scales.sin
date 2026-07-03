@@ -41,3 +41,7 @@ test_results/
 
 # Internal planning docs — never publish (public repo)
 .planning/
+
+# M4L runtime artifacts
+m4l/bridge/boot.log
+m4l/__pycache__/

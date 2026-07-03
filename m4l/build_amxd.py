@@ -94,15 +94,12 @@ midiout = newobj(2, "midiout", 40, 700, 47, 1, 0)
 line(midiin, 0, midiout, 0)
 
 # ── Node process boot ─────────────────────────────────────────────────────────
-loadbang = newobj(3, "loadbang", 300, 20, 60, 1, 1, ["bang"])
-start_msg = box(4, maxclass="message", text="script start", numinlets=2, numoutlets=1,
-                outlettype=[""], patching_rect=[300.0, 60.0, 76.0, 22.0])
-node = newobj(5, "node.script bridge/main.js", 300, 104, 170, 1, 2)
+# scales_entry.js is a flat shim next to the .amxd — node.script cannot resolve
+# subdirectory-relative script args (proven by probe 2026-07-03: bridge/main.js
+# as the arg silently never spawns). @autostart 1 boots the process on device
+# load; no loadbang chain needed (also probe-proven).
+node = newobj(5, "node.script scales_entry.js @autostart 1 @watch 0", 300, 104, 260, 1, 2)
 status = newobj(6, "print node-status", 480, 150, 110, 1, 0)
-line(loadbang, 0, start_msg, 1)  # right inlet: set only? no — loadbang bang must FIRE the message: left inlet
-lines.pop()
-line(loadbang, 0, start_msg, 0)
-line(start_msg, 0, node, 0)
 line(node, 1, status, 0)
 
 # ── Response routing ──────────────────────────────────────────────────────────
