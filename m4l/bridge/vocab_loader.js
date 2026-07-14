@@ -14,7 +14,10 @@
 const fs = require('fs');
 const path = require('path');
 // Plain-object data exports — DOM-free, reused unmodified (D-01/D-02).
-const { CHORD_TYPES, EXTENSION_MAP, STYLE_TEMPLATES } = require('../../voicing_vocabulary.js');
+// Deployed bridge/ carries its own copy (deploy_m4l.sh); repo layout falls back.
+const { CHORD_TYPES, EXTENSION_MAP, STYLE_TEMPLATES } = require(
+    fs.existsSync(path.join(__dirname, 'voicing_vocabulary.js'))
+        ? './voicing_vocabulary.js' : '../../voicing_vocabulary.js');
 
 /**
  * loadVocabularySync(vocabPath)

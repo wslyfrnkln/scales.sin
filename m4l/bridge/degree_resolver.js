@@ -11,7 +11,10 @@
 // the engine stays unmodified).
 // =============================================================================
 
-const { resolveVoicing } = require('../../chord_suggestion_engine.js');
+// Deployed bridge/ carries its own copy (deploy_m4l.sh); repo layout falls back.
+const { resolveVoicing } = require(
+    require('fs').existsSync(require('path').join(__dirname, 'chord_suggestion_engine.js'))
+        ? './chord_suggestion_engine.js' : '../../chord_suggestion_engine.js');
 
 // ── mirrors chord_suggestion_engine.js:11-25 — kept in sync manually, do not diverge ─
 const NOTE_NAMES_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];

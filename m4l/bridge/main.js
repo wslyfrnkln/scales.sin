@@ -29,13 +29,16 @@ bootLog(`boot pid=${process.pid} node=${process.version}`);
 process.on('uncaughtException', e => { bootLog(`FATAL ${e.stack || e.message}`); throw e; });
 
 const path = require('path');
+// Deployed bridge/ carries its own copy of the engine + vocab (deploy_m4l.sh);
+// the repo layout keeps them at the app root — resolve locally first, fall back.
+const dep = rel => fs.existsSync(path.join(__dirname, rel)) ? `./${rel}` : `../../${rel}`;
 const { loadVocabularySync } = require('./vocab_loader.js');
 const { resolveProgression } = require('./degree_resolver.js');
 const { voicedChordToMidiNotes } = require('./midi_convert.js');
-const { suggestChords } = require('../../chord_suggestion_engine.js');
+const { suggestChords } = require(dep('chord_suggestion_engine.js'));
 
 // Vocab loads once at process start (node.script boots one process per device).
-const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json'));
+const vocab = loadVocabularySync(path.join(__dirname, dep('artist_vocab.json')));
 
 // ── Index maps — order MUST match the live.menu items in ScalesChords.amxd ────
 const ARTISTS = ['frank_ocean', 'dangelo', 'leon_thomas', 'glasper', 'badu', 'paak',
