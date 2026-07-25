@@ -1,0 +1,215 @@
+{
+  "_meta": {
+    "purpose": "Expansion progressions to merge into style_templates[artist].progressions",
+    "created": "2026-07-25",
+    "author": "researcher-agent"
+  },
+  "additions": {
+    "dilla": [
+      {
+        "label": "The Light (Common) — D major loop with bVII9 breath",
+        "degrees": [
+          "Imaj7",
+          "IVmaj7",
+          "bVII9",
+          "Imaj7"
+        ],
+        "notes": "Dmaj7 – Gmaj7 – C9 – Dmaj7 in D major. Source: Bobby Caldwell 'Open Your Eyes' (1980), the loop Dilla selected for Common's 'Like Water for Chocolate' single. The C9 (bVII9) is the non-diatonic Mixolydian breath that makes the four-bar loop refuse to cadence — exactly the 'harmonically ambiguous loop point' criterion. James Poyser overdubbed keys on top; the harmonic decision was made at the chop."
+      },
+      {
+        "label": "Stop! — bIImaj7 over a minor loop (Donuts)",
+        "degrees": [
+          "bIImaj7",
+          "im7",
+          "ivm7",
+          "vm7"
+        ],
+        "notes": "Ebmaj7 – Dm7 – Gm7 – Am7 in D minor. Source: Dionne Warwick 'You're Gonna Need Me' (1973). Dilla loops the Ebmaj7–Dm7 head, so a Neapolitan bIImaj7 lands on the downbeat and the tonic minor arrives as an answer rather than a start — the loop reads as beginning on the 'wrong' chord. Half-step chromatic descent (Eb→D) is the harmonic hook."
+      },
+      {
+        "label": "Stop! — sus dominant turnaround from the source bridge",
+        "degrees": [
+          "ivm7",
+          "V7sus4",
+          "bIIImaj7",
+          "bIII7"
+        ],
+        "notes": "Gm7 – C7sus4 – Fmaj7 – F7 (relative-major area of D minor, from the Warwick source). C7sus4 avoids the tritone so the turnaround never fully resolves; F7 then acts as a secondary dominant that Dilla cuts before it lands. Chopping mid-cadence is the reharmonization — the source resolves, the beat does not."
+      },
+      {
+        "label": "Time: The Donut of the Heart — half-speed relative ambiguity",
+        "degrees": [
+          "vim7",
+          "iim7",
+          "bVIImaj7",
+          "IVmaj7"
+        ],
+        "notes": "Built from the Jackson 5's 'All I Do Is Think of You' slowed to half-speed — documented as Dilla's core edit on this track. Half-speed pitch shifting drops the key and re-centres the loop on the relative minor (vim7), so the sampled major-key source is heard as minor. bVIImaj7 is the Mixolydian rest point; no dominant appears anywhere in the loop."
+      },
+      {
+        "label": "Two Can Win — Bb major/G minor ii-V left unresolved",
+        "degrees": [
+          "vim7",
+          "iim7",
+          "V7sus4",
+          "bVIImaj7"
+        ],
+        "notes": "Gm7 – Cm7 – F7sus4 – Abmaj7 in Bb major / G minor. Companion loop to the Sylvers-derived 'Two Can Win' vamp already indexed: the ii–V is set up but the sus dominant is answered by bVIImaj7 instead of the tonic, so both the relative major and relative minor readings stay live. Rhythmic displacement across the bar line blurs which chord is the downbeat."
+      }
+    ],
+    "leon_thomas": [
+      {
+        "label": "LUCID DREAMS (ft. Masego) — G minor with major VI dominant",
+        "degrees": [
+          "im7",
+          "bIIImaj7",
+          "VI7"
+        ],
+        "notes": "Gm7 – Bbmaj7 – A7 in G minor. The A7 is a major VI7 in a minor key — borrowed from Dorian (natural 6th, F# raised to C#/A major 3rd), not a functioning V/ii. It hangs as color rather than pulling anywhere, which is the Leon Thomas dominant posture: tension without cadence. bIIImaj7 is the relative-major plateau between them."
+      },
+      {
+        "label": "LUCID DREAMS — chorus lift to the relative major",
+        "degrees": [
+          "bVImaj7",
+          "vm7",
+          "bIIImaj7",
+          "bIII7"
+        ],
+        "notes": "Ebmaj7 – Dm7 – Bbmaj7 – Bb7 in G minor. The section lifts off the minor tonic entirely and sits on bVImaj7 — his signature unresolved landing. Bb7 (bIII7) at the tail is a secondary dominant aimed at Ebmaj7, closing the loop backwards into bVI instead of forwards into i."
+      },
+      {
+        "label": "RATHER BE ALONE (with Halle) — Eb minor descending maj7 chain",
+        "degrees": [
+          "im",
+          "bVImaj7",
+          "bIIImaj7",
+          "bIImaj7"
+        ],
+        "notes": "In Eb minor (played as Am shapes with capo 6): im – bVImaj7 – bIIImaj7 – bIImaj7. Three consecutive borrowed major 7ths descending away from the tonic, ending on the Neapolitan bIImaj7 rather than returning — the maximal version of his 'floating closure' move. Shares architecture with Glasper's major-third cycles but stays inside one flat-minor key centre."
+      },
+      {
+        "label": "RATHER BE ALONE — parallel major-3rd swap on the tonic",
+        "degrees": [
+          "im",
+          "I",
+          "bVImaj7",
+          "bIImaj7"
+        ],
+        "notes": "The tonic alternates between minor and parallel major (Am/A in capo shapes = Ebm/Eb sounding) before dropping to bVImaj7. Same technique as FAR FETCHED's F#m→F# swap but applied to the tonic itself — the 3rd is the only voice that moves, everything else holds. Neo-soul color change, not a modulation."
+      },
+      {
+        "label": "ANSWER YOUR PHONE — rare major-key gospel plagal loop",
+        "degrees": [
+          "I",
+          "Imaj7",
+          "IVmaj9",
+          "vim7"
+        ],
+        "notes": "C – Cmaj7 – Fadd9 – Am7 in C major (co-written with Diane Warren). One of only two bright major-key tracks in the MUTT catalog — the I→Imaj7 inner-voice climb and the plagal IV are direct gospel inheritance, and the vim7 turn keeps it from resolving cleanly. Useful as the deliberate contrast entry against his flat-key minor default."
+      }
+    ],
+    "herbie_hancock": [
+      {
+        "label": "Cantaloupe Island — three-chord modal vamp (Empyrean Isles)",
+        "degrees": [
+          "im7",
+          "bVI7",
+          "vim7"
+        ],
+        "notes": "Fm7 – Db7 – Dm7 in F minor, 16-bar ABAB form, four bars per chord. Db7 is a bVI7 read as Lydian Dominant (not a functioning V), and Dm7 sits a whole step above the tonic as a bare Dorian shift with no pivot. Almost no harmonic motion by design — each chord is a modal area to be occupied, the prototype for the i–IV Head Hunters vamps."
+      },
+      {
+        "label": "Watermelon Man — 16-bar funk blues (Takin' Off)",
+        "degrees": [
+          "I7",
+          "IV7",
+          "V7",
+          "I7"
+        ],
+        "notes": "F7 – Bb7 – C7 – F7 in F major, a 16-bar blues rather than the standard 12. All three chords are dominant 7ths used as stable resting colors, not tension — the blues frame lets the 7th be the home sound. The Head Hunters (1973) rework keeps the changes and moves all interest to the mbira/clavinet groove."
+      },
+      {
+        "label": "Watermelon Man — Head Hunters bVII7 turnaround",
+        "degrees": [
+          "I7",
+          "bVII7",
+          "IV7",
+          "I7"
+        ],
+        "notes": "F7 – Eb7 – Bb7 – F7. The Eb7 (bVII7) is the Mixolydian backdoor color that the fusion arrangement leans on in place of a V→I close. Same principle as Chameleon's Eb7: a dominant chord functioning as modal furniture, dropped in a whole step below the tonic with no leading-tone pull."
+      },
+      {
+        "label": "Maiden Voyage — sus areas reordered (B section return)",
+        "degrees": [
+          "bIIsus7",
+          "bIIIsus7",
+          "Isus7"
+        ],
+        "notes": "Eb7sus4 – F7sus4 – D7sus4, the order the sus areas arrive in on the way back to the A section of the 32-bar AABA. Same four-bar-per-chord pacing as the opening vamp but entered from the flat side, so the D7sus4 tonic area is heard as an arrival rather than a starting point — the tune never states a plain tonic chord anywhere. Each voicing reads as stacked 4ths (E-A-D-G-C over D); the 4ths are the chord identity and the root is only a bass note."
+      },
+      {
+        "label": "Chameleon — Dorian vamp with the bridge lift",
+        "degrees": [
+          "im7",
+          "IV7",
+          "bIIImaj7",
+          "bVImaj7"
+        ],
+        "notes": "Bbm7 – Eb7 main vamp, with the arranged section lifting to Dbmaj7 – Gbmaj7 (bIII and bVI) before dropping back. The maj7 pair is the only place the track leaves the two-chord Bb Dorian cell; it functions as registral relief, not modulation — the ARP bass line resumes the vamp underneath. Distinct from the bare i–IV entry already indexed."
+      }
+    ],
+    "joe_pass": [
+      {
+        "label": "Minor ii-V-i with m7b5 shifted up a minor 3rd",
+        "degrees": [
+          "iim7",
+          "V7alt",
+          "im7"
+        ],
+        "notes": "Dm7b5 – G7alt – Cm7 in C minor. Joe's documented device: play Dm7b5 for the ii chord, then move the same grip up a minor 3rd to Fm7b5 over the G7alt — the notes F-Ab-B-Eb spell b7, b9, 3, b13 of G7, a complete altered dominant with one shape. Then Ebmaj7 over Cm7 gives a rootless Cm9. Substitution by transposing a known grip, not by learning a new chord."
+      },
+      {
+        "label": "Have You Met Miss Jones — major-third bridge cycle (Virtuoso)",
+        "degrees": [
+          "IVmaj7",
+          "bVImaj7",
+          "IImaj7",
+          "Imaj7"
+        ],
+        "notes": "Bbmaj7 – Dbmaj7 – Amaj7 – Fmaj7 across the 8-bar bridge in F major. Root motion by descending major 3rds (Bb→Db→A→F) — the system Coltrane later formalized in 'Giant Steps.' Pass recorded this on Virtuoso (1973) as solo guitar; each key change is reached by its own ii-V, so the guide tones keep moving by half-step while the roots leap."
+      },
+      {
+        "label": "All the Things You Are — vi-ii-V-I cycle of fourths (Virtuoso)",
+        "degrees": [
+          "vim7",
+          "iim7",
+          "V7",
+          "Imaj7",
+          "IVmaj7"
+        ],
+        "notes": "Fm7 – Bbm7 – Eb7 – Abmaj7 – Dbmaj7 in Ab major. Continuous circle-of-fourths root motion — the vehicle Pass used to demonstrate guide-tone voice leading, since the 3rd and 7th of each chord invert into each other by a half-step at every change. From the Virtuoso solo-guitar reading; the 36-bar AABA then tonicizes C and G."
+      },
+      {
+        "label": "Autumn Leaves — relative major to relative minor pair",
+        "degrees": [
+          "iim7",
+          "V7",
+          "Imaj7",
+          "IVmaj7"
+        ],
+        "notes": "Cm7 – F7 – Bbmaj7 – Ebmaj7 in Bb major, immediately answered by Am7b5 – D7 – Gm7 (ii-V-i in G minor). The two turnarounds share every diatonic chord, so the same drop-2 and drop-3 grips cover both — the standard Pass used to teach that major and relative-minor ii-Vs are one system, not two."
+      },
+      {
+        "label": "Descending chromatic ii-V chain into the tonic",
+        "degrees": [
+          "iim7",
+          "V7",
+          "bIIm9",
+          "bII7",
+          "Imaj7"
+        ],
+        "notes": "Dm7 – G7 – Dbm9 – Db7 – Cmaj7. The whole ii-V unit is shifted down a half-step and repeated, so the tritone sub arrives with its own ii chord attached rather than bare. Bass descends D→G→Db→Db→C; guide tones move by half-step or hold throughout. Pass's standard way to extend a two-bar turnaround into four without adding harmonic rhythm."
+      }
+    ]
+  }
+}
