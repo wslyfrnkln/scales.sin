@@ -38,6 +38,29 @@ boxes = []
 lines = []
 
 
+
+# ── SIN.AUDIO DESIGN LANGUAGE ────────────────────────────────────────────────
+# Wes, 2026-07-25: the M4L device should be "a more compact but same design
+# idea" as the plugin. M4L cannot host the photographic chassis plate (no image
+# fill on live.* objects, and a device is ~170px tall), so the identity carries
+# through COLOUR and TYPE instead of artwork: the plugin's Dusk theme — sand
+# panel, deep-teal display, terracotta accent — plus the same etched-label
+# treatment and the SINAUDIO wordmark.
+#
+# Values mirror Scales.sin Plugin/Source/UI/LookAndFeel.cpp ThemeId::Dusk.
+def rgba(hex_str, a=1.0):
+    """'e9e4dc' -> [r, g, b, a] floats, the form Max wants."""
+    h = hex_str.lstrip('#')
+    return [int(h[i:i+2], 16) / 255.0 for i in (0, 2, 4)] + [a]
+
+DUSK_PANEL     = rgba('e9e4dc')          # sand chassis
+DUSK_PANEL_DK  = rgba('d8d2c8')          # chassis shadow
+DUSK_LCD       = rgba('10333a')          # deep teal display
+DUSK_LCD_INK   = rgba('8fd8c8')          # jade readout
+DUSK_TEXT      = rgba('22262b')          # panel ink
+DUSK_LABEL     = rgba('8a8378')          # etched legend
+DUSK_ACCENT    = rgba('d35e36')          # terracotta
+
 def box(oid, **kw):
     b = {"id": f"obj-{oid}"}
     b.update(kw)
@@ -60,6 +83,12 @@ def live_menu(oid, longname, items, px, py, pw, x, y):
                outlettype=["", "", "float"], parameter_enable=1,
                patching_rect=[x, y, 100.0, 15.0],
                presentation=1, presentation_rect=[px, py, pw, 15.0],
+               fontname="Arial Bold", fontsize=9.0,
+               # Recessed, not a white chip — same reasoning as the plugin's
+               # inset panels ("i dont like the white bubbles").
+               bgcolor=DUSK_PANEL_DK, bgcolor2=DUSK_PANEL_DK,
+               textcolor=DUSK_TEXT, arrowcolor=DUSK_LABEL,
+               bordercolor=[0.0, 0.0, 0.0, 0.22],
                saved_attribute_attributes={"valueof": {
                    "parameter_enum": items,
                    "parameter_longname": longname,
@@ -73,6 +102,7 @@ def live_button(oid, longname, px, py, x, y):
                outlettype=["bang"], parameter_enable=1,
                patching_rect=[x, y, 24.0, 24.0],
                presentation=1, presentation_rect=[px, py, 24.0, 24.0],
+               bgcolor=DUSK_ACCENT, bgoncolor=DUSK_ACCENT,
                saved_attribute_attributes={"valueof": {
                    "parameter_enum": ["off", "on"],
                    "parameter_longname": longname,
@@ -81,11 +111,25 @@ def live_button(oid, longname, px, py, x, y):
                    "parameter_type": 2}})
 
 
+
+def panel(oid, px, py, pw, ph, color, rounded=0.0):
+    """A filled presentation rectangle — the device's own surface."""
+    return box(oid, maxclass="panel", numinlets=1, numoutlets=0,
+               patching_rect=[700.0, 600.0 + oid * 4, pw, ph],
+               presentation=1, presentation_rect=[px, py, pw, ph],
+               bgcolor=color, bgcolor2=color, bordercolor=[0.0, 0.0, 0.0, 0.18],
+               border=1, rounded=rounded, mode=0)
+
 def label(oid, text, px, py, pw=56.0):
+    # Etched legend: small, letterspaced, low-contrast — reads as printed ON the
+    # panel rather than as a floating UI chip, matching the plugin's
+    # etchedLabel treatment.
     return box(oid, maxclass="live.comment", numinlets=1, numoutlets=0,
                patching_rect=[700.0, 20.0 + oid * 24, pw, 18.0],
                presentation=1, presentation_rect=[px, py, pw, 15.0],
-               text=text, textjustification=0)
+               text=text, textjustification=0,
+               fontname="Arial Bold", fontsize=8.0,
+               textcolor=DUSK_LABEL)
 
 
 # ── MIDI passthrough ──────────────────────────────────────────────────────────
@@ -160,6 +204,10 @@ line(br_btn, 0, br_msg, 0)
 line(br_msg, 0, node, 0)
 
 # ── Labels (presentation only) ────────────────────────────────────────────────
+# ── Device surface (drawn first so controls layer on top) ────────────────────
+panel(60, 0.0, 0.0, 380.0, 169.0, DUSK_PANEL)          # sand chassis
+panel(61, 0.0, 84.0, 380.0, 40.0, DUSK_LCD, 4.0)       # deep-teal display band
+
 label(40, "Key", 6.0, 2.0)
 label(41, "Mode", 68.0, 2.0)
 label(42, "Artist", 130.0, 2.0)
@@ -169,7 +217,8 @@ label(45, "Qual A", 68.0, 44.0)
 label(46, "Root B", 130.0, 44.0)
 label(47, "Qual B", 192.0, 44.0)
 label(48, "Bridge", 288.0, 60.0, 60.0)
-label(49, "SCALES.SIN — chords", 254.0, 92.0, 100.0)
+label(49, "SCALES.SIN", 254.0, 128.0, 100.0)
+label(50, "SINAUDIO", 254.0, 142.0, 100.0)
 
 # ── Patcher (skeleton values copied from Ableton's stock Max MIDI Effect) ─────
 patcher = {
