@@ -1,5 +1,14 @@
 # Scales.sin
 
+<!-- judo:status:start -->
+## Status
+_Auto-stamped by closeout · 2026-07-25 · juniper_
+
+- **Last session:** 2026-07-25 — Scales.sin MVP finished — all 7 of Wes's items; universal VST3+AU+M4L shipped to ~/Desktop/Scales.sin-test-build/; Generate variety fixed: dilla had literally 3 authored progressions vs a round-robin; generateVaried derives past the authored set (3 -> 9 distinct over 10 presses); Chord library 87 -> 107 progressions; 20 researched entries for the 4 thinnest artists, 0 voicer rejections; UI: cropped to the measured device body (880x445) — the 'other window' was our own backdrop band; white bubbles removed at all 3 sources; drag works anywhere; strategy shown in LCD; Feel: humanize scale 3x wider (full travel was +/-20ms, the BOTTOM of the human range) and defaults flipped to human-by-default; M4L: derivation layer ported to JS with 23/23 parity vs the C++ fixture — both products now share one musical brain
+- **Next:** Wes's Live pass: hear the humanize defaults and the Evolve strategies in a session, then converge the feel
+- **Active plan:** SCALES_M4L_MVP_PLAN (`/Users/wesleyodd/Judo/projects/SinAudio/Scales.sin App/.planning/SCALES_M4L_MVP_PLAN.md`)
+<!-- judo:status:end -->
+
 **Last Updated:** 2026-03-27 05:00
 **Status:** Phase 1 — Core Theory Engine | Health: green
 **Type:** PWA
