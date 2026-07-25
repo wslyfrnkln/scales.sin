@@ -4,7 +4,7 @@
 // Node — run with Max's bundled binary to match the node.script runtime.
 // =============================================================================
 
-const { doGenerate, doBridge } = require('./main.js');
+const { doGenerate, generateAt, doBridge } = require('./main.js');
 
 let failures = 0;
 const check = (label, cond) => {
@@ -30,8 +30,12 @@ check('bridge: every chord has MIDI-range notes', br.every(c => midiOk(c.notes))
 check('bridge: every chord has a symbol', br.every(c => typeof c.symbol === 'string' && c.symbol.length > 0));
 
 // ── index coercion: menu indices must resolve identically to explicit names ───
-const genByIdx = doGenerate(0, 3, 1);            // frank_ocean=0, Eb=3, minor=1
-check('generate: index form === name form', JSON.stringify(genByIdx) === JSON.stringify(gen));
+// Compared at the SAME press index: doGenerate advances a counter (so an artist
+// with 3 authored progressions keeps producing new ones), which means two bare
+// calls legitimately differ. generateAt is the pure indexed form.
+const genByName = generateAt('frank_ocean', 3, 'minor', 0).chords;
+const genByIdx  = generateAt(0, 3, 1, 0).chords;   // frank_ocean=0, Eb=3, minor=1
+check('generate: index form === name form', JSON.stringify(genByIdx) === JSON.stringify(genByName));
 const brByIdx = doBridge(0, 1, 5, 0, 1);         // maj7=1, min7=0, dangelo=1
 check('bridge: index form === name form', JSON.stringify(brByIdx) === JSON.stringify(br));
 

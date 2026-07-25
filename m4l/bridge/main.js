@@ -33,6 +33,7 @@ const path = require('path');
 // the repo layout keeps them at the app root — resolve locally first, fall back.
 const dep = rel => fs.existsSync(path.join(__dirname, rel)) ? `./${rel}` : `../../${rel}`;
 const { loadVocabularySync } = require('./vocab_loader.js');
+const { generateVaried } = require('./transform.js');
 const { resolveProgression } = require('./degree_resolver.js');
 const { voicedChordToMidiNotes } = require('./midi_convert.js');
 const { suggestChords } = require(dep('chord_suggestion_engine.js'));
@@ -56,9 +57,59 @@ const qualityOf = q => isIdx(q) ? (QUALITIES[Number(q)] ?? QUALITIES[0]) : Strin
 // ── Pure logic paths (Max-independent — exercised by test_bridge.js) ──────────
 
 /** Button 1: artist progression → [{symbol, degree, notes[]}] */
+// Generate press counter, per artist. Resets when the artist changes so press
+// #5 on a freshly selected artist does not pick candidate 5 of their 2.
+let generateIndex = 0;
+let lastGenerateArtist = null;
+
+// What produced the last Generate — authored progression label, plus the
+// operator name when the result came from a derived tier. Sent to the readout.
+let lastStrategy = '';
+
+// Pure, indexed form: same (artist, tonic, mode, index) always gives the same
+// chords. The counter-advancing doGenerate wraps this. Split out so callers
+// that need reproducibility — tests, and any future session-recall path —
+// can address a specific press index instead of depending on call order.
+function generateAt(artist, tonic, mode, index) {
+    const artistKey = artistOf(artist);
+
+    const template = (vocab.styleTemplates ?? {})[artistKey];
+    const authored = (template && Array.isArray(template.progressions))
+        ? template.progressions.length : 0;
+
+    // generateVaried, not a bare resolveProgression: the latter replays the
+    // artist's authored progressions and then repeats (J Dilla has 3). Tier 0
+    // is those progressions verbatim; tier 1+ puts them through the derivation
+    // operators in the selected key, so the artist keeps producing new material
+    // without leaving their idiom. Mirrors the plugin's C++ path exactly —
+    // see m4l/bridge/test_transform.js for the parity assertions.
+    const varied = generateVaried(
+        (aKey, t, m, slot) => {
+            const chords = resolveProgression(aKey, t, m, vocab, slot);
+            const label = (template && template.progressions[slot])
+                ? (template.progressions[slot].label || '') : '';
+            return { chords, label };
+        },
+        authored, artistKey, Number(tonic), modeOf(mode), index);
+
+    return {
+        chords: varied.chords.map(c => ({
+            symbol: c.symbol, degree: c.degree, notes: voicedChordToMidiNotes(c),
+        })),
+        label: varied.label,
+    };
+}
+
 function doGenerate(artist, tonic, mode) {
-    const chords = resolveProgression(artistOf(artist), Number(tonic), modeOf(mode), vocab);
-    return chords.map(c => ({ symbol: c.symbol, degree: c.degree, notes: voicedChordToMidiNotes(c) }));
+    const artistKey = artistOf(artist);
+    if (artistKey !== lastGenerateArtist) {
+        generateIndex = 0;
+        lastGenerateArtist = artistKey;
+    }
+    const r = generateAt(artist, tonic, mode, generateIndex);
+    generateIndex += 1;
+    lastStrategy = r.label;
+    return r.chords;
 }
 
 /** Button 2: bridge chord A → chord B via the engine's suggestChords() export */
@@ -69,7 +120,8 @@ function doBridge(rootA, qualA, rootB, qualB, artist) {
     return chords.map(c => ({ symbol: c.symbol, degree: c.degree, notes: voicedChordToMidiNotes(c) }));
 }
 
-module.exports = { doGenerate, doBridge, vocab, ARTISTS, MODES, QUALITIES };
+module.exports = { doGenerate, generateAt, doBridge, vocab, ARTISTS, MODES, QUALITIES,
+                   getLastStrategy: () => lastStrategy };
 
 // ── Max wiring (only resolvable inside a running node.script process) ─────────
 

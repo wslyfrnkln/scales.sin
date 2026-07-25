@@ -103,12 +103,19 @@ function buildSymbol(root, baseQuality, vocab, artistKey) {
  * Throws on unknown artist / empty progressions — the reader is main.js's
  * handler try/catch, which outlets the message as a Max 'error' message.
  */
-function resolveProgression(artistKey, tonic, mode, vocab) {
+function resolveProgression(artistKey, tonic, mode, vocab, index = 0) {
     const template = (vocab.styleTemplates ?? {})[artistKey];
     if (!template || !Array.isArray(template.progressions) || template.progressions.length === 0) {
         throw new Error(`no progressions for artist '${artistKey}'`);
     }
-    const prog = template.progressions[0];
+    // Round-robin over the artist's authored progressions. This was
+    // progressions[0] unconditionally, so the M4L device replayed ONE
+    // progression forever — a harder version of the plugin's "same 3
+    // progressions" report. The caller supplies a monotonic press counter;
+    // generateVaried in transform.js layers derived variation on top.
+    const count = template.progressions.length;
+    const slot = ((Math.trunc(index) % count) + count) % count;
+    const prog = template.progressions[slot];
     return (prog.degrees ?? []).map(degStr => {
         const root = degreeStringToRoot(degStr, tonic, mode);
         const bq = degreeStringToBaseQuality(degStr);
