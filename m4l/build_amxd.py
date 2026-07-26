@@ -2,7 +2,7 @@
 """
 Scales.sin M4L — .amxd device builder.
 
-Generates ScalesChords.amxd programmatically: a Max for Live MIDI Effect whose
+Generates Scales.sin-m4l.amxd programmatically: a Max for Live MIDI Effect whose
 patcher JSON is authored here (native live.* UI per D-03) and wrapped in the
 unfrozen .amxd envelope reverse-engineered from Ableton's stock
 "Max MIDI Effect.amxd":  ampf|4|'mmmm' + meta|4|0 + ptch|len|<patcher JSON + NUL>
@@ -15,7 +15,7 @@ outlets 'symbols' (readout), timed 'play' (→ iter → makenote → noteout), a
 Menu item ORDER must match the index maps in bridge/main.js (ARTISTS, MODES,
 QUALITIES) — indices are the contract, display text is cosmetic.
 
-Usage: python3 build_amxd.py   (writes ScalesChords.amxd next to this file)
+Usage: python3 build_amxd.py   (writes Scales.sin-m4l.amxd next to this file)
 """
 import json
 import struct
@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-OUT = HERE / "ScalesChords.amxd"
+OUT = HERE / "Scales.sin-m4l.amxd"
 
 # ── Menu items (index contract with bridge/main.js) ──────────────────────────
 KEYS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]

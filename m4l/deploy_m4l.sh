@@ -11,7 +11,7 @@
 # (bridge files resolve locally-first, repo-layout fallback).
 #
 # Usage:
-#   ./deploy_m4l.sh                 # deploy to User Library/.../Sin.Audio/ScalesChords
+#   ./deploy_m4l.sh                 # deploy to User Library/.../Sin.Audio/Scales.sin-m4l
 #   ./deploy_m4l.sh <target-dir>    # deploy next to an .amxd Live already collected
 #                                   # (pass the project's .../Imported dir)
 # =============================================================================
@@ -19,13 +19,13 @@ set -euo pipefail
 
 HERE="${0:A:h}"                       # m4l/
 APP="${HERE:h}"                       # Scales.sin App/
-DEFAULT_TARGET="$HOME/Music/Ableton/User Library/Max for Live Devices/Sin.Audio/ScalesChords"
+DEFAULT_TARGET="$HOME/Music/Ableton/User Library/Max for Live Devices/Sin.Audio/Scales.sin-m4l"
 TARGET="${1:-$DEFAULT_TARGET}"
 MAXNODE="/Applications/Max.app/Contents/Resources/C74/packages/Node for Max/source/bin/osx/node/node"
 
 mkdir -p "$TARGET/bridge"
 
-cp "$HERE/ScalesChords.amxd" "$TARGET/"
+cp "$HERE/Scales.sin-m4l.amxd" "$TARGET/"
 cp "$HERE/scales_entry.js"   "$TARGET/"
 cp "$HERE/bridge/main.js" "$HERE/bridge/vocab_loader.js" \
    "$HERE/bridge/degree_resolver.js" "$HERE/bridge/midi_convert.js" \

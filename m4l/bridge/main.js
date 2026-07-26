@@ -41,7 +41,7 @@ const { suggestChords } = require(dep('chord_suggestion_engine.js'));
 // Vocab loads once at process start (node.script boots one process per device).
 const vocab = loadVocabularySync(path.join(__dirname, dep('artist_vocab.json')));
 
-// ── Index maps — order MUST match the live.menu items in ScalesChords.amxd ────
+// ── Index maps — order MUST match the live.menu items in Scales.sin-m4l.amxd ──
 const ARTISTS = ['frank_ocean', 'dangelo', 'leon_thomas', 'glasper', 'badu', 'paak',
     'stevie_wonder', 'herbie_hancock', 'thundercat', 'gospel', 'dilla', 'kendrick',
     'mac_miller', 'joe_pass', 'ama_lou'];
