@@ -126,8 +126,8 @@
           10,
           14
         ],
-        "label": "9sus4 — dominant replacement, avoids tritone (D'Angelo signature)",
-        "source": "D'Angelo — Untitled (A7sus4), general neo-soul"
+        "label": "9sus4 — dominant replacement, avoids tritone",
+        "source": "D'Angelo — Untitled (A7sus4), general neo-soul; D'Angelo signature"
       },
       {
         "suffix": "13sus4",
@@ -273,8 +273,8 @@
           10,
           14
         ],
-        "label": "Minor 9 — shell voicing (b3, b7, 9) — Leon Thomas signature",
-        "source": "Leon Thomas — MUTT (Fm7 center), modal neo-soul"
+        "label": "Minor 9 — shell voicing (b3, b7, 9)",
+        "source": "Leon Thomas — MUTT (Fm7 center), modal neo-soul; Leon Thomas signature"
       },
       {
         "suffix": "m11",
@@ -324,7 +324,7 @@
   },
   "style_templates": {
     "frank_ocean": {
-      "name": "Frank Ocean",
+      "name": "Nocturne",
       "description": "Mixolydian bVII borrow as signature move. Modal mixture as atmosphere, not modulation. Avoids dominant resolution — sus chords or modal color replace V7. Sparse harmonic rhythm on Blonde; denser jazz vocab on Channel Orange.",
       "chord_colors": {
         "min": "min9",
@@ -414,7 +414,7 @@
       ]
     },
     "dangelo": {
-      "name": "D'Angelo",
+      "name": "Velvet",
       "description": "Modal-funk loops rooted in Mixolydian and Dorian vamps where extensions live in the bass and vocal stacks rather than the keyboard voicing, and tritone substitutions and rhythmic displacement do the harmonic heavy lifting.",
       "chord_colors": {
         "min": "min9",
@@ -492,7 +492,7 @@
       ]
     },
     "leon_thomas": {
-      "name": "Leon Thomas",
+      "name": "After Hours",
       "description": "F-minor-family modal vamps built on stacked m7/m9/m11 extensions with deliberate V7 avoidance, bVII as the harmonic breath point, and sparse inner voicing that leaves register space open for falsetto and stacked self-harmonies.",
       "chord_colors": {
         "min": "min9",
@@ -611,7 +611,7 @@
       ]
     },
     "glasper": {
-      "name": "Robert Glasper",
+      "name": "Vespers",
       "description": "Rootless cluster voicings with minor 2nds as deliberate crunch, cyclic third-motion instead of ii-V-I, and a left hand that locks to 16th-note syncopation like an MPC pattern — jazz brain on a hip-hop nervous system.",
       "chord_colors": {
         "min": "min11",
@@ -697,7 +697,7 @@
       ]
     },
     "badu": {
-      "name": "Erykah Badu",
+      "name": "Incense",
       "description": "Cyclic minor extensions and non-diatonic major 7th substitutions filtered through the Soulquarians' jazz-meets-gospel voicing ethic — jazz harmony in color, stripped of its resolution compulsion, with Bb Dorian as the primary modal center.",
       "chord_colors": {
         "min": "min11",
@@ -758,14 +758,15 @@
           "notes": "Bb Dorian — natural minor with raised 6th (G natural). Bb Dorian permits EbMaj7 on the IV chord without leaving the minor world. Confirmed use of seventh, secondary, altered, inverted, extended, sus2/sus4, add, borrowed chords. 99/100 chord complexity."
         },
         {
-          "label": "Cyclic loop — Soulquarians shared vocabulary",
+          "label": "Cyclic loop — shared neo-soul vocabulary",
           "degrees": [
             "bVII11",
             "Vm9",
             "bVmaj13",
             "bIII11"
           ],
-          "notes": "Bb-11 → G-9 → Gbmaj13 → Eb-11. Harmonic gravity is centripetal, not directional — loops, doesn't cadence. Stepwise bass motion. Direct shared vocabulary with Glasper."
+          "notes": "Bb-11 → G-9 → Gbmaj13 → Eb-11. Harmonic gravity is centripetal, not directional — loops, doesn't cadence. Stepwise bass motion. Direct shared vocabulary with Glasper.",
+          "source": "Soulquarians collective"
         }
       ],
       "rules": [
@@ -780,7 +781,7 @@
       ]
     },
     "paak": {
-      "name": "Anderson .Paak / Silk Sonic",
+      "name": "Pocket",
       "description": "70s Philadelphia/Motown soul harmony — non-functional extended 7ths, dominant sus voicings, chromatic mediant modulations, and quartal structures — filtered through a drummer's instinct for off-beat harmonic placement and short, vamping progressions.",
       "chord_colors": {
         "min": "min9",
@@ -862,7 +863,7 @@
       ]
     },
     "stevie_wonder": {
-      "name": "Stevie Wonder",
+      "name": "Sunlight",
       "description": "Dominant 9(sus4) as the signature soft dominant, Dorian two-chord funk vamps, jazz-extended harmony applied to gospel voice-leading logic, and abrupt chromatic/half-step modulations in place of classical pivot-chord transitions.",
       "chord_colors": {
         "min": "min9",
@@ -952,7 +953,7 @@
       ]
     },
     "herbie_hancock": {
-      "name": "Herbie Hancock",
+      "name": "Maiden",
       "description": "Quartal/quintal poly-chord voicings with the Rhodes locked to the midrange while the ARP or clavinet covers bass/rhythm, Dorian modal vamps where dominants are color chords not resolutions, and a narrow per-track chord palette where harmonic interest comes from rhythmic placement and voice-leading.",
       "chord_colors": {
         "min": "min11",
@@ -1064,7 +1065,7 @@
       ]
     },
     "thundercat": {
-      "name": "Thundercat",
+      "name": "Sublow",
       "description": "Diatonic extended chords (min9, maj9, min11) built on shell voicings from a 6-string bass, punctuated by one non-diatonic 'wild card' chord (tritone sub or minor-3rd drop), connected by chromatic approach bass lines that function as voice-leading.",
       "chord_colors": {
         "min": "min9",
@@ -1144,7 +1145,7 @@
       ]
     },
     "gospel": {
-      "name": "Gospel",
+      "name": "Sunday",
       "description": "Same extended chord vocabulary as jazz but with plagal (IV–I) cadences as the primary motion, suspended dominants as resting states not tension, and V7 frequently avoided or suspended — sacred harmony that resolves by descent, not by tritone pull.",
       "chord_colors": {
         "min": "min9",
@@ -1227,7 +1228,7 @@
       ]
     },
     "dilla": {
-      "name": "J Dilla",
+      "name": "Drift",
       "description": "Harmony created at the sample selection stage — harmonically ambiguous loop points from jazz-soul sources, composed as fugues of independent melodic lines rather than vertical stacks, with rhythmic displacement blurring chord transitions across bar lines.",
       "chord_colors": {
         "min": "min7",
@@ -1255,14 +1256,15 @@
           "notes": "Gm – Bbmaj7 – Bbmaj – Dm7 in Bb major / G minor. Relative major/minor ambiguity never resolved — Dilla leaves both readings open simultaneously. From The Sylvers 'Only One Can Win' (gospel-adjacent soul source)."
         },
         {
-          "label": "Didn't Cha Know (Badu) — Bb minor jazz-funk",
+          "label": "Didn't Cha Know — Bb minor jazz-funk",
           "degrees": [
             "ivm7",
             "I7",
             "bIIImaj",
             "vim7"
           ],
-          "notes": "Ebm7 – Bb7 – Dbmaj – Fm7 in Bb minor. Source: Tarika Blue 'Dreamflower' (Ab minor, pitched up a whole step). The Bb7 is the one functioning dominant — unlike most Dilla tracks this one has some resolution pull."
+          "notes": "Ebm7 – Bb7 – Dbmaj – Fm7 in Bb minor. Source: Tarika Blue 'Dreamflower' (Ab minor, pitched up a whole step). The Bb7 is the one functioning dominant — unlike most Dilla tracks this one has some resolution pull.",
+          "source": "Erykah Badu — Didn't Cha Know"
         },
         {
           "label": "The Light (Common) — D major loop with bVII9 breath",
@@ -1327,7 +1329,7 @@
       ]
     },
     "kendrick": {
-      "name": "Kendrick Lamar",
+      "name": "West",
       "description": "Minor/Dorian modal centers with heavy bVI maj7 as a color landing point, suspended dominants without resolution, extended voicings throughout driven by a live jazz ensemble improvising over drum and bass foundations.",
       "chord_colors": {
         "min": "min7",
@@ -1408,7 +1410,7 @@
       ]
     },
     "mac_miller": {
-      "name": "Mac Miller",
+      "name": "Haze",
       "description": "Jazz-rooted neo-soul harmony — secondary dominant chains, bVII major borrowing, and bIII maj7 in minor contexts — filtered through Jon Brion's film-scoring aesthetic of cinematic unresolved tension, with simple melodies floating over harmonically complex ground.",
       "chord_colors": {
         "min": "min9",
@@ -1496,7 +1498,7 @@
       ]
     },
     "joe_pass": {
-      "name": "Joe Pass",
+      "name": "Standard",
       "description": "Shell voicing, drop-3, and drop-2 mixed fluidly within a single chord change — guide tones (3rd and 7th) are the fixed harmonic identity, chromatic approach chords and tritone substitutions target the V7 in ii-V-I, and inner voice movement creates motion inside otherwise static chords.",
       "chord_colors": {
         "min": "min7",
@@ -1616,7 +1618,7 @@
       ]
     },
     "ama_lou": {
-      "name": "Ama Lou",
+      "name": "Cold Light",
       "description": "Functional minor tonality with selective jazz extensions — closer to Sade's harmonic restraint than US neo-soul modal density — built on the bVI major plateau, harmonic minor V7 for tension, and an intuitive Dorian/Aeolian toggle without committing to either mode.",
       "chord_colors": {
         "min": "min7",

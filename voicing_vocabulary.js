@@ -172,10 +172,18 @@ export const VOICING_RULES = {
 
 // ── Style templates (from harmonic research) ──────────────────────────────────
 // Source: RESEARCH_Music_2026-03-08-harmonic-language.md
-// Joe Pass, Stevie Wonder, D'Angelo, Leon Thomas III
+//
+// Research provenance, not product labels: the harmonic analysis behind these
+// four templates was drawn from recordings by Joe Pass, Stevie Wonder,
+// D'Angelo and Leon Thomas III. What ships is derived harmony — degree
+// strings and voicing rules — so the `name` fields carry CHARACTER names
+// (Wes, 2026-07-25) and match the display names in artist_vocab.json. The
+// keys here (`pass`, `wonder`, `thomas`) are legacy and differ from the
+// JSON's (`joe_pass`, `stevie_wonder`, `leon_thomas`), so the loader's merge
+// never reaches them — they must be renamed here directly or they ship stale.
 export const STYLE_TEMPLATES = {
     pass: {
-        name: 'Joe Pass',
+        name: 'Standard',
         description: 'Bebop voice-leading. Always ii before V. Full cadential resolution. Drop 2/3 rootless voicings.',
         chordColors: { min: 'min9', maj: 'maj9', dom: 'dom13b9' },
         progressions: [
@@ -191,7 +199,7 @@ export const STYLE_TEMPLATES = {
         ],
     },
     wonder: {
-        name: 'Stevie Wonder',
+        name: 'Sunlight',
         description: 'Modal (Dorian/Mixolydian). Chromatic passing 9th chords. IV→IVm borrowed chord. V9sus4 replaces bare V7.',
         chordColors: { min: 'min9', maj: 'maj9', dom: 'dom9sus4' },
         progressions: [
@@ -207,7 +215,7 @@ export const STYLE_TEMPLATES = {
         ],
     },
     dangelo: {
-        name: "D'Angelo",
+        name: 'Velvet',
         description: 'Neo-soul. 2–3 chord cyclic loops, no functional resolution. m9 as default minor. 13sus4 or 7#9 as dominant.',
         chordColors: { min: 'min9', maj: 'maj9', dom: 'dom13sus4' },
         progressions: [
@@ -223,7 +231,7 @@ export const STYLE_TEMPLATES = {
         ],
     },
     thomas: {
-        name: 'Leon Thomas',
+        name: 'After Hours',
         description: 'Contemporary R&B. Four-chord functional loop. m9 minor, maj7/maj9 major, 13sus4 dominant resolves conventionally.',
         chordColors: { min: 'min9', maj: 'maj9', dom: 'dom13sus4' },
         progressions: [

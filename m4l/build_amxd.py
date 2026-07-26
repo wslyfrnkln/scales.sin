@@ -28,10 +28,16 @@ OUT = HERE / "Scales.sin-m4l.amxd"
 # ── Menu items (index contract with bridge/main.js) ──────────────────────────
 KEYS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
 MODES = ["Major", "Minor"]
-ARTISTS = ["Frank Ocean", "D'Angelo", "Leon Thomas", "Robert Glasper",
-           "Erykah Badu", "Anderson .Paak", "Stevie Wonder", "Herbie Hancock",
-           "Thundercat", "Gospel", "J Dilla", "Kendrick", "Mac Miller",
-           "Joe Pass", "Ama Lou"]
+# DISPLAY names only. Order is the index contract with ARTISTS in
+# bridge/main.js — position i here must map to the same style_template key
+# there. Character names rather than artist names (Wes, 2026-07-25): the vocab
+# was researched from those artists' recordings, but a shipped menu naming
+# living artists asserts an endorsement that does not exist. Matches
+# artistNames() in the plugin's PluginProcessor.cpp.
+ARTISTS = ["Nocturne", "Velvet", "After Hours", "Vespers",
+           "Incense", "Pocket", "Sunlight", "Maiden",
+           "Sublow", "Sunday", "Drift", "West", "Haze",
+           "Standard", "Cold Light"]
 QUALITIES = ["m7", "maj7", "dom7"]
 
 boxes = []
@@ -179,7 +185,9 @@ line(route, 2, perr, 0)
 UI = [  # (menu_id, prep_id, longname, items, pres_x, pres_y, pres_w, set_msg)
     (20, 21, "Key",    KEYS,      6.0, 16.0,  56.0, "set_key"),
     (22, 23, "Mode",   MODES,     68.0, 16.0, 56.0, "set_mode"),
-    (24, 25, "Artist", ARTISTS,   130.0, 16.0, 120.0, "set_artist"),
+    # Display/parameter name is "Style"; the set_artist MESSAGE is the wire
+    # protocol with bridge/main.js and must not be renamed with the label.
+    (24, 25, "Style",  ARTISTS,   130.0, 16.0, 120.0, "set_artist"),
     (28, 29, "Root A", KEYS,      6.0, 58.0,  56.0, "set_rootA"),
     (30, 31, "Qual A", QUALITIES, 68.0, 58.0, 56.0, "set_qualA"),
     (32, 33, "Root B", KEYS,      130.0, 58.0, 56.0, "set_rootB"),
@@ -210,7 +218,7 @@ panel(61, 0.0, 84.0, 380.0, 40.0, DUSK_LCD, 4.0)       # deep-teal display band
 
 label(40, "Key", 6.0, 2.0)
 label(41, "Mode", 68.0, 2.0)
-label(42, "Artist", 130.0, 2.0)
+label(42, "Style", 130.0, 2.0)
 label(43, "Generate", 288.0, 16.0, 60.0)
 label(44, "Root A", 6.0, 44.0)
 label(45, "Qual A", 68.0, 44.0)
