@@ -1571,8 +1571,8 @@
       "constraints": {
         "dominantSubstitution": "none",
         "defaultMinorMode": "aeolian",
-        "voicingShape": "closed",
-        "source": "Secondary dominant chains are structural, not ornamental"
+        "voicingShape": "rootless",
+        "source": "Secondary dominant chains are structural, not ornamental; rootless voicings are common (bass covers the root)"
       }
     },
     "joe_pass": {
