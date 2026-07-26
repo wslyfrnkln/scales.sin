@@ -16,6 +16,10 @@ const { resolveVoicing } = require(
     require('fs').existsSync(require('path').join(__dirname, 'chord_suggestion_engine.js'))
         ? './chord_suggestion_engine.js' : '../../chord_suggestion_engine.js');
 
+// Executable style constraints — mirrors applyStyleConstraints in
+// Source/Engine/ChordEngine.cpp (parity contract in constraints.js).
+const { applyStyleConstraints } = require('./constraints.js');
+
 // ── mirrors chord_suggestion_engine.js:11-25 — kept in sync manually, do not diverge ─
 const NOTE_NAMES_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const NOTE_NAMES_FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
@@ -121,16 +125,23 @@ function resolveProgression(artistKey, tonic, mode, vocab, index = 0) {
         const bq = degreeStringToBaseQuality(degStr);
         const voicing = resolveVoicing(artistKey, bq, vocab);
         const symbol = buildSymbol(root, bq, vocab, artistKey);
-        return {
+        const chord = {
             symbol,
             root,
-            intervals: voicing.intervals,
+            intervals: [...voicing.intervals],
             voicing_label: voicing.voicing_label,
             source: voicing.source,
             artist: artistKey,
             match_type: 'vocab',
             degree: degStr,
         };
+
+        // Executable style constraints (Phase 4) — the same layer the plugin's
+        // buildVoicedChord applies, so the device and the plugin resolve the
+        // same degree to the same chord. This is the single funnel every chord
+        // passes through on the JS side, which is why it binds here.
+        applyStyleConstraints(chord, template.constraints);
+        return chord;
     });
 }
 

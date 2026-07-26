@@ -411,7 +411,13 @@
         "Extended chords (maj7, min9, maj9) as default voicing — triads only for contrast",
         "Dorian as default minor (raised 6th, no leading tone) — shared with D'Angelo and Leon Thomas",
         "Lydian IImaj7 or bVIImaj7 for unresolved, floating tonic feel"
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Mixolydian bVII borrow; Lydian II major borrow; modal mixture"
+      }
     },
     "dangelo": {
       "name": "Velvet",
@@ -489,7 +495,13 @@
         "Loop 3-4 chords without strong tonic return. Harmonic interest = rhythmic placement + blue notes.",
         "Rhythmic displacement (Dilla feel) affects perceived harmonic resolution — same chord sounds unresolved when hit late.",
         "Vocal clusters are the extended chord voicings — the top note of the harmony lives in the melody, not the keyboard."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "rootless",
+        "source": "Sus chords are resting points, not tension; keyboard uses shell voicings; Dorian/Mixolydian default"
+      }
     },
     "leon_thomas": {
       "name": "After Hours",
@@ -608,7 +620,13 @@
         "bVI maj7 landing (Dbmaj7 in F minor) is the signature unresolved closure — use it instead of resolving to tonic.",
         "ii–V–i jazz turnarounds are acceptable if they land on a bVI maj7 rather than fully resolving.",
         "Sparse comping is structural — leave room for falsetto ad libs in the upper register."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Avoid V7 resolution; bVII major is the primary rest point"
+      }
     },
     "glasper": {
       "name": "Vespers",
@@ -694,7 +712,13 @@
         "Default minor mode is Dorian (natural 6th). Chromatic passing tones approach chord tones on beat 1.",
         "Rootless voicings need a bass layer to define the root — without it, voicings are harmonically ambiguous.",
         "Lydian dominant (#11 on V) and upper structure triads (bVI triad over V7 shell) for dominants when you need them."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "rootless",
+        "source": "Replace V7 with 13sus4 or sus2 - no leading tone; Rootless cluster voicings; Default minor mode is Dorian"
+      }
     },
     "badu": {
       "name": "Incense",
@@ -778,7 +802,13 @@
         "Gospel 'lift': major IV in minor context (Gmaj7 in D minor) for an emotional breath without leaving the minor world.",
         "Vocal harmonies imply the extensions the keyboard doesn't state — soprano doubles 9th or 11th of the chord.",
         "Harmonic stasis (4-8 bars on one chord with rhythmic/vocal variation) is the structural device, not chord movement."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "closed",
+        "source": "Avoid V->I resolution; loop minor extensions (m9, m11)"
+      }
     },
     "paak": {
       "name": "Pocket",
@@ -860,7 +890,13 @@
         "Chord changes fall on upbeats ('and' of 2 or 4), not downbeats — drummer's instinct applied to harmonic rhythm.",
         "Short 2-4 chord vamps repeated 8-16 times. Groove creates tension; the chord doesn't have to.",
         "Tritone substitution (Bb7b9 for E7 in Leave the Door Open outro) is a jazz-inherited tool for maximum harmonic tension with melody preserved."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Short 2-4 chord vamps; groove creates tension, the chord doesn't have to"
+      }
     },
     "stevie_wonder": {
       "name": "Sunlight",
@@ -950,7 +986,13 @@
         "bVIIMaj7 (Mixolydian borrow) adds modal color in otherwise major-key songs.",
         "Secondary dominant chains (V7/III, V7/ii, V7/vi) are used to delay resolution, not complete it — suspend the listener.",
         "Black key centers (Eb, Db, Ab, Gb) are the native register — voicings cluster here on the Clavinet and Rhodes."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "The 9sus4 chord is the signature dominant substitute; Dorian two-chord vamps"
+      }
     },
     "herbie_hancock": {
       "name": "Maiden",
@@ -1062,7 +1104,13 @@
         "Lydian Dominant (#11) appears as a byproduct of quartal transposition — do not force it as a deliberate modal choice.",
         "Clavinet plays strummed quartal 4th-interval patterns as rhythmic comping (guitar substitute), not harmonic color.",
         "ARP Odyssey is monophonic — it plays single-note bass and lead lines only, never chords."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "quartal",
+        "source": "Sus chord removes tritone from dominant - static groove-locked color; quartal sus vamp"
+      }
     },
     "thundercat": {
       "name": "Sublow",
@@ -1142,7 +1190,13 @@
         "Bass functions as root definition, chromatic approach, AND rhythmic syncopation (16th-note anticipation) simultaneously.",
         "Extensions as melody carriers: chord extensions (13th on Gm13 = melody note E) sit on top of the voicing, one octave above the 5th.",
         "Do not worry about chords fitting within a key — ensure the melody notes are contained within the chords."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Bass-led modal vamp; extended minor harmony without cadential pull"
+      }
     },
     "gospel": {
       "name": "Sunday",
@@ -1225,7 +1279,13 @@
         "V7(b9) is the 'gospel sting' — places b9 in the right hand over 3+b7 shell in left. Strong pull to tonic.",
         "mMaj7 is used only in line-cliché passing motion (im → immaj7 → im7 → im6) — never as a static resting chord.",
         "Choir stacking creates implied maj9 voicings: bass=root, tenor=7th, alto=9th, soprano=5th or 3rd."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "closed",
+        "source": "Primary cadence is plagal (IV->I), not authentic (V7->I); sus chords are resting states"
+      }
     },
     "dilla": {
       "name": "Drift",
@@ -1326,7 +1386,13 @@
         "Rhythmic displacement creates harmonic ambiguity — a chord fragment landing on the 'and' of beat 4 reads as anticipation or sustained depending on pocket.",
         "Preferred harmonic modes: Dorian minor (Gm7/Cm7 with raised 6th implied), Aeolian natural minor, major with added 6th/9th.",
         "The 'drunk timing' myth is false — drum placement is deliberate MPC swing/shift programming creating polyrhythmic grid."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Preferred harmonic modes: Dorian minor, Aeolian natural minor; ambiguous loop points"
+      }
     },
     "kendrick": {
       "name": "West",
@@ -1407,7 +1473,13 @@
         "Parallel major/minor toggle at the section level (F major ↔ F minor) is borrowed chord technique applied structurally.",
         "Functional dominant V7→i reserved for specific emotional moments (You Ain't Gotta Lie) — not the default.",
         "bIIMaj7 (Neapolitan maj7) as half-step chromatic descent into minor tonic — jazz reharmonization applied to hip-hop."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "sus13",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "Suspended dominants (ii7/V without resolution) are structural"
+      }
     },
     "mac_miller": {
       "name": "Haze",
@@ -1495,7 +1567,13 @@
         "Simple melody over complex harmony — pentatonic/diatonic vocal line stays inside while the chords go outside.",
         "Rootless voicings are common — bass covers the root, upper chord voices handle 3rd/7th/9th stack in mid-register.",
         "D6 and Dmaj7 are different colors — D6 (D–F#–A–B) is softer and more neo-soul; Dmaj7 (D–F#–A–C#) is jazzier. Use D6 as default."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "closed",
+        "source": "Secondary dominant chains are structural, not ornamental"
+      }
     },
     "joe_pass": {
       "name": "Standard",
@@ -1615,7 +1693,14 @@
         "Chromatic approach chords: approach any target chord from a half-step above or below using the same chord type — parallel motion.",
         "Do not harmonize every note. Harmonize structurally important notes (downbeats, phrase starts/ends, long tones) and leave runs as single-note lines.",
         "Inner voice movement creates motion inside a static chord — one voice moves chromatically while bass and melody hold."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "rootless",
+        "source": "drop-2/drop-3 rootless systems; bebop minor",
+        "note": "Tritone sub is handled by the DERIVATION OPERATOR (Transform.h), not as a selection constraint — applying it in both places substituted every dominant up front and left the operator nothing to do."
+      }
     },
     "ama_lou": {
       "name": "Cold Light",
@@ -1707,7 +1792,13 @@
         "7th extensions are add-on color (Gmaj7 over a Bm progression) — not structural jazz chord function.",
         "Half-diminished (B-hdim7 in Tried Up) used as a passing chord or substitution in fills/transitions — not a static chord.",
         "Vocal harmonies double chord tones (3rds, 5ths) rather than jazz extensions — keeps harmonies legible and warm."
-      ]
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "closed",
+        "source": "Static or slow-moving harmony; 2-4 chord loops"
+      }
     }
   }
 }
