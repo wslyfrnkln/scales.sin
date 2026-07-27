@@ -2,10 +2,11 @@
 
 <!-- judo:status:start -->
 ## Status
-_Auto-stamped by closeout · 2026-07-25 · juniper_
+_Auto-stamped by closeout · 2026-07-27 · juniper_
 
-- **Last session:** 2026-07-25 — Scales.sin MVP finished — all 7 of Wes's items; universal VST3+AU+M4L shipped to ~/Desktop/Scales.sin-test-build/; Generate variety fixed: dilla had literally 3 authored progressions vs a round-robin; generateVaried derives past the authored set (3 -> 9 distinct over 10 presses); Chord library 87 -> 107 progressions; 20 researched entries for the 4 thinnest artists, 0 voicer rejections; UI: cropped to the measured device body (880x445) — the 'other window' was our own backdrop band; white bubbles removed at all 3 sources; drag works anywhere; strategy shown in LCD; Feel: humanize scale 3x wider (full travel was +/-20ms, the BOTTOM of the human range) and defaults flipped to human-by-default; M4L: derivation layer ported to JS with 23/23 parity vs the C++ fixture — both products now share one musical brain
-- **Next:** Wes's Live pass: hear the humanize defaults and the Evolve strategies in a session, then converge the feel
+- **Last session:** 2026-07-27 — Unified the plugin and M4L device onto one vocabulary: removed the shadowing dangelo built-in, promoted its 2 unique progressions into artist_vocab.json (107 -> 109), MAX_SHADOWED tightened to 0; Rule-conformance tests on both engines (Tests/test_StyleRules.cpp, m4l/bridge/test_rules.js) read the PROSE rules as source of truth, not the constraints table — found 3 real bugs (Vespers rootless never fired, Haze mistranslated, Maiden false-positive) and 3 flaws in my own test logic; SCALES_RHYTHM_FORM_RULES_PLAN Phases 0-4 shipped: per-style harmonic rhythm (Rhythm.h), sections + repeat modes (Form.h), executable StyleConstraints replacing dead prose rules, anticipation param; Fixed a real shipping bug in MidiRender: onset was clamped only against 0.0, not against noteOff - kMinNoteBeats — 638 malformed notes per 2000 seeds at DEFAULT settings; UI: platter now forwards drag (MIDI clip drag was silently swallowed by SpinningDisc), knob labels moved above the knob onto clear board, LCD position DERIVED from the crop formula so art and overlay can't drift apart again; Git: created private repo wslyfrnkln/scales.sin-plugin and pushed 55+ local-only commits; App repo pushed too
+- **Next:** Verify in Ableton: MIDI clip drag out of the platter, FORM/REPEAT audible, knob labels legible on all 5 skins — none of tonight's UI or drag work has been heard or touched in a live session
+- **Blocked:** Iadd9 still renders Cmaj9 (needs a true add9 with no 7th) and immaj7 loses its seventh (needs a minorMajor BaseQuality) — both bounded by counted assertions, not fixed
 - **Active plan:** SCALES_M4L_MVP_PLAN (`/Users/wesleyodd/Judo/projects/SinAudio/Scales.sin App/.planning/SCALES_M4L_MVP_PLAN.md`)
 <!-- judo:status:end -->
 
