@@ -214,22 +214,30 @@ export const STYLE_TEMPLATES = {
             'On chorus/bridge, substitute VIm with VI major (parallel major borrow)',
         ],
     },
-    dangelo: {
-        name: 'Velvet',
-        description: 'Neo-soul. 2–3 chord cyclic loops, no functional resolution. m9 as default minor. 13sus4 or 7#9 as dominant.',
-        chordColors: { min: 'min9', maj: 'maj9', dom: 'dom13sus4' },
-        progressions: [
-            { label: 'Neo-soul loop',  degrees: ['im9', 'bVIImaj9', 'IV13sus4'] },
-            { label: 'Brown Sugar',    degrees: ['im7', 'IV7', 'vim7', 'bII7#9'] },
-            { label: 'Untitled',       degrees: ['Iadd9', 'V7sus4', 'IV6', 'bVII9'] },
-        ],
-        rules: [
-            '2–3 chords max — cyclic, no resolution',
-            'Default minor chord: m9 with #9 color available',
-            "Default dominant: 13sus4 or 7#9 (not plain 7th)",
-            "If progression repeats more than 4 bars, it's correct",
-        ],
-    },
+    // dangelo REMOVED 2026-07-27 (unify pass).
+    //
+    // This built-in template SHADOWED the JSON's. vocab_loader's documented
+    // policy is "never overwrite rules from JSON", so for any style with a
+    // built-in entry the OLD rules won — the device saw dangelo's 4 legacy
+    // rules while the plugin saw the 8 researched ones. Measured by running the
+    // C++ and JS rule suites side by side: 5 styles forbade resolution in one,
+    // 4 in the other.
+    //
+    // Wes: "lets unify the plugins, the more advanced version wins." Per axis
+    // that resolved differently:
+    //   RULES        -> JSON wins (8 researched vs 4 legacy; three of the four
+    //                   were superseded, and one was the unfalsifiable "if it
+    //                   repeats more than 4 bars it's correct" we dropped).
+    //   PROGRESSIONS -> the built-in had two the JSON lacked, so those were
+    //                   PROMOTED into artist_vocab.json rather than lost.
+    //                   Its third ("Untitled") was a byte-identical duplicate
+    //                   of a JSON entry and was dropped.
+    //
+    // The three remaining templates below (pass/wonder/thomas) use LEGACY KEYS
+    // that differ from the JSON's (joe_pass/stevie_wonder/leon_thomas), so the
+    // merge never reaches them and they shadow nothing. They stay as the
+    // fallback vocabulary for a JSON-load failure.
+
     thomas: {
         name: 'After Hours',
         description: 'Contemporary R&B. Four-chord functional loop. m9 minor, maj7/maj9 major, 13sus4 dominant resolves conventionally.',

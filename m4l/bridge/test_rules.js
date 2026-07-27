@@ -107,16 +107,16 @@ console.log('\nMERGE — the device does not see the same rules as the plugin');
     //
     // Same rules, same JSON, different answers. The cause is vocab_loader's
     // documented merge policy (line ~81): "never overwrite rules from JSON".
-    // MEASURED: exactly ONE style is shadowed — dangelo. voicing_vocabulary.js
-    // has built-in templates for four styles, but three of them (pass, wonder,
-    // thomas) use LEGACY KEYS that differ from the JSON's (joe_pass,
-    // stevie_wonder, leon_thomas), so the merge never reaches those and they
-    // shadow nothing. Only dangelo shares its key.
+    // HISTORY, kept because it explains why this check exists: dangelo's
+    // built-in template shadowed the JSON's, so the device saw 4 legacy rules
+    // where the plugin saw 8 researched ones — including one the JSON does not
+    // say ("2-3 chords max - cyclic") and missing one it does ("Do NOT resolve
+    // to V7->I"). That single divergence made the two suites disagree on how
+    // many styles forbid resolution. Resolved by the 2026-07-27 unify pass.
     //
-    // dangelo's JSON carries 8 researched rules; the device sees 4 older ones,
-    // including "2-3 chords max - cyclic" (which the JSON does not say) and
-    // lacking "Do NOT resolve to V7->I" (which it does). I first assumed all
-    // four were shadowed — the test measured one.
+    // The three remaining built-ins (pass/wonder/thomas) use LEGACY KEYS that
+    // differ from the JSON's, so the merge never reaches them and they shadow
+    // nothing — they are the fallback if the JSON fails to load.
     //
     // That is why dangelo counts as cyclic here and as forbidding-resolution
     // there. The policy is deliberate and mirrored from the original JS engine,
@@ -126,7 +126,15 @@ console.log('\nMERGE — the device does not see the same rules as the plugin');
     //
     // What must not happen silently is the set GROWING. If a fifth style starts
     // shadowing its JSON rules, that is new drift and wants a decision.
-    const MAX_SHADOWED = 1;   // measured 2026-07-26: dangelo only
+    // UNIFIED 2026-07-27 (Wes: "lets unify the plugins, the more advanced
+    // version wins"). The shadowing dangelo built-in was removed from
+    // voicing_vocabulary.js after promoting its two unique progressions into
+    // artist_vocab.json, so NO style shadows the JSON any more and both suites
+    // now report the same counts (5 forbid resolution, 2 cyclic).
+    //
+    // Zero, not "at most one": a new shadow would silently re-split the two
+    // products' behaviour, which is the thing this pass existed to fix.
+    const MAX_SHADOWED = 0;
 
     const raw = JSON.parse(fs.readFileSync(VOCAB_JSON, 'utf8')).style_templates;
     const shadowed = MENU.filter(k => {

@@ -484,6 +484,27 @@
             "I9"
           ],
           "notes": "A9 dominant 9th chord comped in 16th-note stabs. Harmony is the rhythm — James Brown philosophy. Groove subdivides the bar; chord stays static."
+        },
+        {
+          "label": "Neo-soul loop — cyclic im9 with 13sus4 landing",
+          "degrees": [
+            "im9",
+            "bVIImaj9",
+            "IV13sus4"
+          ],
+          "notes": "Cyclic three-chord loop, no tonic return. Promoted from the M4L built-in vocabulary 2026-07-27 during the unify pass — the device had it and the plugin did not.",
+          "source": "voicing_vocabulary.js built-in (pre-JSON era)"
+        },
+        {
+          "label": "Brown Sugar — alternate reading with bII7#9",
+          "degrees": [
+            "im7",
+            "IV7",
+            "vim7",
+            "bII7#9"
+          ],
+          "notes": "A different reading from the JSON's Brown Sugar entry (vim7 I7 IVm7 bII7) — sharper #9 on the tritone sub. Both are kept; they are genuinely different progressions.",
+          "source": "voicing_vocabulary.js built-in (pre-JSON era)"
         }
       ],
       "rules": [
