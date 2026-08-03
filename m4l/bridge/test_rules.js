@@ -140,8 +140,14 @@ console.log('\nMERGE — the device does not see the same rules as the plugin');
     const shadowed = MENU.filter(k => {
         const jsonRules = (raw[k] || {}).rules || [];
         const seenRules = (styles[k] || {}).rules || [];
-        return jsonRules.length > 0 && seenRules.length > 0
-            && jsonRules.length !== seenRules.length;
+        // Compare CONTENTS, not counts (finding 602). A built-in that shadows
+        // the JSON with the same NUMBER of rule strings but different prose
+        // used to pass as no-drift — the device would be reading different
+        // rules than the plugin while this guard reported clean, which is the
+        // exact failure it exists to catch.
+        if (jsonRules.length === 0 || seenRules.length === 0) return false;
+        if (jsonRules.length !== seenRules.length) return true;
+        return jsonRules.some((r, i) => String(r) !== String(seenRules[i]));
     });
 
     shadowed.length <= MAX_SHADOWED
