@@ -2,10 +2,11 @@
 
 <!-- judo:status:start -->
 ## Status
-_Auto-stamped by closeout · 2026-08-03 · judo_
+_Auto-stamped by closeout · 2026-07-27 · juniper_
 
-- **Last session:** 2026-08-03 — Cleared the poisoned findings backlog 88 -> 0; YouTube unblocked: token written to the path the poster reads; Downloads router gained audio + installer policy; installed daily 03:00
-- **Next:** Watch the repair write-back close rows unattended for a few days
+- **Last session:** 2026-07-27 — Unified the plugin and M4L device onto one vocabulary: removed the shadowing dangelo built-in, promoted its 2 unique progressions into artist_vocab.json (107 -> 109), MAX_SHADOWED tightened to 0; Rule-conformance tests on both engines (Tests/test_StyleRules.cpp, m4l/bridge/test_rules.js) read the PROSE rules as source of truth, not the constraints table — found 3 real bugs (Vespers rootless never fired, Haze mistranslated, Maiden false-positive) and 3 flaws in my own test logic; SCALES_RHYTHM_FORM_RULES_PLAN Phases 0-4 shipped: per-style harmonic rhythm (Rhythm.h), sections + repeat modes (Form.h), executable StyleConstraints replacing dead prose rules, anticipation param; Fixed a real shipping bug in MidiRender: onset was clamped only against 0.0, not against noteOff - kMinNoteBeats — 638 malformed notes per 2000 seeds at DEFAULT settings; UI: platter now forwards drag (MIDI clip drag was silently swallowed by SpinningDisc), knob labels moved above the knob onto clear board, LCD position DERIVED from the crop formula so art and overlay can't drift apart again; Git: created private repo wslyfrnkln/scales.sin-plugin and pushed 55+ local-only commits; App repo pushed too
+- **Next:** Verify in Ableton: MIDI clip drag out of the platter, FORM/REPEAT audible, knob labels legible on all 5 skins — none of tonight's UI or drag work has been heard or touched in a live session
+- **Blocked:** Iadd9 still renders Cmaj9 (needs a true add9 with no 7th) and immaj7 loses its seventh (needs a minorMajor BaseQuality) — both bounded by counted assertions, not fixed
 - **Active plan:** SCALES_M4L_MVP_PLAN (`/Users/wesleyodd/Judo/projects/SinAudio/Scales.sin App/.planning/SCALES_M4L_MVP_PLAN.md`)
 <!-- judo:status:end -->
 
