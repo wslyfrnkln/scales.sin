@@ -146,5 +146,54 @@ check('dilla carries no recipes (loop-point path owns him)',
     check('no chord repeats back-to-back within a drawn progression', ok);
 }
 
+// ── rootMotion is honoured, not merely authored ─────────────────────────────
+// The regression this guards: `rootMotion` sat in the vocab while the sampler
+// read only degreePool and the length bounds, so Glasper index 0 emitted
+// bIIImaj9 -> bImaj13#11 -> bVImaj7 (a tritone, then a fourth) under a recipe
+// whose sourceRule says "move by thirds, not by fourths/fifths". The field
+// read as a guarantee and enforced nothing.
+{
+    const MAJOR = [0, 2, 4, 5, 7, 9, 11];
+    const MINOR = [0, 2, 3, 5, 7, 8, 10];
+    const ROMAN = { I: 0, II: 1, III: 2, IV: 3, V: 4, VI: 5, VII: 6,
+                    i: 0, ii: 1, iii: 2, iv: 3, v: 4, vi: 5, vii: 6 };
+    const rootPc = (deg, mode) => {
+        const scale = (mode === 'minor') ? MINOR : MAJOR;
+        let prefix = '';
+        let rest = deg || '';
+        if (rest.startsWith('b')) { prefix = 'b'; rest = rest.slice(1); }
+        else if (rest.startsWith('#')) { prefix = '#'; rest = rest.slice(1); }
+        const m = rest.match(/^(VII|VI|IV|V|III|II|I|vii|vi|iv|v|iii|ii|i)/);
+        if (!m) return 0;
+        let iv = scale[ROMAN[m[1]] ?? 0] ?? 0;
+        if (prefix === 'b') iv = (iv - 1 + 12) % 12;
+        if (prefix === '#') iv = (iv + 1) % 12;
+        return ((iv % 12) + 12) % 12;
+    };
+
+    const violations = [];
+    for (const [artist, tpl] of Object.entries(styles)) {
+        const recipes = tpl.recipes || [];
+        if (recipes.length === 0) continue;
+        for (let i = 0; i < 60; ++i) {
+            const recipe = recipes[((i % recipes.length) + recipes.length) % recipes.length];
+            if (recipe.kind !== 'cycle' || !Array.isArray(recipe.rootMotion)
+                || recipe.rootMotion.length === 0) continue;
+            const allowed = new Set(recipe.rootMotion.map(v => (((v | 0) % 12) + 12) % 12));
+            const mode = 'major';   // the fixed reference scale — see recipes.js
+            const got = composeFromRecipe(tpl, i);
+            for (let k = 1; k < got.length; ++k) {
+                const step = ((rootPc(got[k], mode) - rootPc(got[k - 1], mode)) % 12 + 12) % 12;
+                if (!allowed.has(step)) {
+                    violations.push(`${artist} idx ${i}: ${got.join(' -> ')} steps by ${step}`);
+                    break;
+                }
+            }
+        }
+    }
+    check('cycle recipes move only by their declared rootMotion',
+          violations.length === 0, violations.slice(0, 4).join('\n        '));
+}
+
 console.log(`\n${failures === 0 ? 'ALL TESTS PASS' : failures + ' FAILURES'}`);
 process.exit(failures === 0 ? 0 : 1);
