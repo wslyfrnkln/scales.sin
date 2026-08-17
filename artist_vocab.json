@@ -1713,7 +1713,8 @@
         "Passing diminished 7ths are symmetric — one grip covers all four enharmonic functions. Use between any diatonic chord and its neighbor a whole step away.",
         "Chromatic approach chords: approach any target chord from a half-step above or below using the same chord type — parallel motion.",
         "Do not harmonize every note. Harmonize structurally important notes (downbeats, phrase starts/ends, long tones) and leave runs as single-note lines.",
-        "Inner voice movement creates motion inside a static chord — one voice moves chromatically while bass and melody hold."
+        "Inner voice movement creates motion inside a static chord — one voice moves chromatically while bass and melody hold.",
+        "Major-third root cycles as a reharmonization device — move the root down by major 3rds (Bb-Db-A-F) and reach each new key by its own ii-V, so guide tones keep moving by half-step while the roots leap. The system Coltrane later formalized in 'Giant Steps'; Pass recorded it on Virtuoso (1973)."
       ],
       "constraints": {
         "dominantSubstitution": "none",
