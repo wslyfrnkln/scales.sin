@@ -237,14 +237,28 @@ function transformSection (chords, op, tonicPc, mode) {
 // resolveProgression(artistKey, tonicPc, mode, index) -> chord array, supplied
 // by the caller so this module stays independent of the vocab loader.
 function generateVaried (resolveProgression, authoredCount, artistKey,
-                         tonicPc, mode, index) {
+                         tonicPc, mode, index, recipeDriven = false) {
     if (authoredCount <= 0) return { chords: [], label: '' };
     if (index < 0) index = 0;
 
     const tier = Math.floor(index / authoredCount);
     const slot = index % authoredCount;
 
-    const base = resolveProgression(artistKey, tonicPc, mode, slot);
+    // PASS THE FULL INDEX WHEN RECIPES DRIVE GENERATION (Phase 8, Task 8.4 —
+    // mirrors the identical fix in Source/Engine/Transform.cpp).
+    //
+    // `slot` collapses the press counter modulo the AUTHORED count, which was
+    // right when resolveProgression was a lookup table over exactly that many
+    // progressions. Under recipes it is a VARIETY CAP: gospel authored 6, so
+    // every press mapped onto 6 slots and the sampler could never be asked for
+    // a 7th distinct progression however wide its pools were. Measured C++-side
+    // before the fix: 6 distinct in 12 presses, against 11 from the composer
+    // alone.
+    //
+    // `slot` is still correct for the authored-label lookup and the tier walk —
+    // both of those genuinely are per-authored-progression.
+    const base = resolveProgression(artistKey, tonicPc, mode,
+                                    recipeDriven ? index : slot);
     if (!base || base.chords.length === 0) return { chords: [], label: '' };
 
     if (tier === 0) return { chords: base.chords, label: base.label };

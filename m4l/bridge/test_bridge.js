@@ -18,7 +18,12 @@ const midiOk = notes => Array.isArray(notes) && notes.length > 0
 // ── generate: frank_ocean, Eb (3), minor ──────────────────────────────────────
 const gen = doGenerate('frank_ocean', 3, 'minor');
 console.log('generate:', JSON.stringify(gen));
-check('generate returns 4 chords (Nikes progression)', gen.length === 4);
+// LENGTH IS SAMPLED, NOT FIXED (Phase 8, 2026-08-16). This asserted exactly 4
+// — the authored "Nikes" length — when generate replayed a catalogue entry
+// verbatim. Recipes draw a length within the recipe's own lengthMin..lengthMax,
+// so a hardcoded 4 is a stale assumption. The real invariant is a non-empty
+// progression of plausible length; the per-chord shape checks below still bind.
+check('generate returns a non-empty progression', gen.length >= 2 && gen.length <= 11);
 check('generate: every chord has MIDI-range notes', gen.every(c => midiOk(c.notes)));
 check('generate: every chord has a symbol', gen.every(c => typeof c.symbol === 'string' && c.symbol.length > 0));
 

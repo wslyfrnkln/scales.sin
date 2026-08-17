@@ -30,6 +30,7 @@ cp "$HERE/scales_entry.js"   "$TARGET/"
 cp "$HERE/bridge/main.js" "$HERE/bridge/vocab_loader.js" \
    "$HERE/bridge/degree_resolver.js" "$HERE/bridge/midi_convert.js" \
    "$HERE/bridge/transform.js" "$HERE/bridge/constraints.js" \
+   "$HERE/bridge/recipes.js" \
    "$TARGET/bridge/"
 # App-root deps copied into bridge/ — the locally-first resolution in the bridge
 # files picks these up; nothing outside the device folder is referenced.

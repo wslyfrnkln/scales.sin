@@ -20,6 +20,9 @@ const { resolveVoicing } = require(
 // Source/Engine/ChordEngine.cpp (parity contract in constraints.js).
 const { applyStyleConstraints } = require('./constraints.js');
 
+// Phase 8 recipe composition — the JS twin of Evolve.cpp's composeFromRecipe.
+const { composeFromRecipe } = require('./recipes.js');
+
 // ── mirrors chord_suggestion_engine.js:11-25 — kept in sync manually, do not diverge ─
 const NOTE_NAMES_SHARP = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
 const NOTE_NAMES_FLAT  = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
@@ -304,7 +307,17 @@ function resolveProgression(artistKey, tonic, mode, vocab, index = 0,
     const count = template.progressions.length;
     const slot = ((Math.trunc(index) % count) + count) % count;
     const prog = template.progressions[slot];
-    return (prog.degrees ?? []).map(degStr => {
+
+    // PHASE 8 (Task 8.4): COMPOSE, don't look up. When the style carries
+    // recipes, the degree sequence is SAMPLED from the technique's pool rather
+    // than replayed from the catalogue — mirroring the C++
+    // generateProgression's recipe branch so both surfaces resolve the same
+    // artist to the same kind of material. Falls back to the authored degrees
+    // when the style has no recipes (dilla, deliberately) or a draw degenerates.
+    const composed = composeFromRecipe(template, Math.trunc(index));
+    const degrees = (composed.length > 0) ? composed : (prog.degrees ?? []);
+
+    return degrees.map(degStr => {
         const root = degreeStringToRoot(degStr, tonic, mode);
         const bq = degreeStringToBaseQuality(degStr);
 
@@ -351,7 +364,14 @@ if (require.main === module) {
     const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json'));
     const chords = resolveProgression('frank_ocean', 3, 'minor', vocab); // Eb minor
     console.log(JSON.stringify(chords, null, 1));
-    const ok = chords.length === 4 && chords.every(c =>
+    // LENGTH IS NO LONGER FIXED (Phase 8, 2026-08-16). This asserted
+    // `chords.length === 4` — the authored "Nikes" length — back when
+    // resolveProgression replayed a catalogue entry verbatim. Recipes SAMPLE a
+    // length within the recipe's own lengthMin..lengthMax bounds, so a fixed 4
+    // is a stale assumption rather than an invariant. What actually has to hold
+    // is that the composer produced a non-empty progression of well-formed
+    // chords, which is what this now checks.
+    const ok = chords.length > 0 && chords.every(c =>
         Number.isInteger(c.root) && c.root >= 0 && c.root <= 11
         && Array.isArray(c.intervals) && c.intervals.length > 0
         && typeof c.symbol === 'string' && c.symbol.length > 0);

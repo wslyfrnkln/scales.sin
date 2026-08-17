@@ -90,7 +90,10 @@ function generateAt(artist, tonic, mode, index) {
                 ? (template.progressions[slot].label || '') : '';
             return { chords, label };
         },
-        authored, artistKey, Number(tonic), modeOf(mode), index);
+        authored, artistKey, Number(tonic), modeOf(mode), index,
+        // recipeDriven — hand generateVaried the FULL index so the recipe
+        // sampler is not capped at the authored-progression count.
+        Array.isArray(template && template.recipes) && template.recipes.length > 0);
 
     return {
         chords: varied.chords.map(c => ({
