@@ -172,7 +172,16 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
     const authoredIsSus = authoredExtension.includes('sus');
     if (styleWantsSus && !authoredIsSus && alterationMask(authoredExtension) === 0) return null;
 
-    const extKey = { min: 'min', maj: 'maj', dom: '7' }[baseQuality] ?? baseQuality;
+    // The extension_map is keyed by the vocabulary's own bucket names — 'm7',
+    // 'Maj7', '7' — NOT by BaseQuality spelling. This mapped min->'min' and
+    // maj->'maj', buckets that do not exist in artist_vocab.json or the
+    // built-in EXTENSION_MAP, so `entries` was empty for every authored minor
+    // and major degree and both the exact-suffix and alteration-overlap paths
+    // below were unreachable. glasper's "bImaj13#11" fell through to the style
+    // color as Bbmaj9, dropping the authored #11 this resolver exists to keep.
+    // Same mapping as chord_suggestion_engine.js:48 BASE_TO_EXT_KEY, which
+    // resolveVoicing (Step 1, below us) has always used.
+    const extKey = { min: 'm7', maj: 'Maj7', dom: '7' }[baseQuality] ?? baseQuality;
     const extensionMap = vocab.extensionMap ?? vocab.extension_map ?? {};
     const entries = extensionMap[extKey] ?? [];
     const chordTypes = vocab.chordTypes ?? vocab.chord_types ?? {};
