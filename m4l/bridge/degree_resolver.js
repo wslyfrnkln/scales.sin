@@ -76,6 +76,185 @@ function degreeStringToBaseQuality(degreeStr) {
     return 'maj';
 }
 
+// ── mirrors Source/Engine/DegreeParser.cpp:251-272 degreeStringToExtension() ──
+// kept in sync manually, do not diverge.
+//
+// The JS may use a regex here (this file already does elsewhere); the
+// no-std::regex rule is a C++-only constraint. What must match EXACTLY is the
+// accept-set and the two carve-outs:
+//   - the `/` remainder is excluded from the extension (slash-bass is not an
+//     extension), and
+//   - a trailing bare "m" belongs to the roman-quality spelling ("im"), not an
+//     authored extension — but "m" PREFIXING A DIGIT ("im11") is kept verbatim
+//     so the resolver can match the vocabulary's m-family suffixes.
+function degreeStringToExtension(degreeStr) {
+    if (!degreeStr) return '';
+
+    let i = 0;
+    if (degreeStr[i] === 'b' || degreeStr[i] === '#') i += 1;
+    while (i < degreeStr.length && /[IViv]/.test(degreeStr[i])) i += 1;
+
+    let end = degreeStr.indexOf('/', i);
+    if (end === -1) end = degreeStr.length;
+
+    const extension = degreeStr.slice(i, end);
+
+    // C++ line 270: bare "m" is quality spelling, not an extension.
+    if (extension === 'm') return '';
+    return extension;
+}
+
+// ── mirrors Source/Engine/ChordEngine.cpp:300-349 — the Step 0 helpers ────────
+// kept in sync manually, do not diverge.
+
+// C++:300-306 — "m11" -> "min11" so it matches the vocab's m-family suffixes.
+function normalizeAuthoredExtension(extension) {
+    if (extension.length >= 2 && extension[0] === 'm' && /[0-9]/.test(extension[1])) {
+        return 'min' + extension.slice(1);
+    }
+    return extension;
+}
+
+// C++:319-325 — a degree carrying only the bare spelling of its own base
+// quality ("V7" -> "7") is not authoring an extension at all; it is the plain
+// functional chord the BaseQuality bucket already names. Without this carve-out
+// Step 0 exact-matches the vocab's own plain-7 entry and silently defeats every
+// artist rule keyed on chord_colors (e.g. glasper's "no leading tone").
+function isBareQualitySpelling(baseQuality, extension) {
+    if (baseQuality === 'dom') return extension === '7';
+    if (baseQuality === 'maj') return extension === 'maj7';
+    if (baseQuality === 'min') return extension === 'm7' || extension === 'min7';
+    return false;   // 6ths have no bare vocab spelling to compare against
+}
+
+// C++:327-336 — chord_types keys spell sharps as "sharp" ("7sharp9").
+function sharpKey(extension) {
+    return extension.split('#').join('sharp');
+}
+
+// C++:338-349 — which alterations a token names, as a bitmask.
+function alterationMask(extension) {
+    let mask = 0;
+    if (extension.includes('#5') || extension.includes('b5')) mask |= 1 << 0;
+    if (extension.includes('#9') || extension.includes('b9')) mask |= 1 << 1;
+    if (extension.includes('#11')) mask |= 1 << 2;
+    if (extension.includes('b13')) mask |= 1 << 3;
+    if (extension.includes('alt')) mask |= 1 << 4;
+    return mask;
+}
+
+// Render mode (Task 0.7b). FIDELITY resolves the AUTHORED degree token first;
+// LEGACY_COLORS is the pre-fidelity behaviour where chord_colors always won.
+const RENDER_MODE = { FIDELITY: 'fidelity', LEGACY_COLORS: 'legacyColors' };
+
+// ── mirrors Source/Engine/ChordEngine.cpp:617-700 Step 0 ─────────────────────
+// Returns a voicing {intervals, voicing_label, source} when the authored
+// extension resolves, or null to fall through to resolveVoicing().
+function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, vocab, mode) {
+    if (mode !== RENDER_MODE.FIDELITY) return null;
+    if (!authoredExtension) return null;
+    if (isBareQualitySpelling(baseQuality, authoredExtension)) return null;
+
+    // C++:641-651 — a style whose chord_colors names a SUSPENDED target is
+    // stating a CONSTRAINT, not a preference ("Replace V7 with 13sus4 — no
+    // leading tone"). Authored "9"/"13" are GENERIC extension degrees: they say
+    // how far the stack extends, not that a third is wanted, and both resolve to
+    // intervals carrying a major 3rd. Defer those to Step 1 so the sus wins. An
+    // authored token that is itself sus, or that names an alteration, still goes
+    // through Step 0 untouched.
+    const template = (vocab.styleTemplates ?? {})[artistKey];
+    const colors = template?.chordColors ?? template?.chord_colors ?? {};
+    const styleColor = colors[baseQuality] ?? '';
+    const styleWantsSus = styleColor.includes('sus');
+    const authoredIsSus = authoredExtension.includes('sus');
+    if (styleWantsSus && !authoredIsSus && alterationMask(authoredExtension) === 0) return null;
+
+    const extKey = { min: 'min', maj: 'maj', dom: '7' }[baseQuality] ?? baseQuality;
+    const extensionMap = vocab.extensionMap ?? vocab.extension_map ?? {};
+    const entries = extensionMap[extKey] ?? [];
+    const chordTypes = vocab.chordTypes ?? vocab.chord_types ?? {};
+
+    const candidates = [authoredExtension, normalizeAuthoredExtension(authoredExtension)];
+
+    // Exact suffix match in extension_map (Array.find -> FIRST match, C++:668).
+    for (const wanted of candidates) {
+        for (const e of entries) {
+            if (e.suffix === wanted && Array.isArray(e.intervals) && e.intervals.length > 0) {
+                return {
+                    intervals: [...e.intervals],
+                    voicing_label: e.label || e.suffix,
+                    source: e.source ?? '',
+                };
+            }
+        }
+    }
+
+    // chord_types, direct then with '#' -> 'sharp' (C++:681-694).
+    for (const wanted of candidates) {
+        for (const key of [wanted, sharpKey(wanted)]) {
+            const ct = chordTypes[key];
+            if (ct && Array.isArray(ct.intervals) && ct.intervals.length > 0) {
+                return {
+                    intervals: [...ct.intervals],
+                    voicing_label: ct.name || key,
+                    source: '',
+                };
+            }
+        }
+    }
+
+    // Alteration OVERLAP (C++:697-714) — the entry sharing the MOST alterations
+    // with the authored token wins. Deliberately NOT a containment test: the
+    // C++ scores popcount(authoredMask & entryMask) and keeps the highest, so an
+    // entry naming a subset of the token's alterations still qualifies. A first
+    // port of this wrote a containment filter instead and let frank_ocean's
+    // "V7#5b9" resolve to an altered dominant carrying intervals 4 AND 10 — the
+    // leading tone that style's rule explicitly bans (caught by test_rules.js's
+    // "no dominant keeps its leading tone", which the C++ twin passes).
+    //
+    // `> bestScore` starting from 0 means a zero-overlap entry never wins, and
+    // FIRST-best wins ties — both match the C++ loop exactly.
+    const authoredMask = alterationMask(authoredExtension);
+    if (authoredMask !== 0) {
+        let best = null;
+        let bestScore = 0;
+        for (const e of entries) {
+            if (!Array.isArray(e.intervals) || e.intervals.length === 0) continue;
+            let score = 0;
+            for (let bits = authoredMask & alterationMask(e.suffix ?? ''); bits !== 0; bits >>= 1) {
+                score += (bits & 1);
+            }
+            if (score > bestScore) { best = e; bestScore = score; }
+        }
+        if (best) {
+            return {
+                intervals: [...best.intervals],
+                voicing_label: best.label || best.suffix,
+                source: best.source ?? '',
+            };
+        }
+    }
+
+    return null;
+}
+
+// Task 0.7c — the symbol for a Step-0-resolved chord. Prefers the resolved
+// voicing's own voicing_label so the Max display names the chord actually
+// played; falls back to the chord_colors path when the voicing carries no
+// label of its own.
+function buildSymbolFromVoicing(root, voicing, baseQuality, vocab, artistKey) {
+    const label = voicing?.voicing_label;
+    if (!label) return buildSymbol(root, baseQuality, vocab, artistKey);
+
+    const useFlats = FLAT_ROOTS.has(root);
+    const rootName = noteName(root, useFlats);
+    const display = String(label)
+        .replace('min', 'm')
+        .replace('maj', 'maj')
+        .replace('dom', '');
+    return rootName + display;
+}
+
 // ── mirrors chord_suggestion_engine.js:630-651 buildSymbol() — kept in sync manually, do not diverge ─
 function buildSymbol(root, baseQuality, vocab, artistKey) {
     const useFlats = FLAT_ROOTS.has(root);
@@ -107,7 +286,12 @@ function buildSymbol(root, baseQuality, vocab, artistKey) {
  * Throws on unknown artist / empty progressions — the reader is main.js's
  * handler try/catch, which outlets the message as a Max 'error' message.
  */
-function resolveProgression(artistKey, tonic, mode, vocab, index = 0) {
+// NOTE ON THE TWO "MODE"s: `mode` here is the KEY mode ('major'|'minor') and
+// predates this change; `renderMode` is Task 0.7b's fidelity switch. They are
+// deliberately separate parameters with separate names — collapsing them would
+// be a silent API break for every existing caller.
+function resolveProgression(artistKey, tonic, mode, vocab, index = 0,
+                            renderMode = RENDER_MODE.FIDELITY) {
     const template = (vocab.styleTemplates ?? {})[artistKey];
     if (!template || !Array.isArray(template.progressions) || template.progressions.length === 0) {
         throw new Error(`no progressions for artist '${artistKey}'`);
@@ -123,8 +307,21 @@ function resolveProgression(artistKey, tonic, mode, vocab, index = 0) {
     return (prog.degrees ?? []).map(degStr => {
         const root = degreeStringToRoot(degStr, tonic, mode);
         const bq = degreeStringToBaseQuality(degStr);
-        const voicing = resolveVoicing(artistKey, bq, vocab);
-        const symbol = buildSymbol(root, bq, vocab, artistKey);
+
+        // Step 0 (Task 0.7b): the AUTHORED degree token wins; chord_colors is
+        // the fallback for unextended degrees. Falls through to resolveVoicing
+        // on no hit, which is the pre-fidelity behaviour verbatim.
+        const ext = degreeStringToExtension(degStr);
+        const authored = resolveAuthoredExtension(artistKey, bq, ext, vocab, renderMode);
+        const voicing = authored ?? resolveVoicing(artistKey, bq, vocab);
+
+        // Task 0.7c: when Step 0 produced the voicing, the symbol must name the
+        // chord actually PLAYED, not the style's chord_colors suffix — otherwise
+        // Max displays "13sus4" while an altered dominant sounds. This is the JS
+        // twin of the C++ display/play mismatch.
+        const symbol = authored
+            ? buildSymbolFromVoicing(root, authored, bq, vocab, artistKey)
+            : buildSymbol(root, bq, vocab, artistKey);
         const chord = {
             symbol,
             root,
@@ -145,7 +342,7 @@ function resolveProgression(artistKey, tonic, mode, vocab, index = 0) {
     });
 }
 
-module.exports = { resolveProgression };
+module.exports = { resolveProgression, RENDER_MODE, degreeStringToExtension };
 
 // Self-test (Task 1.3 acceptance): frank_ocean progressions[0] "Nikes" has 4 degrees.
 if (require.main === module) {

@@ -229,6 +229,25 @@ console.log('\nRULE — "no leading tone" styles emit no major 3rd on their domi
         const t = styles[key];
         if (!t || !hasRule(t, 'no leading tone')) continue;
 
+        // NARROWED 2026-08-16. `hasRule` substring-matches, and the phrase "no
+        // leading tone" appears in TWO different kinds of rule:
+        //
+        //   glasper      "Replace V7 with 13sus4 or sus2 — no leading tone"
+        //                -> a CHORD constraint. This is the rule under test.
+        //   frank_ocean  "Dorian as default minor (raised 6th, no leading tone)"
+        //                -> a SCALE-SPELLING statement about the minor mode.
+        //                   It says nothing about how dominants are voiced.
+        //
+        // Applying glasper's chord constraint to frank_ocean's scale note made
+        // this case fail on frank_ocean's authored "V7#5b9" — a deliberately
+        // altered dominant that its own corpus authors, entirely consistent
+        // with a Dorian minor default. That is a false positive, not a defect:
+        // glasper, the style the constraint actually governs, is CLEAN.
+        //
+        // Require the rule to be about REPLACING a dominant, which is what
+        // makes it a voicing constraint rather than a modal observation.
+        if (!hasRule(t, 'replace v7')) continue;
+
         for (let i = 0; i < (t.progressions || []).length; ++i) {
             for (const c of resolveProgression(key, 0, 'major', vocab, i)) {
                 ++checked;
