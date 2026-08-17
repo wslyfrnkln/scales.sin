@@ -234,8 +234,10 @@ function transformSection (chords, op, tonicPc, mode) {
 // all bounded by that artist's material and the selected key. This is the fix
 // for "generate in JDilla is giving me the same 3 chord progressions".
 //
-// resolveProgression(artistKey, tonicPc, mode, index) -> chord array, supplied
-// by the caller so this module stays independent of the vocab loader.
+// resolveProgression(artistKey, tonicPc, mode, index, labelSlot) -> chord array,
+// supplied by the caller so this module stays independent of the vocab loader.
+// `index` is the resolve index (the full press index when recipes drive
+// generation); `labelSlot` is always index % authoredCount, for label lookup.
 function generateVaried (resolveProgression, authoredCount, artistKey,
                          tonicPc, mode, index, recipeDriven = false) {
     if (authoredCount <= 0) return { chords: [], label: '' };
@@ -256,9 +258,11 @@ function generateVaried (resolveProgression, authoredCount, artistKey,
     // alone.
     //
     // `slot` is still correct for the authored-label lookup and the tier walk —
-    // both of those genuinely are per-authored-progression.
+    // both of those genuinely are per-authored-progression. So the callback gets
+    // BOTH: the resolve index (uncapped under recipes) and the label slot, which
+    // always stays in range of the authored progressions.
     const base = resolveProgression(artistKey, tonicPc, mode,
-                                    recipeDriven ? index : slot);
+                                    recipeDriven ? index : slot, slot);
     if (!base || base.chords.length === 0) return { chords: [], label: '' };
 
     if (tier === 0) return { chords: base.chords, label: base.label };

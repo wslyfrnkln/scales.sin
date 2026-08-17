@@ -84,10 +84,12 @@ function generateAt(artist, tonic, mode, index) {
     // without leaving their idiom. Mirrors the plugin's C++ path exactly —
     // see m4l/bridge/test_transform.js for the parity assertions.
     const varied = generateVaried(
-        (aKey, t, m, slot) => {
+        // `slot` may exceed the authored count under recipes (that is the point);
+        // `labelSlot` stays modulo-authored so the readout keeps a real label.
+        (aKey, t, m, slot, labelSlot) => {
             const chords = resolveProgression(aKey, t, m, vocab, slot);
-            const label = (template && template.progressions[slot])
-                ? (template.progressions[slot].label || '') : '';
+            const authoredSlot = template && template.progressions[labelSlot];
+            const label = authoredSlot ? (authoredSlot.label || '') : '';
             return { chords, label };
         },
         authored, artistKey, Number(tonic), modeOf(mode), index,
