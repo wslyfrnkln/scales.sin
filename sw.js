@@ -1,10 +1,17 @@
 /**
  * Service Worker for Scales.sin PWA
- * Cache strategy: Cache First, fall back to network
+ * Cache strategy: Cache First for the app shell, Network First for vocab data
  * Offline support: All HTML, CSS, JS, and icons cached on install
  */
 
-const CACHE_NAME = 'scales-sin-v5';
+const CACHE_NAME = 'scales-sin-v6';
+
+// Vocab data changes far more often than the shell. Cache-first would pin
+// installed clients to whatever vocab shipped with their cache version, so
+// these go network-first and fall back to cache only when offline.
+const NETWORK_FIRST = [
+    './artist_vocab.json'
+];
 const FILES_TO_CACHE = [
     './index.html',
     './scales.sin.html',
@@ -69,6 +76,27 @@ self.addEventListener('fetch', (event) => {
 
     // Skip external requests (Google Fonts, etc.)
     if (!event.request.url.startsWith(self.location.origin)) {
+        return;
+    }
+
+    // Network first for vocab data: always prefer fresh, fall back to cache offline
+    const isNetworkFirst = NETWORK_FIRST.some(
+        (path) => event.request.url === new URL(path, self.location.href).href
+    );
+    if (isNetworkFirst) {
+        event.respondWith(
+            fetch(event.request)
+                .then((response) => {
+                    if (response && response.status === 200 && response.type === 'basic') {
+                        const responseToCache = response.clone();
+                        caches.open(CACHE_NAME).then((cache) => {
+                            cache.put(event.request, responseToCache);
+                        });
+                    }
+                    return response;
+                })
+                .catch(() => caches.match(event.request))
+        );
         return;
     }
 
