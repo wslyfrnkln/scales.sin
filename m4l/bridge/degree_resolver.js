@@ -186,6 +186,7 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
                 return {
                     intervals: [...e.intervals],
                     voicing_label: e.label || e.suffix,
+                    voicing_suffix: e.suffix,
                     source: e.source ?? '',
                 };
             }
@@ -200,6 +201,7 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
                 return {
                     intervals: [...ct.intervals],
                     voicing_label: ct.name || key,
+                    voicing_suffix: key,
                     source: '',
                 };
             }
@@ -233,6 +235,7 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
             return {
                 intervals: [...best.intervals],
                 voicing_label: best.label || best.suffix,
+                voicing_suffix: best.suffix,
                 source: best.source ?? '',
             };
         }
@@ -245,17 +248,28 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
 // voicing's own voicing_label so the Max display names the chord actually
 // played; falls back to the chord_colors path when the voicing carries no
 // label of its own.
+// The symbol is built from the voicing's SUFFIX ("7sus4", "min9"), never from
+// its `voicing_label` — labels are authored prose ("Dominant 7sus4 —
+// suspended, avoids tritone") and an unanchored replace() chain mangles them:
+// 'min' inside "Dominant" yields "Domant", and 'dom' inside a lowercase
+// "dominant replacement" yields "ant". Reachable authored degrees V7sus4 and
+// V9sus4 hit exactly those entries, so Max was sent symbols like
+// "GDomant 7sus4 — suspended, avoids tritone". Suffixes are compact chord
+// tokens, and the conversion below is anchored to the leading quality token so
+// it can only ever rewrite a real prefix.
+function suffixToDisplay(suffix) {
+    return String(suffix)
+        .replace(/^min/, 'm')
+        .replace(/^dom/, '');
+}
+
 function buildSymbolFromVoicing(root, voicing, baseQuality, vocab, artistKey) {
-    const label = voicing?.voicing_label;
-    if (!label) return buildSymbol(root, baseQuality, vocab, artistKey);
+    const suffix = voicing?.voicing_suffix;
+    if (!suffix) return buildSymbol(root, baseQuality, vocab, artistKey);
 
     const useFlats = FLAT_ROOTS.has(root);
     const rootName = noteName(root, useFlats);
-    const display = String(label)
-        .replace('min', 'm')
-        .replace('maj', 'maj')
-        .replace('dom', '');
-    return rootName + display;
+    return rootName + suffixToDisplay(suffix);
 }
 
 // ── mirrors chord_suggestion_engine.js:630-651 buildSymbol() — kept in sync manually, do not diverge ─
