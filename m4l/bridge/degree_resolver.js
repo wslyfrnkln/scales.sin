@@ -210,7 +210,7 @@ function resolveAuthoredExtension(artistKey, baseQuality, authoredExtension, voc
                 return {
                     intervals: [...ct.intervals],
                     voicing_label: ct.name || key,
-                    voicing_suffix: key,
+                    voicing_suffix: ct.suffix ?? key,
                     source: '',
                 };
             }

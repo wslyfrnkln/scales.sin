@@ -162,6 +162,28 @@ console.log('\nMERGE — the device does not see the same rules as the plugin');
 }
 
 // =============================================================================
+console.log('\nDISPLAY — chord_types fallback uses compact suffixes');
+{
+    const testArtist = '__test_sharp_suffix';
+    const testVocab = {
+        ...vocab,
+        styleTemplates: {
+            ...vocab.styleTemplates,
+            [testArtist]: {
+                progressions: [{ label: 'sharp altered dominant', degrees: ['V7#9'] }],
+                rules: [],
+                constraints: {},
+            },
+        },
+    };
+    const [chord] = resolveProgression(testArtist, 0, 'major', testVocab, 0);
+
+    chord?.symbol === 'G7#9'
+        ? pass('sharpKey chord_types lookup displays ct.suffix')
+        : fail('sharpKey display suffix', `got ${chord?.symbol}`);
+}
+
+// =============================================================================
 console.log('\nRULE — styles that forbid resolution author no authentic cadence');
 {
     // Same three subtleties the C++ version had to learn:
