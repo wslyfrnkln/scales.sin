@@ -118,6 +118,14 @@ for (const [artist, expected] of Object.entries(GOLDEN)) {
 check('dilla carries no recipes (loop-point path owns him)',
       !styles.dilla.recipes || styles.dilla.recipes.length === 0);
 
+// ── cycle fallback must not emit a one-chord "progression" ─────────────────
+{
+    const got = composeFromRecipe(styles.glasper, 37);
+    check('cycle recipes never fall back to a one-chord progression',
+          got.length === 0 || got.length >= 2,
+          `glasper idx 37 produced [${got}]`);
+}
+
 // ── pool-width rule, the property that makes plagiarism rare by construction ─
 {
     let ok = true;

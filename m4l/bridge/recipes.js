@@ -217,7 +217,8 @@ function composeFromRecipe(template, progressionIndex) {
     // for the analogous plagiarism reject, and a different attempt seeds a
     // different starting degree, which is exactly what changes how far the
     // cycle runs. `best` keeps the longest draw seen so we degrade to the
-    // closest thing to a cycle rather than to a single chord.
+    // closest usable cycle; a single chord is not a progression, so let the
+    // resolver fall back instead of returning one.
     const wantsCycle = hasRootMotion(recipe);
     let candidate = [];
     let best = [];
@@ -228,7 +229,7 @@ function composeFromRecipe(template, progressionIndex) {
         if (wantsCycle && candidate.length < 2) continue;
         if (!reproducesAuthored(template, candidate)) return candidate;
     }
-    return wantsCycle ? best : candidate;
+    return wantsCycle ? (best.length >= 2 ? best : []) : candidate;
 }
 
 module.exports = {
