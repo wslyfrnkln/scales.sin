@@ -47,6 +47,23 @@ const QUALITY_TO_BASE = {
 // Map base quality to the extension_map key used in artist_vocab.json / voicing_vocabulary.js
 const BASE_TO_EXT_KEY = { min: 'm7', maj: 'Maj7', dom: '7' };
 
+const PREFIXED_CHORD_COLOR_INTERVALS = {
+    dom13b9: [0, 4, 7, 10, 13, 21],
+};
+
+function chordColorSuffixCandidates(baseQuality, suffix) {
+    if (!suffix) return [];
+
+    const candidates = [suffix];
+    const prefix = { min: 'min', maj: 'maj', dom: 'dom' }[baseQuality];
+    const normalized = prefix && suffix.startsWith(prefix)
+        ? suffix.slice(prefix.length)
+        : suffix;
+
+    if (normalized && normalized !== suffix) candidates.push(normalized);
+    return candidates;
+}
+
 // ── ROMAN NUMERAL HELPERS ──────────────────────────────────────────────────────
 
 const ROMAN_UPPER = ['I','II','III','IV','V','VI','VII'];
@@ -124,35 +141,49 @@ export function resolveVoicing(artistKey, baseQuality, vocab) {
 
     // Step 2: search extension_map for the matching suffix
     const entries = extMap[extKey] ?? [];
-    if (targetSuffix) {
-        const match = entries.find(e => e.suffix === targetSuffix);
+    const targetSuffixes = chordColorSuffixCandidates(baseQuality, targetSuffix);
+    for (const suffix of targetSuffixes) {
+        const match = entries.find(e => e.suffix === suffix);
         if (match && match.intervals) {
             return {
                 intervals: match.intervals,
-                voicing_label: match.label ?? match.voicing_label ?? targetSuffix,
+                voicing_label: match.label ?? match.voicing_label ?? suffix,
                 source: match.source ?? '',
             };
         }
     }
 
-    // Step 3: fallback — find any entry in extension_map[extKey] with matching quality
+    // Step 3: look up in chord_types from vocab
+    const chordTypes = vocab.chordTypes ?? {};
+    for (const suffix of targetSuffixes) {
+        if (chordTypes[suffix]) {
+            const ct = chordTypes[suffix];
+            return {
+                intervals: ct.intervals,
+                voicing_label: ct.name ?? suffix,
+                source: '',
+            };
+        }
+    }
+
+    for (const suffix of targetSuffixes) {
+        const intervals = PREFIXED_CHORD_COLOR_INTERVALS[suffix];
+        if (intervals) {
+            return {
+                intervals,
+                voicing_label: suffix,
+                source: '',
+            };
+        }
+    }
+
+    // Step 4: fallback — find any entry in extension_map[extKey] with matching quality
     if (entries.length > 0) {
         const fallback = entries[0];
         return {
             intervals: fallback.intervals,
             voicing_label: fallback.label ?? fallback.voicing_label ?? fallback.suffix,
             source: fallback.source ?? '',
-        };
-    }
-
-    // Step 4: look up in chord_types from vocab
-    const chordTypes = vocab.chordTypes ?? {};
-    if (targetSuffix && chordTypes[targetSuffix]) {
-        const ct = chordTypes[targetSuffix];
-        return {
-            intervals: ct.intervals,
-            voicing_label: ct.name ?? targetSuffix,
-            source: '',
         };
     }
 
