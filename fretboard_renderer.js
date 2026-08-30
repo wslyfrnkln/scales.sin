@@ -366,15 +366,16 @@ function voiceLeadRow(allChords, inv1, inv2, direction, findLowestFn, findHighes
 
     for (let i = 0; i < orderedChords.length; i++) {
         const chord    = orderedChords[i];
+        const chordType = chord.chordType ?? chord.triadType;
         const inversion = (i % 2 === 0) ? inv1 : inv2;
         let voicing;
 
         if (i === 0) {
             voicing = direction === 'up'
-                ? findLowestFn(chord.rootMidi, chord.chordType, inversion)
-                : findHighestFn(chord.rootMidi, chord.chordType, inversion);
+                ? findLowestFn(chord.rootMidi, chordType, inversion)
+                : findHighestFn(chord.rootMidi, chordType, inversion);
         } else {
-            voicing = findVoiceledFn(chord.rootMidi, chord.chordType, inversion, prevVoicing, direction);
+            voicing = findVoiceledFn(chord.rootMidi, chordType, inversion, prevVoicing, direction);
         }
 
         if (!voicing) continue;
