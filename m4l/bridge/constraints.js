@@ -57,6 +57,27 @@ function applyStyleConstraints (chord, constraints) {
                && hasThird && !isSus
                && !has(chord, 14) && !has(chord, 15) && !has(chord, 17)
                && !has(chord, 21) && !has(chord, 9);
+
+    // --- Voicing shape: rootless ---------------------------------------------
+    // NOT gated by `plain` — it runs first, for every chord.
+    //
+    // The gate above exists to stop a constraint CHANGING PITCH CONTENT the
+    // artist's vocabulary already decided. Dropping the root is a different
+    // operation: it removes a note without changing which harmony is played
+    // (the bass supplies the root — the style's own rule says so).
+    //
+    // Found by the C++ test_StyleRules: glasper declares voicingShape=rootless
+    // but 0 of its chords were rootless, because IVmaj7 resolves to Fmaj9 — an
+    // extended chord the gate skips. The rule was declared and never applied.
+    if (constraints.voicingShape === VOICING.ROOTLESS
+        && hasThird                       // a sus chord has no root to spare
+        && chord.intervals.length > 3) {  // never reduce below a triad
+        // "Rootless cluster voicings: omit root" (glasper); "shell voicings"
+        // (dangelo). The bass layer supplies the root — which is why the symbol
+        // still names the full chord.
+        chord.intervals = chord.intervals.filter(iv => iv !== 0);
+    }
+
     if (!plain) return chord;
 
     // --- Selection: dominant substitution -----------------------------------
@@ -76,13 +97,8 @@ function applyStyleConstraints (chord, constraints) {
         chord.intervals = [...chord.intervals, 21].sort((a, b) => a - b);
     }
 
-    // --- Voicing shape -------------------------------------------------------
-    if (constraints.voicingShape === VOICING.ROOTLESS && chord.intervals.length > 3) {
-        // "Rootless cluster voicings: omit root" (glasper); "shell voicings"
-        // (dangelo). The bass layer supplies the root — which is why the symbol
-        // still names the full chord.
-        chord.intervals = chord.intervals.filter(iv => iv !== 0);
-    } else if (constraints.voicingShape === VOICING.QUARTAL && chord.intervals.length >= 3) {
+    // --- Voicing shape: quartal ----------------------------------------------
+    if (constraints.voicingShape === VOICING.QUARTAL && chord.intervals.length >= 3) {
         // "Sus chord removes tritone from dominant — chords sit as static
         //  groove-locked color" (herbie_hancock).
         chord.intervals = [0, 5, 10, 15];

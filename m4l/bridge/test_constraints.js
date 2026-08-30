@@ -51,8 +51,8 @@ console.log('\nSUS13 — no leading tone (glasper rule)');
     // A plain G7: root, major 3rd, 5th, b7.
     const chord = { root: 67, intervals: [0, 4, 7, 10], symbol: 'G7' };
     applyStyleConstraints(chord, styles.glasper.constraints);
-    // C++ measured: glasper G13sus4 [ 0 5 10 21 ] — the rootless shape drops 7
-    // after the sus13 substitution.
+    // C++ measured: glasper G13sus4 — the sus13 substitution fires after the
+    // rootless shape and legitimately owns the whole chord.
     !chord.intervals.includes(4) ? pass('major 3rd (leading tone) removed')
                                  : fail('leading tone', `[${chord.intervals}]`);
     chord.intervals.includes(5) ? pass('suspended 4th present')
@@ -82,11 +82,17 @@ console.log('\nTHE GATE — authored voicings are never reshaped');
     eq(sus.intervals, [0, 5, 7, 10]) ? pass('sus chord left untouched')
                                      : fail('sus untouched', `got [${sus.intervals}]`);
 
-    // An extended chord came from the extension map / vocab.
+    // An extended chord came from the extension map / vocab, so no SELECTION
+    // constraint may touch its pitch content — dangelo's Cm9 must not gain a
+    // Dorian 6th. (C++ test_StyleConstraints asserts exactly this.) The rootless
+    // shape is not a selection constraint: it runs before the gate and drops the
+    // root, which the bass layer supplies.
     const ext = { root: 60, intervals: [0, 3, 10, 14], symbol: 'Cm9' };
     applyStyleConstraints(ext, styles.dangelo.constraints);
-    eq(ext.intervals, [0, 3, 10, 14]) ? pass('extended chord left untouched')
-                                      : fail('ext untouched', `got [${ext.intervals}]`);
+    !ext.intervals.includes(21) ? pass('extended chord gains no Dorian 6th')
+                                : fail('ext 6th', `got [${ext.intervals}]`);
+    eq(ext.intervals, [3, 10, 14]) ? pass('rootless shape still drops the root')
+                                   : fail('ext rootless', `want [3,10,14] got [${ext.intervals}]`);
 }
 
 console.log('\nCONTRACT');
