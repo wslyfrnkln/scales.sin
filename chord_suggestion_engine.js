@@ -565,7 +565,6 @@ function buildTurnaround(root, quality, artistKey, vocab) {
     const progressions = template?.progressions ?? [];
     const base = QUALITY_TO_BASE[quality] ?? 'maj';
     const mode = base === 'min' ? 'minor' : 'major';
-    const scale = mode === 'major' ? MAJOR_SCALE : MINOR_SCALE;
 
     // Try to find a cyclic / loop progression in the artist's set
     const cyclic = progressions.find(p => p.label?.toLowerCase().includes('loop')
@@ -584,7 +583,7 @@ function buildTurnaround(root, quality, artistKey, vocab) {
         : ['min', 'maj', 'min', 'dom'];
 
     return tonicOffset.map((offset, i) => {
-        const r = pc(root + scale[i === 0 ? 0 : (i === 1 ? 5 : (i === 2 ? 1 : 4))]);
+        const r = pc(root + offset);
         const bq = baseQualities[i];
         const voicing = resolveVoicing(artistKey, bq, vocab);
         return {
