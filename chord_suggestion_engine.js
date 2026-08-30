@@ -325,8 +325,10 @@ function degreeStringToBaseQuality(degreeStr) {
     const hasMaj = /maj|M(?=[0-9])/.test(degreeStr);
     const hasMin = /m(?=[0-9])|min/.test(degreeStr) || isLower;
 
+    // Minor wins over the extension test: 'im7'/'im9'/'IVm7' carry a 7/9/13
+    // suffix but are minor chords, not dominants.
+    if (hasMin) return 'min';
     if (hasDom && !hasMaj) return 'dom';
-    if (hasMin || isLower) return 'min';
     return 'maj';
 }
 
