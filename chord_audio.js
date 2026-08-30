@@ -35,6 +35,16 @@ export function playChord(root, intervals, audioCtx, startTime, duration) {
     const sustainLevel = 0.7;
     const releaseTime = 0.3;
     const peakGain = 0.22 / Math.max(frequencies.length, 1); // scale down per voice
+    const safeDuration = Math.max(duration, 0);
+    const envelopeTime = attackTime + decayTime + releaseTime;
+    const envelopeScale = safeDuration < envelopeTime ? safeDuration / envelopeTime : 1;
+    const scaledAttackTime = attackTime * envelopeScale;
+    const scaledDecayTime = decayTime * envelopeScale;
+    const scaledReleaseTime = releaseTime * envelopeScale;
+    const noteEndTime = startTime + safeDuration;
+    const attackEndTime = startTime + scaledAttackTime;
+    const decayEndTime = attackEndTime + scaledDecayTime;
+    const releaseStartTime = Math.max(startTime, noteEndTime - scaledReleaseTime);
 
     const masterGain = audioCtx.createGain();
     masterGain.gain.setValueAtTime(1.0, startTime);
@@ -49,16 +59,16 @@ export function playChord(root, intervals, audioCtx, startTime, duration) {
 
         // ADSR envelope
         envGain.gain.setValueAtTime(0, startTime);
-        envGain.gain.linearRampToValueAtTime(peakGain, startTime + attackTime);
-        envGain.gain.linearRampToValueAtTime(peakGain * sustainLevel, startTime + attackTime + decayTime);
-        envGain.gain.setValueAtTime(peakGain * sustainLevel, startTime + duration - releaseTime);
-        envGain.gain.linearRampToValueAtTime(0, startTime + duration);
+        envGain.gain.linearRampToValueAtTime(peakGain, attackEndTime);
+        envGain.gain.linearRampToValueAtTime(peakGain * sustainLevel, decayEndTime);
+        envGain.gain.setValueAtTime(peakGain * sustainLevel, releaseStartTime);
+        envGain.gain.linearRampToValueAtTime(0, noteEndTime);
 
         osc.connect(envGain);
         envGain.connect(masterGain);
 
         osc.start(startTime);
-        osc.stop(startTime + duration + 0.05); // tiny tail to avoid click
+        osc.stop(noteEndTime + 0.05); // tiny tail to avoid click
     }
 }
 
