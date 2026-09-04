@@ -32,7 +32,7 @@ const styles = vocab.style_templates;
 console.log('\nCONSTRAINTS PRESENT');
 {
     const keys = Object.keys(styles);
-    keys.length === 15 ? pass('15 styles') : fail('style count', `got ${keys.length}`);
+    keys.length === 19 ? pass('19 styles') : fail('style count', `got ${keys.length}`);  // Phase 6, 2026-09-04: 15 -> 19
     const missing = keys.filter(k => !styles[k].constraints);
     missing.length === 0 ? pass('every style has a constraints block')
                          : fail('constraints block', `missing: ${missing}`);

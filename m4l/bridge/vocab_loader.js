@@ -98,12 +98,14 @@ module.exports = { loadVocabularySync };
 // Self-test (Task 1.2 acceptance): run directly with any Node ≥22.
 if (require.main === module) {
     const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json'));
-    // All 15 JSON artists must survive the merge. Total is 18: the built-in
+    // All 19 JSON artists must survive the merge. Total is 22: the built-in
     // STYLE_TEMPLATES adds 4 legacy keys (pass, wonder, dangelo, thomas) — the
-    // browser merge produces the same union, verified 2026-07-03.
+    // browser merge produces the same union, verified 2026-07-03 (count updated
+    // 2026-09-04, Phase 6: bill_evans/steely_dan/duke_ellington/bon_iver appended).
     const JSON_ARTISTS = ['frank_ocean','dangelo','leon_thomas','glasper','badu','paak',
         'stevie_wonder','herbie_hancock','thundercat','gospel','dilla','kendrick',
-        'mac_miller','joe_pass','ama_lou'];
+        'mac_miller','joe_pass','ama_lou','bill_evans','steely_dan','duke_ellington',
+        'bon_iver'];
     const missing = JSON_ARTISTS.filter(k => !vocab.styleTemplates[k]);
     console.log('artists (union):', Object.keys(vocab.styleTemplates).length);
     console.log('missing JSON artists:', missing.length ? missing.join(',') : 'none');

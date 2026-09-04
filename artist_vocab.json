@@ -2928,6 +2928,703 @@
           "sourceRule": "7th extensions are add-on color (Gmaj7 over a Bm progression) — not structural jazz chord function."
         }
       ]
+    },
+    "bill_evans": {
+      "name": "Waltz",
+      "description": "Rootless left-hand shell voicings (guide tones plus color tones) carry the harmonic identity while the bass states the root — quartal fourths structures substitute for tertian extensions on static chords, modal interchange borrows freely between major and parallel minor without functional detour, and tritone substitution routinely stands in for the written dominant.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "13"
+      },
+      "progressions": [
+        {
+          "label": "Rootless 3-7-9 shell turn in 3/4",
+          "degrees": [
+            "iim9",
+            "V13",
+            "Imaj9"
+          ],
+          "notes": "Bill Evans — Waltz for Debby (1956 studio reading and the 1961 Village Vanguard trio recordings are the standard reference for a rootless left-hand shell, 3-7 plus a color tone, stated under a walking or implied bass; the pianist never doubles the root)."
+        },
+        {
+          "label": "Modal-interchange darkening of a static tonic",
+          "degrees": [
+            "Imaj9",
+            "ivm9",
+            "Imaj9"
+          ],
+          "notes": "Bill Evans — trio recordings of standards, 1959-1961 Riverside sessions (documented technique: darkening a sustained major tonic with the borrowed iv from the parallel minor as a passing color, then returning without treating the borrow as a modulation)."
+        },
+        {
+          "label": "Quartal color over a suspended tonic",
+          "degrees": [
+            "Isus7",
+            "IVmaj9",
+            "Isus7"
+          ],
+          "notes": "Bill Evans — mid-1960s solo and trio playing (documented in harmonic analyses of his open, fourths-derived voicings over a static tonic, substituting stacked fourths for a tertian extension without changing the underlying function)."
+        },
+        {
+          "label": "Tritone-substitute turnaround into the tonic",
+          "degrees": [
+            "iim9",
+            "bII13",
+            "Imaj9"
+          ],
+          "notes": "Bill Evans — Riverside- and Verve-era standards recordings (a ii-V-I with the V replaced by its tritone partner is one of his most consistent reharmonization devices; the substitute dominant's root falls a half-step into the tonic)."
+        },
+        {
+          "label": "Third-related reharmonization under a held melody note",
+          "degrees": [
+            "Imaj9",
+            "bIIImaj7",
+            "Imaj9"
+          ],
+          "notes": "Bill Evans — solo reharmonizations of standards (a chromatic-mediant substitution documented across his catalogue: the melody note held over the tonic is reheard as a color tone of the mediant chord before the tonic returns, with no dominant preparation)."
+        },
+        {
+          "label": "Minor ii-V-i with rootless altered-dominant voicing",
+          "degrees": [
+            "iim7b5",
+            "V7alt",
+            "im9"
+          ],
+          "notes": "Bill Evans — minor-key standards in the trio book (e.g. his recorded readings of 'Alice in Wonderland' and 'My Foolish Heart'), voicing the altered dominant as a rootless upper-structure shape rather than a stack of named alterations."
+        }
+      ],
+      "rules": [
+        "Rootless left-hand voicings (3-7 shells, or A/B two-handed structures) carry the harmonic identity — the guide tones plus one or two color tones ARE the chord; the root is implied by the bass, never played by the pianist.",
+        "Quartal (fourths-based) structures substitute for tertian upper extensions on static or slow-moving chords, producing an open, ambiguous color that resists a single functional label.",
+        "Modal interchange borrows chords from the parallel minor freely inside a major-key progression (and vice versa) without treating the borrowed chord as a detour that must resolve back — it is simply another available color.",
+        "Extended tertian color (9ths, 11ths, 13ths) is added by default on every chord, major or minor, rather than reserved for dominants — the plain triad or seventh is treated as an unfinished sound.",
+        "Voice leading between chords favors the smallest possible motion in the inner voices even when the roots leap by a third or more — a chord change is judged by how little the hand has to move, not by the interval between roots.",
+        "Tritone substitution stands in for a dominant chord routinely enough that the same rootless shape can read as either the written V7 or its tritone partner, depending only on what the bass plays underneath it.",
+        "A melody note is reharmonized by finding a different chord, often a third away, under which that same note becomes a new, still-consonant extension rather than the chord tone it was originally."
+      ],
+      "recipes": [
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "Imaj9",
+            "bII13",
+            "iim9",
+            "V13",
+            "iim7b5",
+            "bVImaj9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "Tritone substitution stands in for a dominant chord routinely enough that the same rootless shape can read as either the written V7 or its tritone partner, depending only on what the bass plays underneath it."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "iim7b5",
+            "V7alt",
+            "im9",
+            "iim9",
+            "V13",
+            "Imaj9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "Rootless left-hand voicings (3-7 shells, or A/B two-handed structures) carry the harmonic identity — the guide tones plus one or two color tones ARE the chord; the root is implied by the bass, never played by the pianist."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Imaj9",
+            "bIIImaj7",
+            "bVImaj9",
+            "iim9",
+            "IVmaj9",
+            "bIImaj7",
+            "vim9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 4,
+          "cadencePolicy": "none",
+          "sourceRule": "Voice leading between chords favors the smallest possible motion in the inner voices even when the roots leap by a third or more — a chord change is judged by how little the hand has to move, not by the interval between roots."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Isus7",
+            "IVmaj9",
+            "bIIsus7",
+            "bVIImaj9",
+            "vim11",
+            "Imaj9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Quartal (fourths-based) structures substitute for tertian upper extensions on static or slow-moving chords, producing an open, ambiguous color that resists a single functional label."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj9",
+            "IVmaj9",
+            "vim9",
+            "iim9",
+            "bVImaj9",
+            "bIIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Extended tertian color (9ths, 11ths, 13ths) is added by default on every chord, major or minor, rather than reserved for dominants — the plain triad or seventh is treated as an unfinished sound."
+        },
+        {
+          "kind": "cycle",
+          "degreePool": [
+            "IVmaj9",
+            "bVImaj9",
+            "IImaj9",
+            "Imaj9",
+            "iim9",
+            "V13",
+            "IIImaj9"
+          ],
+          "rootMotion": [
+            -4
+          ],
+          "lengthMin": 3,
+          "lengthMax": 4,
+          "cadencePolicy": "none",
+          "sourceRule": "A melody note is reharmonized by finding a different chord, often a third away, under which that same note becomes a new, still-consonant extension rather than the chord tone it was originally."
+        }
+      ],
+      "constraints": {
+        "dominantSubstitution": "tritone",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "rootless",
+        "source": "rootless shell voicings (3-7-9); quartal fourths color; modal interchange; tritone-substitution reharmonization"
+      }
+    },
+    "steely_dan": {
+      "name": "Chrome",
+      "description": "Dense altered-dominant harmony and tritone substitution are layered inside a tight, close-position pop-song form rather than an open jazz-solo form — the 'mu major' (triad plus 2nd, no doubled 3rd) voicing replaces the plain major triad as the default tonic color, and parallel seventh-chord planing substitutes for functional voice leading on transitional passages.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "7b9"
+      },
+      "progressions": [
+        {
+          "label": "Mu-major tonic color over a static vamp",
+          "degrees": [
+            "Iadd9",
+            "IVadd9",
+            "Iadd9"
+          ],
+          "notes": "Steely Dan (Walter Becker / Donald Fagen) — the 'mu major' triad-plus-2nd voicing documented in jazz-harmony pedagogy discussing the duo's 1970s studio chord vocabulary, replacing the plain major triad as the tonic color."
+        },
+        {
+          "label": "Tritone-substitute turnaround inside a pop form",
+          "degrees": [
+            "Imaj7",
+            "bII13",
+            "iim9",
+            "V7alt"
+          ],
+          "notes": "Steely Dan — mid-1970s studio recordings (documented device: the expected V7 of a I-vi-ii-V turnaround replaced by its tritone partner, producing half-step-down bass motion into the ii chord)."
+        },
+        {
+          "label": "Altered-dominant chain inside a foursquare form",
+          "degrees": [
+            "iim9",
+            "V7alt",
+            "Imaj7",
+            "VI7b9"
+          ],
+          "notes": "Steely Dan — dense chromatic-altered-dominant color layered over a conventional 4-bar pop phrase length, a hallmark of the Fagen/Becker studio-band arrangements where jazz harmonic density sits inside rock-song formal proportions."
+        },
+        {
+          "label": "Parallel seventh-chord planing descent",
+          "degrees": [
+            "IVmaj7",
+            "biii7",
+            "bIImaj7",
+            "im7"
+          ],
+          "notes": "Steely Dan — a parallel close-position seventh-chord slide by whole and half steps, characteristic of the chromatic passing harmony in the duo's studio arrangements; the voicing shape is transposed rather than reharmonized chord by chord."
+        },
+        {
+          "label": "Secondary dominant targeting the melody's 3rd",
+          "degrees": [
+            "Imaj7",
+            "VI7",
+            "iim9",
+            "V13"
+          ],
+          "notes": "Steely Dan — a secondary dominant (VI7, the V/ii) chosen because the held melody note is its 3rd, documented in analyses of the duo's chromatic voice-leading choices across their 1970s catalogue."
+        },
+        {
+          "label": "Stacked ii-V chain without a tonic landing",
+          "degrees": [
+            "iim9",
+            "V7alt",
+            "biiim9",
+            "bVI7alt"
+          ],
+          "notes": "Steely Dan — consecutive ii-V units a half-step apart, moving through the changes without settling on a tonic, the same chromatic-planing logic as the seventh-chord descent applied to functional ii-V units."
+        }
+      ],
+      "rules": [
+        "The 'mu major' voicing — a major triad with an added 2nd/9th and the 3rd voiced above rather than doubled — replaces the plain major triad as the default tonic color, producing an ambiguous, non-cadential brightness.",
+        "Dominant chords are routinely replaced by their tritone substitute inside otherwise diatonic turnarounds, so the bass motion becomes chromatic and stepwise rather than by fourths and fifths.",
+        "Extended and altered dominants (7#9, 7b9, 13#11) are layered inside a tight, close-position pop-song form rather than an open bebop-solo form — the harmonic density is high, but the phrase lengths stay foursquare.",
+        "Parallel major-to-minor-seventh planing — sliding the same close-position seventh-chord shape by whole and half steps — substitutes for functional voice leading on transitional passages.",
+        "A secondary dominant is favored over its diatonic target's relative-minor substitute whenever the melody note is the 3rd of the secondary dominant, so the chromatic color reads clearly rather than being absorbed into a diatonic chord.",
+        "The vi chord is voiced as a minor 9th or minor 11th, never a bare minor triad, so it functions as a color chord in its own right rather than a weak substitute for the I.",
+        "Chains of ii-V units are stacked back-to-back without returning to a tonic between them, so the ear tracks the guide-tone voice leading across the whole chain rather than a single resolution."
+      ],
+      "recipes": [
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "Imaj7",
+            "bII13",
+            "iim9",
+            "V7alt",
+            "VI7b9",
+            "biiim9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "Dominant chords are routinely replaced by their tritone substitute inside otherwise diatonic turnarounds, so the bass motion becomes chromatic and stepwise rather than by fourths and fifths."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "iim9",
+            "V7alt",
+            "biiim9",
+            "bVI7alt",
+            "Imaj7",
+            "VI7b9",
+            "bII13"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 4,
+          "cadencePolicy": "none",
+          "sourceRule": "Chains of ii-V units are stacked back-to-back without returning to a tonic between them, so the ear tracks the guide-tone voice leading across the whole chain rather than a single resolution."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Iadd9",
+            "IVadd9",
+            "vim9",
+            "iim9",
+            "bVIIadd9",
+            "IIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "The 'mu major' voicing — a major triad with an added 2nd/9th and the 3rd voiced above rather than doubled — replaces the plain major triad as the default tonic color, producing an ambiguous, non-cadential brightness."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "IVmaj7",
+            "biii7",
+            "bIImaj7",
+            "im7",
+            "bVImaj7",
+            "iv7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Parallel major-to-minor-seventh planing — sliding the same close-position seventh-chord shape by whole and half steps — substitutes for functional voice leading on transitional passages."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "Imaj7",
+            "VI7",
+            "iim9",
+            "V13",
+            "IV13",
+            "bII7"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "A secondary dominant is favored over its diatonic target's relative-minor substitute whenever the melody note is the 3rd of the secondary dominant, so the chromatic color reads clearly rather than being absorbed into a diatonic chord."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "vim9",
+            "vim11",
+            "Imaj7",
+            "IVmaj7",
+            "iim9",
+            "bVIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "The vi chord is voiced as a minor 9th or minor 11th, never a bare minor triad, so it functions as a color chord in its own right rather than a weak substitute for the I."
+        }
+      ],
+      "constraints": {
+        "dominantSubstitution": "tritone",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "closed",
+        "source": "mu-major (add2/no-3rd) tonic color; dense altered-dominant substitution inside foursquare pop-song form; parallel seventh-chord planing"
+      }
+    },
+    "duke_ellington": {
+      "name": "Brass Parlor",
+      "description": "Lush stacked 9th/11th/13th big-band voicings are the default color for every chord, filled out with chromatic passing chords borrowed freely from outside the key — a pre-bebop harmonic lineage that favors the plagal (IV-to-I) color cadence at least as often as the authentic V-to-I, and treats modal mixture as a color shift rather than a modulation.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "maj9",
+        "dom": "13"
+      },
+      "progressions": [
+        {
+          "label": "Stacked 9th/11th/13th tonic color over a held root",
+          "degrees": [
+            "Imaj13",
+            "IVmaj9",
+            "Imaj13"
+          ],
+          "notes": "Duke Ellington — documented across analyses of his orchestral writing for the big band: every chord carries a 9th, 11th, or 13th as a matter of course, not as an occasional color."
+        },
+        {
+          "label": "Chromatic passing chord between diatonic neighbors",
+          "degrees": [
+            "Imaj9",
+            "bIImaj7",
+            "iim9"
+          ],
+          "notes": "Duke Ellington — a chromatic passing chord filling the whole-step gap between I and ii, a device found throughout the pre-bebop big-band writing tradition his arrangements are associated with, predating the bebop-era passing-diminished convention."
+        },
+        {
+          "label": "Plagal color cadence closing a phrase",
+          "degrees": [
+            "IVmaj9",
+            "Imaj13"
+          ],
+          "notes": "Duke Ellington — a IV-to-I plagal close used as a phrase-ending gesture rather than an authentic V-to-I cadence, consistent with the softer, non-dominant-driven cadential language documented in analyses of Ellington-era big-band writing."
+        },
+        {
+          "label": "Modal-mixture color shift inside a major phrase",
+          "degrees": [
+            "Imaj9",
+            "ivm9",
+            "Imaj9"
+          ],
+          "notes": "Duke Ellington — a borrowed minor-iv color chord inside an otherwise major phrase, resolved back without functioning as a modulation, the same modal-interchange logic documented across the swing-era big-band writing tradition."
+        },
+        {
+          "label": "Pedal-point tonic with a shifting upper structure",
+          "degrees": [
+            "Imaj13",
+            "Imaj9#11",
+            "Imaj13"
+          ],
+          "notes": "Duke Ellington — a held bass pedal under a moving upper-structure color, a texture associated with Ellington's extended-form writing (e.g. the longer suites), where the harmony above the pedal shifts while the bass anchors the tonic."
+        },
+        {
+          "label": "Dense stacked-extension turnaround",
+          "degrees": [
+            "iim9",
+            "V13",
+            "Imaj13",
+            "IVmaj9"
+          ],
+          "notes": "Duke Ellington — a conventional ii-V-I turnaround voiced throughout with stacked 9th/11th/13th color rather than plain triads or sevenths, consistent with the harmonic density documented in Ellington-orchestra transcriptions and analyses."
+        }
+      ],
+      "rules": [
+        "Upper-structure color (9ths, 11ths, and 13ths stacked above the 7th) is the default voicing for every chord in the ensemble, not an occasional embellishment — a plain triad or bare seventh chord reads as unfinished in this idiom.",
+        "Chromatic passing chords fill the space between two diatonic chords a whole step apart, borrowed freely from outside the key rather than restricted to a single diminished-seventh formula.",
+        "Reed and brass sections are voiced in close, overlapping clusters so the individual chord tones blend into a single composite color rather than reading as separate instrumental lines.",
+        "The plagal (IV-to-I) motion is used as a color cadence at least as often as the authentic (V-to-I) cadence, giving phrase endings a softer, non-dominant-driven landing.",
+        "A chord's extension is chosen for the specific instrumental voicing available (which player can reach which note), so the same harmonic function can carry different upper-structure colors from one performance to the next.",
+        "Modal mixture between the major and minor forms of the same scale degree is used inside a single phrase as a color shift, without the borrowed chord functioning as a modulation.",
+        "A held pedal tone under a moving upper-structure line lets the harmony above it shift color freely while the bass anchors the listener's sense of key."
+      ],
+      "recipes": [
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj13",
+            "IVmaj9",
+            "iim9",
+            "V13",
+            "bIImaj7",
+            "vim9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Upper-structure color (9ths, 11ths, and 13ths stacked above the 7th) is the default voicing for every chord in the ensemble, not an occasional embellishment — a plain triad or bare seventh chord reads as unfinished in this idiom."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Imaj9",
+            "bIImaj7",
+            "iim9",
+            "bIIImaj7",
+            "IVmaj9",
+            "biiim7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Chromatic passing chords fill the space between two diatonic chords a whole step apart, borrowed freely from outside the key rather than restricted to a single diminished-seventh formula."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "IVmaj9",
+            "Imaj13",
+            "V13",
+            "iim9",
+            "bVIImaj7",
+            "vim9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "The plagal (IV-to-I) motion is used as a color cadence at least as often as the authentic (V-to-I) cadence, giving phrase endings a softer, non-dominant-driven landing."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj13",
+            "Imaj9#11",
+            "IVmaj9",
+            "vim9",
+            "bVImaj7",
+            "iim9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "A held pedal tone under a moving upper-structure line lets the harmony above it shift color freely while the bass anchors the listener's sense of key."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Imaj9",
+            "ivm9",
+            "bVImaj7",
+            "IVmaj9",
+            "iim9",
+            "bIIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Modal mixture between the major and minor forms of the same scale degree is used inside a single phrase as a color shift, without the borrowed chord functioning as a modulation."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "iim9",
+            "V13",
+            "Imaj13",
+            "IVmaj9",
+            "bIImaj7",
+            "vim11"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "A chord's extension is chosen for the specific instrumental voicing available (which player can reach which note), so the same harmonic function can carry different upper-structure colors from one performance to the next."
+        }
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "dorian",
+        "voicingShape": "closed",
+        "source": "stacked 9th/11th/13th big-band voicings; chromatic passing chords; plagal color cadences; pre-bebop lineage"
+      }
+    },
+    "bon_iver": {
+      "name": "Drift Fold",
+      "description": "Chromatic-mediant modulation replaces dominant-driven key change, stacked-fourth (quartal) and added-9th chord colors replace tertian extensions, and dominant function is avoided outright — harmony sustains on a chord or a slow alternation for extended stretches, with the ear meant to accept each arrival as a color shift rather than the release of a built tension.",
+      "chord_colors": {
+        "min": "min9",
+        "maj": "add9",
+        "dom": "9sus4"
+      },
+      "progressions": [
+        {
+          "label": "Chromatic-mediant key shift without dominant preparation",
+          "degrees": [
+            "Iadd9",
+            "bIIIadd9"
+          ],
+          "notes": "Bon Iver — a modulation by chromatic third with no intervening dominant, characteristic of the harmonic language widely discussed in analyses of the artist's indie-folk catalogue; the new tonic simply arrives as a color shift."
+        },
+        {
+          "label": "Stacked-fourth static tonic vamp",
+          "degrees": [
+            "Iadd9",
+            "IVadd9",
+            "Iadd9",
+            "IVadd9"
+          ],
+          "notes": "Bon Iver — a slow two-chord alternation sustained for extended stretches, consistent with the harmonic stasis widely discussed in analyses of the catalogue's production style, where rhythmic and textural variation carries the sense of motion instead of chord change."
+        },
+        {
+          "label": "Planing parallel triads under a static melody",
+          "degrees": [
+            "Iadd9",
+            "bIIIadd9",
+            "IVadd9"
+          ],
+          "notes": "Bon Iver — parallel add9-color triads moving by third and by step under a held or slow-moving melodic line, a planing technique documented in analyses of contemporary indie-folk/chamber-pop songwriting, of which this catalogue is a frequently cited example."
+        },
+        {
+          "label": "Phrase ending with no dominant preparation",
+          "degrees": [
+            "vim9",
+            "bIIIadd9"
+          ],
+          "notes": "Bon Iver — a phrase resolving onto a chromatic-mediant color chord with no preceding dominant; the ear accepts the arrival as a color shift rather than the release of a built harmonic tension, consistent with the non-functional cadential language discussed in analyses of the artist's harmonic vocabulary."
+        },
+        {
+          "label": "Implied-root ambiguity over a drone",
+          "degrees": [
+            "IVadd9",
+            "Iadd9"
+          ],
+          "notes": "Bon Iver — a quartal-adjacent add9 shape held over a sustained low drone, where the vocal or bass implies a root the harmony instrument itself never states outright, a texture consistent with the sustained/ambient production style widely associated with the catalogue."
+        },
+        {
+          "label": "Minor-to-mediant color pivot",
+          "degrees": [
+            "im9",
+            "bIIIadd9",
+            "bVIadd9"
+          ],
+          "notes": "Bon Iver — a minor tonic pivoting through a chromatic-mediant chain (i to bIII to bVI, each a third from the last) without any intervening dominant, the same non-functional third-relation logic documented across the catalogue applied to a minor-key passage."
+        }
+      ],
+      "rules": [
+        "Chromatic-mediant modulation — moving the tonic to a chord a third away that shares no diatonic function with the original key — replaces dominant-driven modulation as the primary way a phrase changes key center.",
+        "Stacked fourths (quartal voicings) and added-9th major/minor triads are the default chord color, favored over tertian 9th/11th/13th extensions built from thirds.",
+        "Harmony sustains on a single chord or a slow two-chord alternation for extended stretches, with rhythmic and textural variation carrying the sense of motion instead of chord change.",
+        "Dominant function is avoided outright — no chord is voiced or placed so that it creates an expectation of falling a fifth into the tonic below it.",
+        "A chord's root is frequently implied by the vocal or a drone rather than stated in the harmony instrument's lowest voice, so the same quartal shape can support more than one apparent root across a phrase.",
+        "Parallel first-inversion or open-voiced triads move by step or by third under a static or slow-moving melodic line, producing planing motion rather than functional voice leading.",
+        "A phrase can end on a chord with no dominant preparation at all — the ear is meant to accept the arrival as a color shift, not as the resolution of a built-up tension."
+      ],
+      "recipes": [
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Iadd9",
+            "bIIIadd9",
+            "bVIadd9",
+            "IVadd9",
+            "im9",
+            "vim9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Chromatic-mediant modulation — moving the tonic to a chord a third away that shares no diatonic function with the original key — replaces dominant-driven modulation as the primary way a phrase changes key center."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Iadd9",
+            "IVadd9",
+            "vim9",
+            "bIIIadd9",
+            "im9",
+            "bVIadd9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Stacked fourths (quartal voicings) and added-9th major/minor triads are the default chord color, favored over tertian 9th/11th/13th extensions built from thirds."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Iadd9",
+            "IVadd9",
+            "bVIIadd9",
+            "vim9",
+            "im9",
+            "bIIadd9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Harmony sustains on a single chord or a slow two-chord alternation for extended stretches, with rhythmic and textural variation carrying the sense of motion instead of chord change."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "Iadd9",
+            "bIIIadd9",
+            "bVIadd9",
+            "vim9",
+            "IVadd9",
+            "im9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Dominant function is avoided outright — no chord is voiced or placed so that it creates an expectation of falling a fifth into the tonic below it."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Iadd9",
+            "bIIIadd9",
+            "IVadd9",
+            "bVIadd9",
+            "vim9",
+            "bIIadd9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Parallel first-inversion or open-voiced triads move by step or by third under a static or slow-moving melodic line, producing planing motion rather than functional voice leading."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "vim9",
+            "bIIIadd9",
+            "Iadd9",
+            "bVIadd9",
+            "IVadd9",
+            "im9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "deceptive",
+          "sourceRule": "A phrase can end on a chord with no dominant preparation at all — the ear is meant to accept the arrival as a color shift, not as the resolution of a built-up tension."
+        }
+      ],
+      "constraints": {
+        "dominantSubstitution": "none",
+        "defaultMinorMode": "aeolian",
+        "voicingShape": "quartal",
+        "source": "chromatic-mediant modulation; stacked-fourth/add9 non-functional sustained harmony; dominant function avoided outright"
+      }
     }
   }
 }
