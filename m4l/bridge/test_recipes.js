@@ -30,41 +30,44 @@ const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json')
 const styles = vocab.styleTemplates;
 
 // ── GOLDEN VECTORS — captured from the C++ engine, 2026-09-04 ────────────────
-// Re-captured for Phase 4 (SCALES_VOCAB_EXPANSION_PLAN Task 4.3): raising
-// frank_ocean and gospel to 5 recipes each shifts `progressionIndex %
-// recipes.length` for every index even though neither artist's pool changed
-// — see recipes.js's ROOT MOTION / composeFromRecipe comments and the GOLDEN
+// Re-captured for Phase 5 (SCALES_VOCAB_EXPANSION_PLAN Task 5.2): widening
+// frank_ocean and gospel recipes 0-2's degreePool to lengthMax + 3 shifts the
+// draws composeFromRecipe makes at every index whose recipe pool changed
+// (indices 0,1,2,5,6,7,10,11 — the ones landing on recipes 0-2; indices
+// 3,4,8,9 land on the two Phase-4 recipes, whose pools were untouched, and
+// their vectors are correspondingly unchanged from the Phase-4 capture) —
+// see recipes.js's ROOT MOTION / composeFromRecipe comments and the GOLDEN
 // VECTOR HAZARD note above. Re-captured via the [.oracle] dump
 // (tools/recapture_recipe_vectors.sh), never re-derived from this file.
 // Any divergence here means the two surfaces have stopped agreeing.
 const GOLDEN = {
     frank_ocean: [
-        ['bVI', 'im'],
-        ['bVIImaj7', 'IImaj7'],
-        ['bVIImaj7', 'im', 'Imaj7'],
+        ['Imaj7', 'vim'],
+        ['Imaj7', 'IV'],
+        ['vim7', 'bII', 'viim7'],
         ['bVII', 'vim'],
         ['vim9', 'IImaj7', 'viim9'],
-        ['Imaj7', 'vm', 'bVI', 'im'],
-        ['Imaj7', 'bVIImaj7'],
-        ['viim7', 'bVIImaj7', 'bII'],
+        ['bVIImaj7', 'Imaj7', 'bVI', 'vim'],
+        ['Imaj7', 'IV'],
+        ['vim', 'im', 'bII'],
         ['iim', 'bIII', 'vm'],
         ['IImaj7', 'iiim9', 'vim9'],
-        ['Imaj7', 'im'],
-        ['IV', 'Imaj7'],
+        ['bVIImaj7', 'im'],
+        ['im', 'Imaj7'],
     ],
     gospel: [
-        ['V7/I/bass', 'IV', 'IVsus2'],
-        ['IVsus2', 'I'],
-        ['im', 'im7', 'I'],
+        ['V7/I/bass', 'bVII', 'IVsus2'],
+        ['IVsus2', 'V7/I/bass'],
+        ['V7/I/bass', 'immaj7', 'IV'],
         ['bVII', 'Isus4'],
         ['Iadd9', 'bVII', 'Vsus4'],
-        ['V7/I/bass', 'IVsus2', 'IV'],
-        ['Isus4', 'Vsus4', 'IV', 'I'],
-        ['IV', 'im', 'immaj7'],
+        ['Isus4', 'IV', 'V7/I/bass'],
+        ['V7/I/bass', 'Isus4', 'IVsus2', 'IV'],
+        ['im6', 'im7', 'immaj7'],
         ['bIVmaj7', 'iim7', 'IVsus2'],
         ['bVII', 'I', 'Iadd9'],
-        ['IV', 'IVsus2', 'bVII'],
-        ['IV', 'IVsus2'],
+        ['Isus4', 'bVII', 'V7/I/bass'],
+        ['bVII', 'I'],
     ],
 };
 
