@@ -82,7 +82,7 @@ console.log('\nREACHABILITY — the merged vocab carries more than the menu show
     // already caused two separate confusions (they shipped inside the device
     // still displaying artist names after the rename).
     const unreachable = Object.keys(styles).filter(k => !MENU.includes(k));
-    MENU.length === 15 ? pass('menu exposes 15 styles')
+    MENU.length === 19 ? pass('menu exposes 19 styles')  // Phase 6, 2026-09-04: 15 -> 19
                        : fail('menu size', `got ${MENU.length}`);
 
     const constrained = MENU.filter(k => styles[k] && styles[k].constraints);

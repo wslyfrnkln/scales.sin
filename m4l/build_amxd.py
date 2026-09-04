@@ -37,7 +37,8 @@ MODES = ["Major", "Minor"]
 ARTISTS = ["Nocturne", "Velvet", "After Hours", "Vespers",
            "Incense", "Pocket", "Sunlight", "Maiden",
            "Sublow", "Sunday", "Drift", "West", "Haze",
-           "Standard", "Cold Light"]
+           "Standard", "Cold Light", "Waltz", "Chrome",
+           "Brass Parlor", "Drift Fold"]
 QUALITIES = ["m7", "maj7", "dom7"]
 
 boxes = []

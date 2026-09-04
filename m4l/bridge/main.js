@@ -44,7 +44,8 @@ const vocab = loadVocabularySync(path.join(__dirname, dep('artist_vocab.json')))
 // ── Index maps — order MUST match the live.menu items in Scales.sin-m4l.amxd ──
 const ARTISTS = ['frank_ocean', 'dangelo', 'leon_thomas', 'glasper', 'badu', 'paak',
     'stevie_wonder', 'herbie_hancock', 'thundercat', 'gospel', 'dilla', 'kendrick',
-    'mac_miller', 'joe_pass', 'ama_lou'];
+    'mac_miller', 'joe_pass', 'ama_lou', 'bill_evans', 'steely_dan', 'duke_ellington',
+    'bon_iver'];
 const MODES = ['major', 'minor'];
 const QUALITIES = ['min7', 'maj7', '7'];
 
