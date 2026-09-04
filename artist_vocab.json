@@ -427,7 +427,8 @@
             "iim",
             "bVI",
             "vim",
-            "Imaj7"
+            "Imaj7",
+            "bVIImaj7"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
@@ -440,7 +441,8 @@
             "bVIImaj7",
             "Imaj7",
             "IV",
-            "IImaj7"
+            "IImaj7",
+            "im"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -455,7 +457,8 @@
             "vim",
             "bII",
             "Imaj7",
-            "viim7"
+            "viim7",
+            "vim7"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -607,7 +610,8 @@
             "im9",
             "iim9",
             "IV13sus4",
-            "vim7"
+            "vim7",
+            "Iadd9"
           ],
           "lengthMin": 3,
           "lengthMax": 3,
@@ -620,7 +624,8 @@
             "im7",
             "V7sus4",
             "I",
-            "Vsus"
+            "Vsus",
+            "Iadd9"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -633,7 +638,8 @@
             "iim9",
             "vim7",
             "bII7",
-            "III7"
+            "III7",
+            "Iadd9"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -805,7 +811,8 @@
             "bVII",
             "ivm7",
             "bVImaj7",
-            "im"
+            "im",
+            "iim7"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -819,7 +826,8 @@
             "bVImaj7",
             "V7",
             "iim7",
-            "im"
+            "im",
+            "ivm7"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -834,7 +842,8 @@
             "iiim7",
             "bIII7",
             "bVII7",
-            "im7"
+            "im7",
+            "ivm7"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -973,7 +982,8 @@
             "im11",
             "bIIImaj9",
             "bVImaj7",
-            "Imaj9"
+            "Imaj9",
+            "IIImaj9"
           ],
           "rootMotion": [
             4
@@ -990,7 +1000,8 @@
             "im",
             "bIIImaj7",
             "bVImaj7",
-            "im11"
+            "im11",
+            "IIImaj7"
           ],
           "rootMotion": [
             -4
@@ -1007,7 +1018,8 @@
             "im9",
             "bVmaj13",
             "bVIIm9",
-            "bVImaj7"
+            "bVImaj7",
+            "im11"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -1143,7 +1155,8 @@
             "im7",
             "im9",
             "ivm7",
-            "bVIImaj7"
+            "bVIImaj7",
+            "IVmaj9"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -1158,7 +1171,8 @@
             "bVImaj7",
             "Imaj9",
             "im7",
-            "bVIImaj7"
+            "bVIImaj7",
+            "V+#9/I"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -1171,7 +1185,8 @@
             "V7sus",
             "im7",
             "bVIImaj7",
-            "IVmaj7"
+            "IVmaj7",
+            "IVmaj9"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -1306,7 +1321,8 @@
             "im7",
             "bVI",
             "IVmaj7",
-            "Imaj7"
+            "Imaj7",
+            "V7/IV"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
@@ -1319,7 +1335,8 @@
             "Imaj7",
             "V13sus",
             "bVII13sus",
-            "II13sus"
+            "II13sus",
+            "IVmaj7"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -1334,7 +1351,8 @@
             "bIIImaj9",
             "IIIx7sus4",
             "IVmaj7",
-            "Imaj7"
+            "Imaj7",
+            "V7/IV"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -1475,7 +1493,8 @@
             "im",
             "im7",
             "IVmaj7",
-            "IV7/i"
+            "IV7/i",
+            "vim"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -1489,7 +1508,8 @@
             "vim",
             "V9sus4",
             "II9",
-            "IVmaj7"
+            "IVmaj7",
+            "im"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -1504,7 +1524,8 @@
             "bVIImaj7",
             "I7",
             "IVmaj7",
-            "I"
+            "I",
+            "vim"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -1668,7 +1689,8 @@
             "bVI7",
             "IV7",
             "vim7",
-            "I7"
+            "I7",
+            "Isus7"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -1682,7 +1704,8 @@
             "Isus7",
             "bIIsus7",
             "IV7",
-            "im7"
+            "im7",
+            "vim7(11)"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -1696,7 +1719,8 @@
             "I7",
             "IV7",
             "im7",
-            "Isus7"
+            "Isus7",
+            "bIIIsus7"
           ],
           "lengthMin": 3,
           "lengthMax": 3,
@@ -1827,7 +1851,8 @@
             "im9",
             "bVImaj7",
             "bIImaj7",
-            "IIIm7"
+            "IIIm7",
+            "IVm7"
           ],
           "lengthMin": 2,
           "lengthMax": 2,
@@ -1842,7 +1867,8 @@
             "vim7sus4",
             "IVm7",
             "im9",
-            "bIImaj7"
+            "bIImaj7",
+            "bVImaj7"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -1857,7 +1883,8 @@
             "VIIm7",
             "IIIm7",
             "im9",
-            "bIImaj7"
+            "bIImaj7",
+            "bVImaj7"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -1992,7 +2019,8 @@
             "bVII",
             "I",
             "V7/I/bass",
-            "IVsus2"
+            "IVsus2",
+            "Isus4"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2007,7 +2035,8 @@
             "Vsus4",
             "Isus4",
             "IV",
-            "bVII"
+            "bVII",
+            "V7/I/bass"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
@@ -2022,7 +2051,8 @@
             "im6",
             "immaj7",
             "I",
-            "IV"
+            "IV",
+            "V7/I/bass"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -2262,7 +2292,8 @@
             "bVImaj7",
             "ivm",
             "bVI",
-            "IVm"
+            "IVm",
+            "bVImaj9"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2276,7 +2307,8 @@
             "im",
             "ivm",
             "bVImaj7",
-            "bVI"
+            "bVI",
+            "bVImaj9"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2291,7 +2323,8 @@
             "ivm7",
             "im7",
             "bVImaj7",
-            "ivm"
+            "ivm",
+            "bVImaj9"
           ],
           "lengthMin": 3,
           "lengthMax": 4,
@@ -2439,7 +2472,8 @@
             "IV",
             "im",
             "bVII",
-            "iim"
+            "iim",
+            "bVImaj7"
           ],
           "lengthMin": 4,
           "lengthMax": 11,
@@ -2453,7 +2487,8 @@
             "bVImaj7",
             "bVIIm7",
             "I7",
-            "bVIImaj7"
+            "bVIImaj7",
+            "Imaj7"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2468,7 +2503,8 @@
             "bVII6",
             "Isus4",
             "I7",
-            "vim7"
+            "vim7",
+            "Imaj7"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
@@ -2642,7 +2678,8 @@
             "Imaj7",
             "iim7",
             "IVmaj7",
-            "bII7"
+            "bII7",
+            "I13sus4"
           ],
           "lengthMin": 3,
           "lengthMax": 3,
@@ -2656,7 +2693,8 @@
             "iim7",
             "bII7",
             "V7",
-            "IVmaj7"
+            "IVmaj7",
+            "I13sus4"
           ],
           "lengthMin": 3,
           "lengthMax": 3,
@@ -2670,7 +2708,8 @@
             "bII7",
             "bIIdim7",
             "Imaj7",
-            "V7"
+            "V7",
+            "I13sus4"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2685,7 +2724,8 @@
             "IImaj7",
             "Imaj7",
             "iim7",
-            "V7"
+            "V7",
+            "IIImaj7"
           ],
           "rootMotion": [
             -4
@@ -2817,7 +2857,8 @@
             "im7",
             "V7",
             "im",
-            "bVI"
+            "bVI",
+            "bVII7"
           ],
           "lengthMin": 2,
           "lengthMax": 3,
@@ -2832,7 +2873,8 @@
             "bIII",
             "bVII",
             "V",
-            "V7"
+            "V7",
+            "im7"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
@@ -2847,7 +2889,8 @@
             "bIII",
             "bVI",
             "bVII",
-            "V"
+            "V",
+            "im7"
           ],
           "lengthMin": 2,
           "lengthMax": 4,
