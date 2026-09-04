@@ -26,6 +26,15 @@
 // authored-progression path, not an error.
 // =============================================================================
 
+// GOLDEN VECTOR HAZARD (2026-09-04, U-02 recon)
+// test_recipes.js:34-51 pins hand-captured C++ vectors for frank_ocean and
+// gospel only; no capture tool exists. Any change to those two artists'
+// degreePool, lengthMin, lengthMax, or rootMotion invalidates them; they must
+// be RE-CAPTURED FROM THE C++ ENGINE (Phase 3's [oracle] dump), never
+// re-derived from this file, because a JS-derived vector makes the test
+// self-certifying and destroys the only cross-language parity assertion in
+// the project.
+
 const MASK64 = (1n << 64n) - 1n;
 
 // ── ROOT MOTION (cycle recipes) ──────────────────────────────────────────────
