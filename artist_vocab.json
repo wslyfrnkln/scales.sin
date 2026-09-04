@@ -461,6 +461,37 @@
           "lengthMax": 4,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "bVII major chord (Mixolydian borrow) is the primary color move — use in both major and minor contexts"
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "im",
+            "iim",
+            "bIII",
+            "IV",
+            "vm",
+            "vim",
+            "bVII"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 4,
+          "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Dorian as default minor (raised 6th, no leading tone) — shared with D'Angelo and Leon Thomas"
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "Imaj9",
+            "iiim9",
+            "vim9",
+            "IImaj7",
+            "viim9",
+            "bVIImaj9"
+          ],
+          "lengthMin": 3,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Extended chords (maj7, min9, maj9) as default voicing — triads only for contrast"
         }
       ]
     },
@@ -608,6 +639,36 @@
           "lengthMax": 2,
           "cadencePolicy": "resolve",
           "sourceRule": "Tritone substitutions are reserved for specific moments (V of ii area) — not a general tool."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "I9",
+            "IV6",
+            "bVII9",
+            "im7",
+            "IVm7",
+            "iiim7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Default to Mixolydian (bVII as modal color) and Dorian (minor with raised 6th on IV) — avoid committing to a single mode."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "bVII",
+            "I",
+            "IVm7",
+            "im7",
+            "bII7",
+            "V7sus"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Do NOT resolve to V7→I. The bVII chord is a color and rest point, not a backdoor dominant."
         }
       ]
     },
@@ -779,6 +840,36 @@
           "lengthMax": 4,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "ii–V–i jazz turnarounds are acceptable if they land on a bVI maj7 rather than fully resolving."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "im",
+            "ivm",
+            "bVI",
+            "bIII",
+            "bVII",
+            "vm"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Default key center: flat-key minor (Bb minor, F minor, Ab minor). Avoid bright major keys except for rare color contrast."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "im7",
+            "bVII",
+            "iiim7",
+            "ivm7",
+            "V",
+            "bVImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Keep modal ambiguity between Dorian, Aeolian, and Mixolydian — never fully commit to one mode."
         }
       ]
     },
@@ -922,6 +1013,36 @@
           "lengthMax": 3,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "Replace V7 with 13sus4 or sus2 — no leading tone, no resolution urge. This is the single biggest difference from bebop."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "iim11",
+            "bIIm9",
+            "Vm9",
+            "bIIImaj9",
+            "vim11",
+            "bVmaj13"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Rootless cluster voicings: omit root, stack 3rd + 7th + 9th + 11th in close position (within a 5th span). Minor 2nds are deliberate crunch, not errors."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "im9",
+            "iim11",
+            "bIIImaj7",
+            "IVmaj7",
+            "vm11",
+            "bVII11"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Default minor mode is Dorian (natural 6th). Chromatic passing tones approach chord tones on beat 1."
         }
       ]
     },
@@ -1056,6 +1177,36 @@
           "lengthMax": 2,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "Gospel 'lift': major IV in minor context (Gmaj7 in D minor) for an emotional breath without leaving the minor world."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "im7",
+            "IVmaj7",
+            "iim7",
+            "bIII",
+            "vm",
+            "bVII"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Bb Dorian is the default modal center on later records — minor with a natural 6th, which permits IVmaj7 without leaving minor territory."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "bIIIm9/bIV",
+            "im7/bVI",
+            "II/IV",
+            "bdim/VI",
+            "IVmaj9",
+            "Imaj9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Slash chords (Abm7/Gb, Bbm9/Eb) function modally, not as inversions — they create ambiguity between two key centers."
         }
       ]
     },
@@ -1188,6 +1339,36 @@
           "lengthMin": 3,
           "lengthMax": 4,
           "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Chromatic mediant modulations (key shifts by a 3rd) are the primary structural key changes — not pivot-chord modulation."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj7",
+            "IVmaj7",
+            "iim7",
+            "vim7",
+            "iiim7",
+            "IIm7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "The 7th is the primary color tone of funk harmony. Maj7 on major, min7 on minor — standard issue."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "bIVmaj9",
+            "bIIImaj9",
+            "bVI",
+            "iiim7",
+            "vim7",
+            "IIm7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
           "sourceRule": "Chromatic mediant modulations (key shifts by a 3rd) are the primary structural key changes — not pivot-chord modulation."
         }
       ]
@@ -1329,6 +1510,36 @@
           "lengthMax": 4,
           "cadencePolicy": "resolve",
           "sourceRule": "I7 → IV (treating tonic as its own dominant) is a gospel move that creates forward momentum without leaving the key."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj9",
+            "ii9",
+            "iiim7",
+            "#iv7",
+            "V7/III",
+            "IVmaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Chromatic/half-step modulations are abrupt and unprepared — no pivot chord. Two half-step modulations in one song (Golden Lady) is standard."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "V7/III",
+            "V7/ii",
+            "V7/vi",
+            "Imaj7",
+            "iiim7",
+            "ii9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "deceptive",
+          "sourceRule": "Secondary dominant chains (V7/III, V7/ii, V7/vi) are used to delay resolution, not complete it — suspend the listener."
         }
       ]
     },
@@ -1491,6 +1702,36 @@
           "lengthMax": 3,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "Narrow chord palette per track (often just Dorian i-IV). Harmonic interest comes from rhythmic placement and voice-leading, not chord substitution."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "im7",
+            "IV7",
+            "bIIImaj7",
+            "vim7",
+            "bVI7",
+            "bVImaj7#11/bVII"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "ARP Odyssey or clavinet handles bass/low register — Rhodes stays in E3–D5 range doing color work, not root-defining work."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "IV7#11",
+            "I7",
+            "bVII7",
+            "im7",
+            "bVI7",
+            "vim7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Lydian Dominant (#11) appears as a byproduct of quartal transposition — do not force it as a deliberate modal choice."
         }
       ]
     },
@@ -1622,6 +1863,36 @@
           "lengthMax": 4,
           "cadencePolicy": "none",
           "sourceRule": "Shell voicing on bass: root + 3rd + 7th, omit the 5th. Add one extension (9th, 11th, or 13th) to push to extended color."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "im13",
+            "bIImaj13",
+            "IVm13",
+            "vim13",
+            "IIIm13",
+            "im9"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Extension octave placement is non-negotiable — 13th voiced close to root sounds harsh; an octave up it sounds lush."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "im9",
+            "I9",
+            "ivm7",
+            "IV7",
+            "bIImaj7",
+            "bII7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Parallel major/minor pivot: shift from minor to parallel major within a single chord for one-chord reharmonization."
         }
       ]
     },
@@ -1757,6 +2028,36 @@
           "lengthMax": 4,
           "cadencePolicy": "none",
           "sourceRule": "mMaj7 is used only in line-cliché passing motion (im → immaj7 → im7 → im6) — never as a static resting chord."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "bVII",
+            "I",
+            "IVsus2",
+            "bIVmaj7",
+            "iim7",
+            "Isus4"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "resolve",
+          "sourceRule": "bVII chord (backdoor dominant) resolves to I from a whole step below — softer pull than authentic V-I, used as a color/texture chord."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "IVadd9",
+            "I",
+            "Iadd9",
+            "bVII",
+            "Vsus4",
+            "IVsus2"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "IVadd9 preferred over IVmaj7 on the tonic level — retains openness without the jazz-flavored maj7 interval."
         }
       ]
     },
@@ -1996,6 +2297,36 @@
           "lengthMax": 4,
           "cadencePolicy": "resolve",
           "sourceRule": "Functional dominant V7→i reserved for specific emotional moments (You Ain't Gotta Lie) — not the default."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "iim7/V",
+            "V7",
+            "bIImaj7",
+            "im7",
+            "ivm7",
+            "bVImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "deceptive",
+          "sourceRule": "Suspended dominants (ii7/V without resolution) are structural — Gm7/C implies dominant function but suspends it indefinitely."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "im",
+            "ivm",
+            "vm",
+            "bVImaj9",
+            "bVImaj7",
+            "bVII"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Live ensemble improvisation over drum/bass foundations — voicings are emergent from jazz-literate musicians, not pre-specified."
         }
       ]
     },
@@ -2143,6 +2474,36 @@
           "lengthMax": 4,
           "cadencePolicy": "avoid_resolution",
           "sourceRule": "bVII major (Bb in C major, D in A major) is the most consistent harmonic color — Mixolydian borrowing that gives tracks a floating quality rather than V→I finality."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "bIIImaj7",
+            "im7",
+            "vm7",
+            "bVImaj7",
+            "iim7",
+            "IVmaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "bIII maj7 (Ebmaj7 in G or C minor) is the jazz minor standard — relative major chord with added 7th."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "I7",
+            "IV7",
+            "bVII6",
+            "V7b9",
+            "Isus4",
+            "bVIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "avoid_resolution",
+          "sourceRule": "Unresolved dominant tension is an aesthetic choice — D7 in Circles is intentionally left hanging."
         }
       ]
     },
@@ -2333,6 +2694,21 @@
           "lengthMax": 4,
           "cadencePolicy": "resolve",
           "sourceRule": "Major-third root cycles as a reharmonization device — move the root down by major 3rds (Bb-Db-A-F) and reach each new key by its own ii-V, so guide tones keep moving by half-step while the roots leap. The system Coltrane later formalized in 'Giant Steps'; Pass recorded it on Virtuoso (1973)."
+        },
+        {
+          "kind": "vamp",
+          "degreePool": [
+            "Imaj7",
+            "I6",
+            "Imaj9",
+            "I7",
+            "im7",
+            "IVmaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Inner voice movement creates motion inside a static chord — one voice moves chromatically while bass and melody hold."
         }
       ]
     },
@@ -2477,6 +2853,36 @@
           "lengthMax": 4,
           "cadencePolicy": "none",
           "sourceRule": "Dorian/Aeolian toggle: shift between minor iv (Fm) and major IV (F) freely within the same song — felt, not theorized."
+        },
+        {
+          "kind": "chain",
+          "degreePool": [
+            "im",
+            "ivm",
+            "bIII",
+            "bVI",
+            "bVII",
+            "V7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "Default tonality is functional minor. Extensions are selective color additions, not structural foundations."
+        },
+        {
+          "kind": "cadence",
+          "degreePool": [
+            "bVImaj7",
+            "im7",
+            "V7",
+            "im",
+            "bVII7",
+            "bIIImaj7"
+          ],
+          "lengthMin": 2,
+          "lengthMax": 3,
+          "cadencePolicy": "none",
+          "sourceRule": "7th extensions are add-on color (Gmaj7 over a Bm progression) — not structural jazz chord function."
         }
       ]
     }
