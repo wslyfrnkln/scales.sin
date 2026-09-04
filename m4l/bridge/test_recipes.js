@@ -29,24 +29,42 @@ function check(name, cond, detail) {
 const vocab = loadVocabularySync(path.join(__dirname, '../../artist_vocab.json'));
 const styles = vocab.styleTemplates;
 
-// ── GOLDEN VECTORS — captured from the C++ engine, 2026-08-16 ────────────────
+// ── GOLDEN VECTORS — captured from the C++ engine, 2026-09-04 ────────────────
+// Re-captured for Phase 4 (SCALES_VOCAB_EXPANSION_PLAN Task 4.3): raising
+// frank_ocean and gospel to 5 recipes each shifts `progressionIndex %
+// recipes.length` for every index even though neither artist's pool changed
+// — see recipes.js's ROOT MOTION / composeFromRecipe comments and the GOLDEN
+// VECTOR HAZARD note above. Re-captured via the [.oracle] dump
+// (tools/recapture_recipe_vectors.sh), never re-derived from this file.
 // Any divergence here means the two surfaces have stopped agreeing.
 const GOLDEN = {
     frank_ocean: [
         ['bVI', 'im'],
         ['bVIImaj7', 'IImaj7'],
         ['bVIImaj7', 'im', 'Imaj7'],
-        ['vm', 'Imaj7'],
+        ['bVII', 'vim'],
+        ['vim9', 'IImaj7', 'viim9'],
+        ['Imaj7', 'vm', 'bVI', 'im'],
+        ['Imaj7', 'bVIImaj7'],
+        ['viim7', 'bVIImaj7', 'bII'],
+        ['iim', 'bIII', 'vm'],
+        ['IImaj7', 'iiim9', 'vim9'],
+        ['Imaj7', 'im'],
         ['IV', 'Imaj7'],
-        ['viim7', 'im', 'bII', 'bVIImaj7'],
     ],
     gospel: [
         ['V7/I/bass', 'IV', 'IVsus2'],
         ['IVsus2', 'I'],
         ['im', 'im7', 'I'],
-        ['IVsus2', 'bVII'],
-        ['Vsus4', 'Isus4', 'IV'],
-        ['IV', 'im7', 'immaj7', 'im'],
+        ['bVII', 'Isus4'],
+        ['Iadd9', 'bVII', 'Vsus4'],
+        ['V7/I/bass', 'IVsus2', 'IV'],
+        ['Isus4', 'Vsus4', 'IV', 'I'],
+        ['IV', 'im', 'immaj7'],
+        ['bIVmaj7', 'iim7', 'IVsus2'],
+        ['bVII', 'I', 'Iadd9'],
+        ['IV', 'IVsus2', 'bVII'],
+        ['IV', 'IVsus2'],
     ],
 };
 
@@ -119,11 +137,17 @@ check('dilla carries no recipes (loop-point path owns him)',
       !styles.dilla.recipes || styles.dilla.recipes.length === 0);
 
 // ── cycle fallback must not emit a one-chord "progression" ─────────────────
+// glasper's recipe index 1 (the "never completes a cycle at all" pool per
+// recipes.js's ROOT MOTION comment) is targeted via idx % recipes.length ==
+// 1. Phase 4 (Task 4.2) appended two new recipes to glasper (indices 3-4),
+// changing recipes.length from 3 to 5 — 37 % 3 == 1 no longer holds (37 % 5
+// == 2), so the index is re-derived here (36 % 5 == 1) to keep exercising
+// the same recipe rather than silently drifting onto an unrelated one.
 {
-    const got = composeFromRecipe(styles.glasper, 37);
+    const got = composeFromRecipe(styles.glasper, 36);
     check('cycle recipes never fall back to a one-chord progression',
           got.length === 0 || got.length >= 2,
-          `glasper idx 37 produced [${got}]`);
+          `glasper idx 36 produced [${got}]`);
 }
 
 // ── pool-width rule, the property that makes plagiarism rare by construction ─
